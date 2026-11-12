@@ -378,7 +378,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
   <section id="reward" hidden></section>
   <section id="game" hidden><div class="lesson-head"><button class="x" id="gquit" aria-label="Back to the map">✕</button><h2 id="gtitle" style="font-size:24px"></h2></div><div id="gstage"></div></section>
   <section id="worlds" hidden>
-    <div class="section-title"><h2>Pick a world!</h2><span>Each season has its own pals to collect</span></div>
+    <div class="section-title"><h2>Pick a world!</h2><span>Each world has its own pals to collect</span></div>
     <div class="worlds" id="worldGrid"></div>
   </section>
   <section id="mine" hidden>
@@ -861,7 +861,7 @@ const ART={
    +Array.from({length:Math.ceil(h/140)},(_,i)=>`<ellipse cx="${i%2?320:80}" cy="${60+i*140}" rx="80" ry="18" fill="#C9DEFA" opacity=".6"/>`).join("")
    +Array.from({length:22},(_,i)=>EM((i*83)%w,(i*149)%h,"❄",14+(i%3)*5,"twinkle","fill:#7FA9E6")).join("")};
 function renderMap(){if(!S.world)return show("worlds");const r=R(),wd=Wd();
-  $("#titleSnail").innerHTML=snailSVG();$("#titleP").textContent=`${wd.season} in ${wd.name}! Learn cursive with ${bn()}. Every lesson you finish brings new pals.`;
+  $("#titleSnail").innerHTML=snailSVG();$("#titleP").textContent=`Welcome to ${wd.name}! Learn cursive with ${bn()}. Every lesson you finish brings new pals.`;
   const u=unl(wd),bi=buddyIdx(wd);
   $("#palrow").innerHTML=ROSTER[wd.id].map((p,i)=>i<u?`<button class="ptile ${i===bi?"on":""}" data-i="${i}">${snailSVG(S.eq,"",p)}<span>${esc(p.n)}</span></button>`:`<div class="ptile lock">${palSVG(p)}<span>🔒</span></div>`).join("");
   $("#palrow").querySelectorAll("button.ptile").forEach(t=>t.onclick=()=>{S.buddy[wd.id]=+t.dataset.i;save();sfx.pop();say(bn());renderMap();renderHUD()});
@@ -1160,7 +1160,7 @@ function play(rid){stopGame();const gm=GAMES[rid],P=gameParams();const slow=P.sl
 
 /* ===================== WORLDS PICKER ===================== */
 const WBG={flower:"linear-gradient(180deg,#FFE3F1,#BDEBA4 60%,#7CC35A 60%)",mermaid:"linear-gradient(180deg,#9FE3FF,#4CC3E6 60%,#F4E3B9 60%)",truck:"linear-gradient(180deg,#FFD9A0,#F3B868 60%,#C8662A 60%)",dragon:"linear-gradient(180deg,#BFD9FF,#EAF3FF 60%,#FFFFFF 60%)"};
-function renderWorlds(){$("#worldGrid").innerHTML=WORLDS.map(w=>`<button class="wcard ${S.world===w.id?"on":""}" data-w="${w.id}" style="background:${WBG[w.id]}"><span class="season">${w.em} ${w.season}</span><div class="trio">${ROSTER[w.id].slice(0,3).map(p=>palSVG(p)).join("")}</div><h3>${w.name}</h3><p>${w.blurb}<br>${unl(w)} of ${ROSTER[w.id].length} pals unlocked</p></button>`).join("");
+function renderWorlds(){$("#worldGrid").innerHTML=WORLDS.map(w=>`<button class="wcard ${S.world===w.id?"on":""}" data-w="${w.id}" style="background:${WBG[w.id]}"><div class="trio">${ROSTER[w.id].slice(0,3).map(p=>palSVG(p)).join("")}</div><h3>${w.name}</h3><p>${w.blurb}<br>${unl(w)} of ${ROSTER[w.id].length} pals unlocked</p></button>`).join("");
   $("#worldGrid").querySelectorAll(".wcard").forEach(b=>b.onclick=()=>{S.world=b.dataset.w;save();sfx.good();bdNow="";renderBackdrop(S.world);show("map");mood($("#titleSnail"),"happy")})}
 
 /* ===================== MY WORDS ===================== */
