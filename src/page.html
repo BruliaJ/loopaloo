@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;800;900&family=Playwrite+US+Trad:wght@300;400&display=swap">
 <style>
-/* Layout: a lagoon-world map of stepping stones; each lesson is a sheet of handwriting paper on a floating card; Loopy the snail's slime trail is the ink. */
+/* Layout: a lagoon-world map of stepping stones; each lesson is a sheet of handwriting paper on a floating card; your pal leads the way and the paper changes with the season. */
 :root{
   --bg:#E4F5F0; --bg2:#CDEDE4; --card:#FFFFFF; --card2:#F3F8FF; --ink:#262150; --muted:#5D6488;
   --plum:#7A3FE0; --plum-d:#5524AE; --mint:#12A386; --mint-d:#0B7861; --soft:#DDF5EC;
@@ -194,6 +194,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .bk .p{font-weight:900;font-size:13px;color:var(--muted)}
 .bk.no{opacity:.32}
 .bk.no canvas,.bk.no .cur{filter:grayscale(1)}
+.bk .snail{width:100%}.bk.no .snail{filter:brightness(0) opacity(.25)}
 .bk .emo{font-size:30px;line-height:1.4}
 
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:16px;font-weight:900;z-index:40;max-width:calc(100% - 32px);text-align:center}
@@ -287,6 +288,39 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{padding:8px 14px;border-radius:999px;background:var(--card2);font-weight:900;box-shadow:0 3px 0 var(--shadow)}
 
+/* pals + worlds */
+.pal .mo,.pal .ms{display:none}
+.happy .pal .mm,.dance .pal .mm{display:none}.happy .pal .mo,.dance .pal .mo{display:inline}
+.sad .pal .mm{display:none}.sad .pal .ms{display:inline}
+.pal .tl{transform-box:fill-box;transform-origin:0 50%;animation:wag 1.8s ease-in-out infinite alternate}
+@keyframes wag{from{transform:rotate(-5deg)}to{transform:rotate(6deg)}}
+.pal .blink{animation:siren .6s steps(2) infinite}
+@keyframes siren{50%{fill:#3E8EF0}}
+.dance .pal .al,.dance .pal .ar{transform-box:fill-box;animation:armw .4s ease-in-out infinite alternate}
+.dance .pal .al{transform-origin:100% 0}.dance .pal .ar{transform-origin:0 0}
+@keyframes armw{to{transform:rotate(-18deg)}}
+.chiplabel{justify-self:center;background:var(--card);border-radius:999px;padding:6px 16px;font-family:var(--f-display);font-weight:700;font-size:19px;box-shadow:0 3px 0 var(--shadow)}
+.palrow{display:flex;gap:10px;overflow-x:auto;padding:6px 4px 12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.ptile{flex:none;width:100px;scroll-snap-align:start;background:var(--card);border-radius:20px;padding:6px 6px 6px;display:grid;justify-items:center;box-shadow:0 4px 0 var(--shadow);font-family:var(--f-display);font-weight:600;font-size:15px;line-height:1.1}
+.ptile .snail{width:84px}
+.ptile.on{box-shadow:0 0 0 4px var(--mint),0 4px 0 var(--mint-d)}
+.ptile.lock{background:transparent;border:3px dashed var(--locked);box-shadow:none;color:var(--muted)}
+.ptile.lock .snail{filter:brightness(0) opacity(.18)}
+.count{justify-self:center;background:var(--card);border-radius:999px;padding:4px 14px;font-weight:800;font-size:14px;color:var(--muted);box-shadow:0 2px 0 var(--shadow);text-align:center}
+.worlds{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.wcard{position:relative;border-radius:26px;overflow:hidden;padding:12px 10px 14px;display:grid;gap:6px;justify-items:center;box-shadow:0 5px 0 var(--shadow);text-align:center}
+.wcard .trio{display:flex;justify-content:center;gap:0;width:100%}
+.wcard .trio .snail{width:31%}
+.wcard h3{font-size:22px;background:var(--card);border-radius:12px;padding:2px 12px}
+.wcard .season{font-weight:900;font-size:13px;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.85);color:#262150;border-radius:999px;padding:2px 10px}
+.wcard p{margin:0;font-weight:800;font-size:14px;background:rgba(255,255,255,.85);color:#262150;border-radius:12px;padding:4px 10px}
+.wcard.on{box-shadow:0 0 0 5px var(--mint),0 5px 0 var(--mint-d)}
+.newpals{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.newpals .ptile{animation:pop .5s .6s backwards}
+.amb.fall{animation:fall linear infinite}
+@keyframes fall{from{transform:translate(0,-10vh) rotate(0)}to{transform:translate(7vw,110vh) rotate(420deg)}}
+.snowf{color:#fff;text-shadow:0 0 6px rgba(90,140,220,.7)}
+
 /* snail */
 .snail{display:block;width:100%;height:auto;overflow:visible}
 .snail .eyes{transform-box:fill-box;transform-origin:center;animation:blink 4.4s infinite}
@@ -298,7 +332,11 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .sad .snail .sb{transform-box:fill-box;transform-origin:50% 100%;animation:droop .8s ease}
 @keyframes droop{30%,70%{transform:rotate(-6deg) translateY(2px)}}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
-@media (max-width:560px){.nav button{padding:7px 9px;font-size:15px}.who b{display:none}.preview{grid-template-columns:1fr}.preview .snail{width:120px;justify-self:center}.title .snail{width:72px}.rtab{font-size:12px}}
+@media (max-width:560px){.who .snail{width:40px}header.top .wrap{padding-block:5px;gap:6px}.pill{font-size:16px;padding:3px 10px 3px 4px}
+  .card{padding:14px 12px;gap:10px;border-radius:24px}.bubble .snail{width:52px}.bubble p{font-size:16px;padding:8px 12px}
+  .lesson-head{padding-block:6px}.trail{height:46px}.trail .walker{width:46px}.x{width:40px;height:40px}
+  .speak{width:52px;height:52px}.btn{padding:10px 18px;font-size:18px}.mode{font-size:12px}
+.nav button{padding:6px 9px;font-size:14px}.who b{display:none}.preview{grid-template-columns:1fr}.preview .snail{width:120px;justify-self:center}.title .snail{width:72px}.rtab{font-size:12px}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -308,11 +346,12 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 <div class="backdrop" id="backdrop"></div>
 <canvas id="fx"></canvas>
 <header class="top"><div class="wrap">
-  <button class="who" id="who" aria-label="Dress up Loopy"><span id="whoSnail"></span><b>Loopaloo</b></button>
+  <button class="who" id="who" aria-label="Dress up your pal"><span id="whoSnail"></span><b>Loopaloo</b></button>
   <span class="pill" title="Stars"><svg class="star on coin" viewBox="0 0 24 24"><path d="M12 1.8l3.1 6.5 7.1.9-5.2 4.9 1.4 7.1L12 17.7 5.6 21.2 7 14.1 1.8 9.2l7.1-.9z"/></svg><span id="starCount">0</span></span>
   <span class="pill" title="Coins"><svg class="coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="url(#gCoin)" stroke="#B87400" stroke-width="1.5"/><path d="M8 14c1-4 3-6 4-6s1 3-1 5-3 3-1 3 4-2 5-3" fill="none" stroke="#B87400" stroke-width="1.8" stroke-linecap="round"/></svg><span id="coinCount">0</span></span>
   <nav class="nav" aria-label="Sections">
     <button data-go="map">Map</button>
+    <button data-go="worlds">Worlds</button>
     <button data-go="mine">My Words</button>
     <button data-go="shop">Skins</button>
     <button data-go="book">Stickers</button>
@@ -322,7 +361,8 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 <main class="wrap">
   <section id="map">
     <div class="col">
-      <div class="title"><span id="titleSnail" class="bob"></span><div class="brand">Loopaloo</div><p>Learn cursive with Loopy the snail. Every letter is a slimy little loop-de-loop.</p></div>
+      <div class="title"><span id="titleSnail" class="bob"></span><div class="brand">Loopaloo</div><p id="titleP">Learn cursive with your pal. Every letter is a little loop-de-loop.</p></div>
+      <div class="chiplabel">Pick a pal!</div><div class="palrow" id="palrow"></div><div class="count" id="palcount"></div>
       <div class="regions" id="regions"></div>
       <div class="gamebtn"><button class="btn big" id="playBtn">Play!</button><button class="btn sun big" id="gameBtn"></button></div>
       <div class="world" id="world"></div>
@@ -337,9 +377,13 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
   </section>
   <section id="reward" hidden></section>
   <section id="game" hidden><div class="lesson-head"><button class="x" id="gquit" aria-label="Back to the map">✕</button><h2 id="gtitle" style="font-size:24px"></h2></div><div id="gstage"></div></section>
+  <section id="worlds" hidden>
+    <div class="section-title"><h2>Pick a world!</h2><span>Each season has its own pals to collect</span></div>
+    <div class="worlds" id="worldGrid"></div>
+  </section>
   <section id="mine" hidden>
     <div class="col">
-      <div class="title"><span class="bob" id="mineSnail"></span><div class="brand" id="mineHi">Write anything!</div><p>Type or say your name and any word. Loopy will show you how to write it in cursive.</p></div>
+      <div class="title"><span class="bob" id="mineSnail"></span><div class="brand" id="mineHi">Write anything!</div><p>Type or say your name and any word. Your pal will show you how to write it in cursive.</p></div>
       <div class="card" style="justify-items:stretch;text-align:left">
         <label class="fld"><span>Your name</span><div class="inrow"><input id="inName" maxlength="16" autocomplete="off" placeholder="Like Mia or Leo"><button class="mic" data-for="inName" aria-label="Say your name">🎤</button></div></label>
         <label class="fld"><span>A word you want to write</span><div class="inrow"><input id="inWord" maxlength="40" autocomplete="off" placeholder="Like dinosaur or pizza party"><button class="mic" data-for="inWord" aria-label="Say a word">🎤</button></div></label>
@@ -351,7 +395,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
     </div>
   </section>
   <section id="shop" hidden>
-    <div class="section-title"><h2>Loopy's closet</h2><span>Every skin gives Loopy a silly power in the mini-games</span></div>
+    <div class="section-title"><h2>Dress-up closet</h2><span>Every hat, pen and paper gives your pal a silly power in the mini-games</span></div>
     <div class="preview" id="shopPreview"></div>
     <div id="shopBody"></div>
   </section>
@@ -402,8 +446,8 @@ const STORIES=[
   qs:[["How many tacos did he eat?","ten",["two","one"]],["What did he eat after the tacos?","the table",["a pizza","his hat"]]]},
  {t:"Sneezy the Cloud",e:"☁️",bg:"#E8F1FA",pages:[["Sneezy is a little cloud.","☁️🙂"],["When he sneezes, it rains.","☁️🌧️"],["Achoo! The cat gets wet.","🌧️🐱💦"],["Sneezy needs a tissue as big as a house.","☁️🧻🏠"]],
   qs:[["What happens when Sneezy sneezes?","it rains",["it snows","it gets hot"]],["Who got wet?","the cat",["the dog","the king"]]]},
- {t:"The Great Snail Race",e:"🐌",bg:"#FFF3D6",pages:[["Loopy the snail is in a race.","🐌🏁"],["The rabbit runs very fast.","🐇💨"],["The rabbit stops to take a nap.","🐇😴"],["Loopy keeps going and wins!","🐌🏆🎉"]],
-  qs:[["Who is in the race with Loopy?","a rabbit",["a cow","a fish"]],["Who wins the race?","Loopy",["the rabbit","nobody"]]]},
+ {t:"The Great Truck Race",e:"🚚",bg:"#FFF3D6",pages:[["Turbo the truck is in a race.","🚚🏁"],["The rabbit runs very fast.","🐇💨"],["The rabbit stops to take a nap.","🐇😴"],["Turbo keeps going and wins!","🚚🏆🎉"]],
+  qs:[["Who is in the race with Turbo?","a rabbit",["a cow","a fish"]],["Who wins the race?","Turbo",["the rabbit","nobody"]]]},
  {t:"Cat in Pajamas",e:"🐈",bg:"#F0E6FF",pages:[["My cat wears pajamas.","🐈👕"],["They have tiny fish on them.","👕🐟🐟"],["At night she reads a book.","🐈📖🌙"],["She snores like a big truck.","🐈😴🚚"]],
   qs:[["What does the cat wear?","pajamas",["boots","a cape"]],["What does she snore like?","a truck",["a bird","a bell"]]]}];
 const REGIONS=[
@@ -440,8 +484,9 @@ const PAPERS={
 
 /* ===================== STATE ===================== */
 const KEY="loopaloo-v1";
-const fresh=()=>({coins:20,stars:{},done:{},plays:0,region:"lagoon",own:{shell:["classic"],hat:["none"],pen:["berry"],paper:["notebook"]},eq:{shell:"classic",hat:"none",pen:"berry",paper:"notebook"},got:{}});
+const fresh=()=>({coins:20,stars:{},done:{},plays:0,region:"lagoon",own:{shell:["classic"],hat:["none"],pen:["berry"],paper:["notebook"]},eq:{shell:"classic",hat:"none",pen:"berry",paper:"notebook"},got:{},world:"",unl:{},buddy:{}});
 let S;try{S=Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||"null")||{})}catch(e){S=fresh()}
+if(!S.unl)S.unl={};if(!S.buddy)S.buddy={};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -472,19 +517,19 @@ function hatSVG(h){switch(h){
   case "cowboy":return `<path d="M28 16 Q56 26 84 16 Q 80 22 56 24 Q 32 22 28 16Z" fill="#9A5B2A" stroke="#5E3414" stroke-width="2"/><path d="M42 18 Q42 0 50 2 Q56 6 62 2 Q70 0 70 18 Z" fill="#B87333" stroke="#5E3414" stroke-width="2.5"/><path d="M42 13 Q56 17 70 13" stroke="#E2402E" stroke-width="3" fill="none"/>`;
   case "flower":return `<g transform="translate(56 12)">${[0,72,144,216,288].map(r=>`<ellipse cx="0" cy="-8" rx="5" ry="8" fill="#fff" stroke="#C9B6D9" stroke-width="1.5" transform="rotate(${r})"/>`).join("")}<circle r="5.5" fill="#FFC531" stroke="#C98500" stroke-width="1.5"/></g>`;
   default:return ""}}
-function snailSVG(sk=S.eq,cls=""){const id="sh"+(uid++);const sh=SHELLS[sk.shell]||SHELLS.classic;const f=shellFill(id,sh);
-  return `<svg class="snail ${cls}" viewBox="-4 -26 132 122" aria-hidden="true"><defs>${f.defs}</defs><g class="sb">
-  <ellipse cx="62" cy="92" rx="52" ry="4" fill="rgba(0,0,0,.12)"/>
-  <path d="M6 88 C 6 78 16 74 28 74 L 94 74 C 96 62 94 46 99 37 C 104 26 121 27 123 40 C 125 56 120 76 108 86 C 102 90 96 91 88 91 L 12 92 C 8 92 6 90 6 88 Z" fill="#B9E874" stroke="#4E7A22" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M18 84 L 90 84" stroke="#9ACB55" stroke-width="3" stroke-linecap="round"/>
-  <g class="stalk"><path d="M105 31 L 99 10" stroke="#4E7A22" stroke-width="3.2" stroke-linecap="round"/><path d="M116 31 L 121 12" stroke="#4E7A22" stroke-width="3.2" stroke-linecap="round"/>
-  <g class="eyes"><circle cx="99" cy="9" r="6.5" fill="#fff" stroke="#262150" stroke-width="2"/><circle cx="100.5" cy="10" r="3" fill="#262150"/><circle cx="121" cy="11" r="6.5" fill="#fff" stroke="#262150" stroke-width="2"/><circle cx="122.5" cy="12" r="3" fill="#262150"/></g></g>
-  <circle cx="117" cy="49" r="4" fill="#FF8FA3" opacity=".55"/>
-  <path d="M106 47 Q 112 54 119 46" stroke="#262150" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-  <circle cx="56" cy="46" r="32" fill="${f.fill}" stroke="${sh.line}" stroke-width="3.2"/>${f.extra}
-  ${shellExtras(sh)}
-  <path d="M58 46 a3 3 0 1 0 -3 3 a8 8 0 1 0 8 -8 a14 14 0 1 0 -14 14 a21 21 0 1 0 21 -21" fill="none" stroke="${sh.line}" stroke-width="3" stroke-linecap="round" opacity="${sh.rind?0:.85}"/>
-  ${hatSVG(sk.hat)}</g></svg>`}
+/*PALS*/
+/* worlds: one per season, each with its own cast of pals */
+const WORLDS=[
+ {id:"mermaid",name:"Mermaid Cove",season:"Summer",ic:"🧜‍♀️",em:"🐚",acc:"#12A386",blurb:"Sunny waves, sandcastles and sparkly tails."},
+ {id:"truck",name:"Truck Town",season:"Fall",ic:"🚚",em:"🍂",acc:"#E0742A",blurb:"Crunchy leaves, pumpkins and big busy trucks."},
+ {id:"dragon",name:"Dragon Peaks",season:"Winter",ic:"🐉",em:"❄️",acc:"#3E7FD8",blurb:"Snowy mountains and cozy little dragons."}];
+const STARTERS=3,PER=2;
+const Wd=()=>WORLDS.find(w=>w.id===S.world)||WORLDS[0];
+const unl=w=>Math.min(ROSTER[w.id].length,(S.unl&&S.unl[w.id])||STARTERS);
+const buddyIdx=w=>Math.min((S.buddy&&S.buddy[w.id])||0,unl(w)-1);
+const buddy=()=>ROSTER[Wd().id][buddyIdx(Wd())];
+const bn=()=>buddy().n;
+function snailSVG(sk=S.eq,cls="",pal=null){return palSVG(pal||buddy(),sk.hat,cls)}
 function mood(el,cls,ms=700){if(!el)return;el.classList.remove("happy","sad");void el.offsetWidth;el.classList.add(cls);setTimeout(()=>el.classList.remove(cls),ms)}
 
 /* ===================== AUDIO ===================== */
@@ -529,11 +574,12 @@ function TracePad(host,word,mode,onDone){
   const pp=PAPERS[S.eq.paper],pen=PENS[S.eq.pen];
   const wrap=document.createElement("div");wrap.className="paper";const cv=document.createElement("canvas");wrap.appendChild(cv);
   const tip=document.createElement("div");tip.className="tip";tip.innerHTML=snailSVG();wrap.appendChild(tip);host.appendChild(wrap);
+  cv.style.touchAction=mode==="demo"?"pan-y":"none";
   const ctx=cv.getContext("2d");const L=layoutWord(word);
   let W,H,U,by,ox,strokes=[],dead=false,raw=[],cur=null;
   const st={s:0,i:0,oops:0,off:false,done:false};
   function geom(){const dpr=Math.min(2,window.devicePixelRatio||1);W=wrap.clientWidth;if(W<20)return false;const wu=(L.maxx-L.minx)+.9;
-    U=Math.min(110,(W-24)/wu);H=Math.round(U*3.6);cv.width=W*dpr;cv.height=H*dpr;cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);
+    const avail=Math.max(150,Math.min(innerHeight,screen.height||innerHeight)*(innerWidth<560?0.34:0.42));U=Math.min(110,(W-24)/wu,avail/3.6);H=Math.round(U*3.6);cv.width=W*dpr;cv.height=H*dpr;cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);
     by=U*2.3;ox=(W-(L.maxx-L.minx)*U)/2;
     const P=s=>s.map(p=>[ox+(p[0]-L.minx)*U,by-p[1]*U]);
     strokes=[L.main,...L.extra].map(s=>{const pts=P(s);const cum=[0];for(let k=1;k<pts.length;k++)cum.push(cum[k-1]+Math.hypot(pts[k][0]-pts[k-1][0],pts[k][1]-pts[k-1][1]));return {pts,cum,len:cum[cum.length-1],dot:pts.length===1}})}
@@ -579,7 +625,7 @@ function TracePad(host,word,mode,onDone){
   function onMove(e){if(!cur||st.done)return;e.preventDefault();const p=local(e);cur.pts.push(p);const s=strokes[st.s];
     const win=U*.7;let best=-1,bd=1e9;for(let j=Math.max(0,st.i-4);j<s.pts.length&&s.cum[j]-s.cum[st.i]<=win;j++){const d=Math.hypot(p[0]-s.pts[j][0],p[1]-s.pts[j][1]);if(d<bd){bd=d;best=j}}
     if(bd<=tol()){if(best>st.i)st.i=best;if(st.off){st.off=false;cur={pts:[p],bad:false};raw.push(cur)}}
-    else if(bd>tol()*1.6&&!st.off){st.off=true;st.oops++;cur.bad=true;sfx.bad();fb("Oops! Hop back to Loopy.","bad")}
+    else if(bd>tol()*1.6&&!st.off){st.off=true;st.oops++;cur.bad=true;sfx.bad();fb(`Oops! Hop back to ${bn()}.`,"bad")}
     if(s.len-s.cum[st.i]<U*.16){st.i=s.pts.length-1;finishStroke()}
     draw()}
   function onUp(){cur=null;if(st.off){st.off=false}}
@@ -593,9 +639,9 @@ function TracePad(host,word,mode,onDone){
   return {st,demo,draw,setFb:el=>fbEl=el,reset(){st.s=0;st.i=0;st.done=false;raw=[];draw()},kill(){dead=true;ro.disconnect();removeEventListener("pointerup",onUp);removeEventListener("pointercancel",onUp)},strokes:()=>strokes}}
 
 /* ===================== NAV / HUD ===================== */
-const SECTIONS=["map","lesson","reward","shop","book","game","mine"];
+const SECTIONS=["map","lesson","reward","shop","book","game","mine","worlds"];
 function show(id){SECTIONS.forEach(s=>$("#"+s).hidden=s!==id);document.querySelectorAll(".nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.go===id));scrollTo(0,0);
-  if(id==="map")renderMap();if(id==="shop")renderShop();if(id==="book")renderBook();if(id==="mine")renderMine();renderHUD()}
+  if(id==="map")renderMap();if(id==="shop")renderShop();if(id==="book")renderBook();if(id==="mine")renderMine();if(id==="worlds")renderWorlds();if(S.world)renderBackdrop(S.world);renderHUD()}
 function renderHUD(){$("#starCount").textContent=totalStars();$("#coinCount").textContent=S.coins;$("#whoSnail").innerHTML=snailSVG()}
 document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{killPad();stopGame();show(b.dataset.go)});
 $("#who").onclick=()=>{killPad();stopGame();show("shop")};
@@ -611,19 +657,32 @@ function stoneFace(r,i){const L=r.lessons[i];
   if(r.kind==="words")return `<span class="emo">${L[0][1]}${L[1][1]}</span>`;
   if(r.kind==="caps")return `<span class="lbl" data-w="${typeof L==="string"?L.slice(0,3).split("").join(" "):L.names[1]}"></span>`;
   return `<span class="emo">${L.e}</span>`}
+const EM=(x,y,e,sz=34,cls="",st="")=>`<text x="${x}" y="${y}" font-size="${sz}" text-anchor="middle" class="${cls}" style="${st}">${e}</text>`;
 const ART={
- lagoon:(w,h)=>`<rect width="${w}" height="${h}" fill="#8FDCCB"/><rect y="${h*.0}" width="${w}" height="${h}" fill="url(#lw)"/>`+Array.from({length:Math.ceil(h/90)},(_,i)=>`<path d="M0 ${40+i*90} q 25 -10 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0" stroke="#fff" stroke-width="3" fill="none" opacity=".45"/>`).join("")+[[60,.18],[340,.33],[50,.55],[350,.7],[70,.9]].map(([x,f])=>`<g class="sway" transform="translate(${x} ${h*f})"><ellipse rx="34" ry="12" fill="#2FA35A"/><path d="M0 0 L 30 -6 L 30 6 Z" fill="#8FDCCB"/><circle cx="-8" cy="-10" r="9" fill="#FF8FC4"/><circle cx="-8" cy="-10" r="4" fill="#FFE27A"/></g>`).join("")+[[300,.24,"🐟",0],[90,.46,"🐠",1.2],[310,.62,"🐟",2.1],[100,.82,"🦆",.6]].map(([x,f,e,d])=>`<text class="mapfx" style="animation-delay:-${d}s" x="${x}" y="${h*f}" font-size="30" text-anchor="middle">${e}</text>`).join("")+`<text x="${w-40}" y="${h-30}" font-size="38" text-anchor="middle" class="mapfx" style="animation-duration:5s">🐢</text>`,
- lane:(w,h)=>`<rect width="${w}" height="${h}" fill="#BDE7A4"/>`+[[40,.12],[360,.3],[30,.5],[370,.66],[45,.86]].map(([x,f],i)=>`<g transform="translate(${x} ${h*f})"><rect x="-22" y="-20" width="44" height="34" fill="${["#FFD6A5","#FFADAD","#CAFFBF","#A0C4FF","#FDFFB6"][i]}" stroke="#7A5230" stroke-width="2"/><path d="M-28 -18 L0 -40 L28 -18Z" fill="#E2674E" stroke="#7A5230" stroke-width="2"/><rect x="-6" y="-2" width="12" height="16" fill="#9A5B2A"/></g>`).join("")+Array.from({length:14},(_,i)=>`<circle cx="${(i*97)%w}" cy="${(i*173)%h}" r="5" fill="${["#FF6FA8","#FFD93D","#fff"][i%3]}"/>`).join("")+[.4,.78].map((f,i)=>`<rect x="0" y="${h*f-18}" width="${w}" height="36" fill="#7B7F8C"/><path d="M0 ${h*f} H${w}" stroke="#fff" stroke-width="3" stroke-dasharray="14 12"/><text class="drive" style="animation-delay:-${i*4}s;animation-duration:${8+i*3}s" x="0" y="${h*f}" font-size="32">${i?"🚌":"🚗"}</text>`).join("")+[[330,.2],[70,.62],[340,.94]].map(([x,f])=>`<text x="${x}" y="${h*f}" font-size="40" text-anchor="middle" class="sway">🌳</text>`).join(""),
- castle:(w,h)=>`<rect width="${w}" height="${h}" fill="url(#cw)"/><g transform="translate(${w/2} 140)" opacity=".9"><rect x="-90" y="-60" width="180" height="90" fill="#B9A6E8"/><rect x="-120" y="-100" width="50" height="130" fill="#A890E0"/><rect x="70" y="-100" width="50" height="130" fill="#A890E0"/><path d="M-125 -100 L-95 -140 L-65 -100Z M65 -100 L95 -140 L125 -100Z" fill="#7A3FE0"/><rect x="-20" y="-10" width="40" height="40" rx="20" fill="#5524AE"/><path class="flag" d="M95 -140 v-20 l16 6 -16 6" fill="#FFD93D" stroke="#5524AE" stroke-width="2"/><path class="flag" d="M-95 -140 v-20 l16 6 -16 6" fill="#FF6FA8" stroke="#5524AE" stroke-width="2"/></g><circle cx="60" cy="60" r="26" fill="#FFF6C9"/><circle cx="70" cy="54" r="24" fill="#2A1E5C"/><text x="${w-60}" y="${h*.55}" font-size="44" text-anchor="middle" class="mapfx" style="animation-duration:4s">🐉</text><text x="70" y="${h*.8}" font-size="34" text-anchor="middle" class="sway">🦄</text>`+Array.from({length:18},(_,i)=>`<circle cx="${(i*131)%w}" cy="${200+(i*211)%(h-200)}" r="${i%3+1.5}" fill="#fff" opacity=".8"/>`).join(""),
- swamp:(w,h)=>`<rect width="${w}" height="${h}" fill="#7FB069"/>`+Array.from({length:Math.ceil(h/120)},(_,i)=>`<ellipse cx="${i%2?320:80}" cy="${80+i*120}" rx="70" ry="22" fill="#5A8F4E" opacity=".7"/>`).join("")+[[50,.2],[350,.45],[60,.7],[340,.88]].map(([x,f])=>`<g transform="translate(${x} ${h*f})"><rect x="-30" y="-8" width="60" height="16" rx="8" fill="#8B5A2B"/><circle cx="-30" cy="0" r="8" fill="#C08A55"/><g transform="translate(14 -14)"><rect x="-3" y="0" width="6" height="10" fill="#FFF3D6"/><path d="M-11 2 Q0 -14 11 2Z" fill="#E2402E"/><circle cx="-4" cy="-3" r="1.6" fill="#fff"/></g></g>`).join("")+[[60,.36],[300,.6],[80,.95]].map(([x,f],i)=>`<text class="hopf" style="animation-delay:-${i*.9}s" x="${x}" y="${h*f}" font-size="34">🐸</text>`).join("")+Array.from({length:10},(_,i)=>`<circle class="twinkle" cx="${(i*83)%w}" cy="${(i*149)%h}" r="3" fill="#FFF59A" opacity=".9"/>`).join("")+`<text x="${w-50}" y="${h*.28}" font-size="40" class="sway">🍄</text>`};
-function renderMap(){const r=R();
-  $("#titleSnail").innerHTML=snailSVG();
+ mermaid:(w,h)=>`<rect width="${w}" height="${h}" fill="#4CC3E6"/><rect width="${w}" height="${h}" fill="url(#seaG)"/>`+Array.from({length:Math.ceil(h/80)},(_,i)=>`<path d="M0 ${30+i*80} q 25 -10 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0" stroke="#fff" stroke-width="3" fill="none" opacity=".4"/>`).join("")
+   +`<circle cx="60" cy="60" r="34" fill="#FFE27A"/><circle cx="60" cy="60" r="44" fill="#FFE27A" opacity=".3"/>`
+   +[[340,.16],[50,.42],[350,.66],[60,.9]].map(([x,f])=>`<ellipse cx="${x}" cy="${h*f+18}" rx="46" ry="14" fill="#F4E3B9"/>`+EM(x,h*f,"🌴",44,"sway")).join("")
+   +EM(320,h*.3,"🐠",28,"mapfx")+EM(80,h*.56,"🐬",34,"mapfx","animation-delay:-1.4s")+EM(330,h*.8,"🦀",28,"hopf")+EM(90,h*.72,"🐚",24)+EM(300,h*.52,"⭐",22,"twinkle")+EM(110,h*.24,"⛵",34,"sway")+EM(340,h*.95,"🐳",36,"mapfx","animation-duration:5s"),
+ truck:(w,h)=>`<rect width="${w}" height="${h}" fill="#F3B868"/><rect width="${w}" height="${h}" fill="url(#fallG)"/>`
+   +[.36,.74].map((f,i)=>`<rect x="0" y="${h*f-18}" width="${w}" height="36" fill="#7B7F8C"/><path d="M0 ${h*f} H${w}" stroke="#FFE27A" stroke-width="3" stroke-dasharray="14 12"/>`+EM(0,h*f+4,i?"🚜":"🚚",32,"drive","animation-delay:-"+(i*4)+"s;animation-duration:"+(9+i*3)+"s")).join("")
+   +[[340,.14,"🍁"],[60,.28,"🌳"],[350,.5,"🍂"],[50,.6,"🎃"],[340,.86,"🌾"],[70,.92,"🍁"],[320,.62,"🎃"]].map(([x,f,e])=>EM(x,h*f,e,40,"sway")).join("")
+   +Array.from({length:14},(_,i)=>EM((i*97)%w,(i*173)%h,i%2?"🍂":"🍁",16,"twinkle")).join(""),
+ dragon:(w,h)=>`<rect width="${w}" height="${h}" fill="#DCEBFF"/><rect width="${w}" height="${h}" fill="url(#snowG)"/><path d="M0 120 L70 30 L130 100 L200 10 L270 100 L330 40 L400 110 V0 H0Z" fill="#A9C6EE"/><path d="M50 55 L70 30 L88 52 Z M180 35 L200 10 L222 38Z M312 62 L330 40 L350 64Z" fill="#fff"/>`
+   +`<ellipse cx="300" cy="${h*.46}" rx="60" ry="20" fill="#BFE6FF" stroke="#fff" stroke-width="3"/>`
+   +[[50,.24,"🌲"],[350,.32,"🌲"],[60,.52,"☃️"],[340,.72,"🌲"],[70,.84,"🌲"],[330,.94,"⛄"]].map(([x,f,e])=>EM(x,h*f,e,42,"sway")).join("")
+   +EM(330,h*.2,"🐉",40,"mapfx","animation-duration:4.5s")+EM(300,h*.44,"⛸️",24)+Array.from({length:16},(_,i)=>EM((i*83)%w,(i*149)%h,"❄",14+(i%3)*4,"twinkle","fill:#fff")).join("")};
+function renderMap(){if(!S.world)return show("worlds");const r=R(),wd=Wd();
+  $("#titleSnail").innerHTML=snailSVG();$("#titleP").textContent=`${wd.season} in ${wd.name}! Learn cursive with ${bn()}. Every lesson you finish brings new pals.`;
+  const u=unl(wd),bi=buddyIdx(wd);
+  $("#palrow").innerHTML=ROSTER[wd.id].map((p,i)=>i<u?`<button class="ptile ${i===bi?"on":""}" data-i="${i}">${snailSVG(S.eq,"",p)}<span>${esc(p.n)}</span></button>`:`<div class="ptile lock">${palSVG(p)}<span>🔒</span></div>`).join("");
+  $("#palrow").querySelectorAll("button.ptile").forEach(t=>t.onclick=()=>{S.buddy[wd.id]=+t.dataset.i;save();sfx.pop();say(bn());renderMap();renderHUD()});
+  $("#palcount").textContent=`${u} of ${ROSTER[wd.id].length} ${wd.name} pals · every lesson you finish unlocks ${PER} more`;
   $("#regions").innerHTML=REGIONS.map(x=>`<button class="rtab" data-r="${x.id}" aria-current="${x.id===r.id}"><span class="ic">${x.ic}</span>${x.name}<small>${doneCount(x)}/${x.lessons.length}</small></button>`).join("");
   $("#regions").querySelectorAll(".rtab").forEach(b=>b.onclick=()=>{S.region=b.dataset.r;save();sfx.pop();renderMap()});
   const n=r.lessons.length,w=400,h=170+n*118;const pos=r.lessons.map((_,i)=>[[130,280,200,110,290,200,120,280][i%8],150+i*118]);
   const pathPts=spline([[330,40],...pos,[200,h+20]],4);
   const cur=nextIdx(r);
-  let html=`<div class="region" style="aspect-ratio:${w}/${h}"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><linearGradient id="lw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5CC8D8" stop-opacity=".5"/><stop offset="1" stop-color="#2E9F8C" stop-opacity=".4"/></linearGradient><linearGradient id="cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A1E5C"/><stop offset="1" stop-color="#8E6CD8"/></linearGradient></defs>${ART[r.id](w,h)}
+  let html=`<div class="region" style="aspect-ratio:${w}/${h}"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FE3FF" stop-opacity=".6"/><stop offset="1" stop-color="#1F8FC4" stop-opacity=".5"/></linearGradient><linearGradient id="fallG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD58A" stop-opacity=".7"/><stop offset="1" stop-color="#C8662A" stop-opacity=".45"/></linearGradient><linearGradient id="snowG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAF3FF"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient><linearGradient id="lw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5CC8D8" stop-opacity=".5"/><stop offset="1" stop-color="#2E9F8C" stop-opacity=".4"/></linearGradient><linearGradient id="cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A1E5C"/><stop offset="1" stop-color="#8E6CD8"/></linearGradient></defs>${ART[Wd().id](w,h)}
     <polyline points="${pathPts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="#F4E3B9" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
     <polyline points="${pathPts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round" opacity=".9"/></svg>
     <div class="sign">${r.name}</div>`;
@@ -635,7 +694,7 @@ function renderMap(){const r=R();
   $("#world").querySelectorAll(".lbl[data-w]").forEach(el=>{const t=cursiveText(el.dataset.w,44);t.style.columnGap="2px";el.appendChild(t)});
   $("#world").querySelectorAll(".stone").forEach(b=>b.onclick=()=>{if(b.classList.contains("locked")){sfx.bad();toast("Finish the lesson before this one first!");return}startLesson(r,+b.dataset.i)});
   $("#playBtn").onclick=()=>startLesson(r,cur);
-  const gm=GAMES[r.id];$("#gameBtn").innerHTML=`${gm.ic} ${gm.name}`;$("#gameBtn").onclick=()=>startGame(r.id);renderBackdrop(r.id)}
+  const gm=GAMES[r.id];$("#gameBtn").innerHTML=`${gm.ic} ${gm.name}`;$("#gameBtn").onclick=()=>startGame(r.id);renderBackdrop(Wd().id)}
 function lessonName(r,i){const L=r.lessons[i];if(r.kind==="letters")return "Letters "+L.join(", ");if(r.kind==="words")return "Words: "+L.map(w=>w[0]).join(", ");if(r.kind==="caps")return typeof L==="string"?"Capitals "+L.split("").join(", "):"Capital names and sentences";return L.t}
 
 /* ===================== LESSON ENGINE ===================== */
@@ -644,7 +703,7 @@ let LS=null;
 function startLesson(r,i){killPad();const L=r.lessons[i];const steps=[];
   if(r.kind==="letters"){L.forEach(c=>{steps.push({t:"watch",w:c,cue:CUES[c]},{t:"trace",w:c},{t:"solo",w:c})});
     const learned=REGIONS[0].lessons.slice(0,i+1).flat();shuffle(L.concat(shuffle(L)).slice(0,4)).forEach((c,k)=>steps.push(k%2?{t:"spotCur",c,pool:learned}:{t:"spotPrint",c,pool:learned}))}
-  if(r.kind==="words"){L.forEach(([w,e])=>steps.push({t:"watch",w,cue:`Watch Loopy link the letters in ${w}. The pen never lifts until the dots and crosses at the end!`},{t:"trace",w}));
+  if(r.kind==="words"){L.forEach(([w,e])=>steps.push({t:"watch",w,cue:`Watch ${bn()} link the letters in ${w}. The pen never lifts until the dots and crosses at the end!`},{t:"trace",w}));
     shuffle(L).forEach(([w,e])=>steps.push({t:"readWord",w,e,pool:WORDS.flat().concat(EXTRAWORDS)}))}
   if(r.kind==="caps"&&typeof L==="string"){L.split("").forEach(c=>steps.push({t:"watch",w:c,cue:capCue(c)},{t:"trace",w:c},{t:"solo",w:c}));shuffle(L.split("")).slice(0,4).forEach(c=>steps.push({t:"capspot",c,pool:CAPS.slice(0,5).join("").split("")}))}
   if(r.kind==="caps"&&typeof L==="object"){if(L.sent)steps.push({t:"rule",rules:CAPRULES});L.names.forEach(c=>steps.push({t:"watch",w:c,cue:`Names start with a capital! Watch the big ${c[0]} at the front of ${c}.`},{t:"trace",w:c}));shuffle(CAPSENT).slice(0,L.sent?5:3).forEach(sent=>steps.push({t:"fixCap",sent}))}
@@ -671,8 +730,8 @@ function stWatch(card,s){const single=s.w.length===1;
   card.querySelector("#again").onclick=()=>{killPad();runStep()};
   card.querySelector("#go").onclick=()=>next()}
 function stTrace(card,s){const solo=s.t==="solo";
-  card.innerHTML=`<div class="mode">${solo?"Now you, with a faint guide":"Trace it! Push Loopy along the path"}</div><div class="padhost" style="width:100%;display:grid;justify-items:center"></div>
-   <div class="feedback" id="fb">${solo?"Start at the green dot and write it yourself.":"Put your finger on Loopy and follow the arrows."}</div>
+  card.innerHTML=`<div class="mode">${solo?"Now you, with a faint guide":`Trace it! Push ${bn()} along the path`}</div><div class="padhost" style="width:100%;display:grid;justify-items:center"></div>
+   <div class="feedback" id="fb">${solo?"Start at the green dot and write it yourself.":`Put your finger on ${bn()} and follow the arrows.`}</div>
    <div class="row ctr"><button class="btn alt sm" id="redo">↻ Start over</button><button class="btn alt sm" id="skip">Skip</button></div>`;
   const fb=card.querySelector("#fb");
   pad=TracePad(card.querySelector(".padhost"),s.w,solo?"solo":"trace",st=>{LS.oops+=Math.min(st.oops,4);sfx.good();fb.textContent=pick(["Loop-tastic!","Slimy and smooth!","Beautiful loops!","Wow, so neat!","You're a cursive star!"]);fb.className="feedback good";mood(card.querySelector(".paper .tip"),"happy");if(s.w.length===1)S.got[s.w]=1;setTimeout(next,1000)});
@@ -711,7 +770,7 @@ function cursiveText(t,h){const box=document.createElement("span");box.className
     if(!m){w.textContent=tok}else{if(m[1])w.append(m[1]);const c=cursiveCanvas(m[2],h,{tight:1});w.appendChild(c);if(m[3]){const p=document.createElement("span");p.className="punct";p.textContent=m[3].replace(/'s$/,"’s");w.appendChild(p)}}
     box.appendChild(w)});return box}
 function wordsHTML(t){return t.split(" ").map(w=>`<span class="w">${esc(w)}</span>`).join(" ")}
-function stCover(card,s){const st=s.s;card.innerHTML=`<div class="mode">Story time</div><div class="scene" style="background:${st.bg}"><span>${st.e}</span><span>🐌</span></div><h2 class="storytext" style="font-size:clamp(28px,7vw,44px)">${esc(st.t)}</h2>${bubble("Read each page in cursive. Tap a word to hear it, or peek at the print if you get stuck.")}<button class="btn mint big" id="go">Start reading</button>`;
+function stCover(card,s){const st=s.s;card.innerHTML=`<div class="mode">Story time</div><div class="scene" style="background:${st.bg}"><span>${st.e}</span><span>${Wd().ic}</span></div><h2 class="storytext" style="font-size:clamp(28px,7vw,44px)">${esc(st.t)}</h2>${bubble("Read each page in cursive. Tap a word to hear it, or peek at the print if you get stuck.")}<button class="btn mint big" id="go">Start reading</button>`;
   card.querySelector("#go").onclick=()=>next()}
 function stPage(card,s){const [text,art]=s.p;
   card.innerHTML=`<div class="mode">${esc(s.s.t)} · page ${s.k+1} of ${s.s.pages.length}</div><div class="scene" style="background:${s.s.bg}">${graphemes(art).map(g=>`<span>${g}</span>`).join("")}</div>
@@ -729,11 +788,13 @@ function stStoryQ(card,s){const [q,a,wrong]=s.q;const opts=shuffle([a,...wrong])
 function finish(){killPad();const {r,i}=LS;const k=lkey(r.id,i);const pen=LS.oops+LS.miss*2;const stars=pen<=2?3:pen<=7?2:1;
   const first=!S.done[k];S.done[k]=true;S.stars[k]=Math.max(S.stars[k]||0,stars);const coins=10+stars*5;S.coins+=coins;S.plays=(S.plays||0)+1;
   if(r.kind==="words")r.lessons[i].forEach(w=>S.got["w:"+w[0]]=1);if(r.kind==="story")S.got["s:"+i]=1;if(r.kind==="custom")r.lessons[0].words.forEach(w=>{if(w.length===1)S.got[w]=1});
-  let gift=null;if(S.plays%3===0){const pool=[];[["shell",SHELLS],["hat",HATS],["pen",PENS],["paper",PAPERS]].forEach(([cat,set])=>Object.keys(set).forEach(id=>{if(!S.own[cat].includes(id))pool.push([cat,id,set[id]])}));if(pool.length){gift=pick(pool);S.own[gift[0]].push(gift[1])}}
+  let gift=null;if(S.plays%3===0){const pool=[];[["hat",HATS],["pen",PENS],["paper",PAPERS]].forEach(([cat,set])=>Object.keys(set).forEach(id=>{if(!S.own[cat].includes(id))pool.push([cat,id,set[id]])}));if(pool.length){gift=pick(pool);S.own[gift[0]].push(gift[1])}}
+  const wd=Wd(),before=unl(wd);S.unl[wd.id]=Math.min(ROSTER[wd.id].length,before+PER);const newPals=ROSTER[wd.id].slice(before,unl(wd));
   save();renderHUD();show("reward");const nextOpen=i+1<r.lessons.length;
   $("#reward").innerHTML=`<div class="card reward"><div class="rays"></div><h2>${r.kind==="custom"&&S.name?`Way to go, ${esc(S.name)}!`:pick(["Lesson complete!","You did it!","Loop-de-loo-hoo!"])}</h2><div class="bigstars">${[1,2,3].map(s=>STAR(s<=stars)).join("")}</div>
    <div class="dance">${snailSVG()}</div><div class="coinsup">+${coins} coins</div>
-   ${gift?`<div class="gift"><div class="prev">${giftPreview(gift)}</div><div>Surprise gift! Loopy found a <b>${esc(gift[2].n)}</b>. Wear it in Skins.</div></div>`:`<p class="hint">Every 3rd lesson hides a surprise gift. ${3-S.plays%3} to go!</p>`}
+   ${newPals.length?`<b style="font-family:var(--f-display);font-size:20px">New pals joined you!</b><div class="newpals">${newPals.map(p=>`<div class="ptile">${palSVG(p,"none","")}<span>${esc(p.n)}</span></div>`).join("")}</div>`:""}
+   ${gift?`<div class="gift"><div class="prev">${giftPreview(gift)}</div><div>Surprise gift! ${esc(bn())} found a <b>${esc(gift[2].n)}</b>. Wear it in Skins.</div></div>`:`<p class="hint">Every 3rd lesson hides a surprise gift. ${3-S.plays%3} to go!</p>`}
    <div class="row ctr">${nextOpen?`<button class="btn mint big" id="nx">Next lesson →</button>`:""}<button class="btn alt" id="mp">Map</button><button class="btn sun" id="sk">Skins</button></div></div>`;
   sfx.win();confetti();
   if(nextOpen)$("#nx").onclick=()=>startLesson(r,i+1);$("#mp").onclick=()=>show(r.kind==="custom"?"mine":"map");$("#sk").onclick=()=>show("shop")}
@@ -746,8 +807,8 @@ function confetti(){const c=$("#fx"),x=c.getContext("2d");const dpr=Math.min(2,d
     if(now-t0<3200)requestAnimationFrame(f);else x.clearRect(0,0,innerWidth,innerHeight)})(t0)}
 
 /* ===================== SHOP ===================== */
-const CATS=[["shell","Shells",SHELLS],["hat","Hats",HATS],["pen","Pens",PENS],["paper","Paper",PAPERS]];
-function renderShop(){const pv=$("#shopPreview");pv.innerHTML=`<div class="dance">${snailSVG()}</div><div style="display:grid;gap:8px;min-width:0"><b class="cur" style="font-size:22px;color:var(--plum)">Hi, I'm Loopy!</b><div class="ppv"></div></div>`;
+const CATS=[["hat","Hats",HATS],["pen","Pens",PENS],["paper","Paper",PAPERS]];
+function renderShop(){const pv=$("#shopPreview");pv.innerHTML=`<div class="dance">${snailSVG()}</div><div style="display:grid;gap:8px;min-width:0"><b class="cur" style="font-size:22px;color:var(--plum)">Hi, I'm ${esc(bn())}!</b><div class="ppv"></div></div>`;
   mini(pv.querySelector(".ppv"),"loopy");
   $("#shopBody").innerHTML=CATS.map(([cat,label,set])=>`<div class="section-title"><h2>${label}</h2></div><div class="shop">${Object.entries(set).map(([id,it])=>{const own=S.own[cat].includes(id),eq=S.eq[cat]===id;
     return `<div class="item ${eq?"equipped":""}"><div class="ico" data-cat="${cat}" data-id="${id}"></div><h3>${esc(it.n)}</h3><p class="pw"><b>🎮 ${esc(POWERS[cat][id][0])}</b><br>${esc(POWERS[cat][id][1])}</p>${eq?`<button class="btn mint" disabled>Wearing</button>`:own?`<button class="btn mint" data-eq="${cat}:${id}">Use</button>`:`<button class="btn sun" data-buy="${cat}:${id}" ${S.coins<it.price?"disabled":""}><svg class="coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="url(#gCoin)" stroke="#B87400" stroke-width="1.5"/></svg> ${it.price}</button>`}</div>`}).join("")}</div>`).join("");
@@ -767,13 +828,19 @@ function renderBook(){const low="abcdefghijklmnopqrstuvwxyz".split(""),caps="ABC
   $("#bookBody").innerHTML=`<p class="hint" style="background:var(--card);border-radius:14px;padding:8px 14px;max-width:none;margin-bottom:12px">${n} of 52 letter stickers collected. Tap any sticker you've earned to hear it.</p>
    <div class="section-title"><h2 style="font-size:20px">Little letters</h2></div><div class="book" id="bLow"></div>
    <div class="section-title"><h2 style="font-size:20px">Capitals</h2></div><div class="book" id="bCap"></div>
-   <div class="section-title"><h2 style="font-size:20px">Words &amp; stories</h2></div><div class="book" id="bW"></div>`;
+   <div class="section-title"><h2 style="font-size:20px">Words &amp; stories</h2></div><div class="book" id="bW"></div>
+   ${WORLDS.map(w=>`<div class="section-title"><h2 style="font-size:20px">${w.em} ${w.name} pals</h2><span>${unl(w)} of ${ROSTER[w.id].length}</span></div><div class="book">${ROSTER[w.id].map((p,i)=>`<div class="bk ${i<unl(w)?"":"no"}">${palSVG(p)}<span class="p">${i<unl(w)?esc(p.n):"???"}</span></div>`).join("")}</div>`).join("")}`;
   low.forEach(c=>{const d=document.createElement("button");d.className="bk"+(S.got[c]?"":" no");d.appendChild(cursiveCanvas(c,90));d.insertAdjacentHTML("beforeend",`<span class="p">${c}</span>`);d.onclick=()=>S.got[c]&&say(c);$("#bLow").appendChild(d)});
   caps.forEach(c=>{const d=document.createElement("button");d.className="bk"+(S.got[c]?"":" no");d.appendChild(cursiveCanvas(c,90));d.insertAdjacentHTML("beforeend",`<span class="p">${c}</span>`);d.onclick=()=>S.got[c]&&say(c);$("#bCap").appendChild(d)});
   WORDS.flat().forEach(([w,e])=>{const d=document.createElement("button");d.className="bk"+(S.got["w:"+w]?"":" no");d.innerHTML=`<span class="emo">${e}</span>`;d.appendChild(cursiveCanvas(w,60));d.onclick=()=>S.got["w:"+w]&&say(w);$("#bW").appendChild(d)});
   STORIES.forEach((s,i)=>{const d=document.createElement("button");d.className="bk"+(S.got["s:"+i]?"":" no");d.innerHTML=`<span class="emo">${s.e}</span><span class="p">${esc(s.t)}</span>`;$("#bW").appendChild(d)})}
 
 /*GAMES*/
+/* ===================== WORLDS PICKER ===================== */
+const WBG={mermaid:"linear-gradient(180deg,#9FE3FF,#4CC3E6 60%,#F4E3B9 60%)",truck:"linear-gradient(180deg,#FFD9A0,#F3B868 60%,#C8662A 60%)",dragon:"linear-gradient(180deg,#BFD9FF,#EAF3FF 60%,#FFFFFF 60%)"};
+function renderWorlds(){$("#worldGrid").innerHTML=WORLDS.map(w=>`<button class="wcard ${S.world===w.id?"on":""}" data-w="${w.id}" style="background:${WBG[w.id]}"><span class="season">${w.em} ${w.season}</span><div class="trio">${ROSTER[w.id].slice(0,3).map(p=>palSVG(p)).join("")}</div><h3>${w.name}</h3><p>${w.blurb}<br>${unl(w)} of ${ROSTER[w.id].length} pals unlocked</p></button>`).join("");
+  $("#worldGrid").querySelectorAll(".wcard").forEach(b=>b.onclick=()=>{S.world=b.dataset.w;save();sfx.good();bdNow="";renderBackdrop(S.world);show("map");mood($("#titleSnail"),"happy")})}
+
 /* ===================== MY WORDS ===================== */
 const cleanWord=t=>t.replace(/[^A-Za-z ]/g,"").replace(/\s+/g," ").trim();
 function renderMine(){$("#mineSnail").innerHTML=snailSVG();$("#mineHi").textContent=S.name?`Hi, ${S.name}!`:"Write anything!";
@@ -781,7 +848,7 @@ function renderMine(){$("#mineSnail").innerHTML=snailSVG();$("#mineHi").textCont
   const upd=()=>{const nm=cleanWord(n.value),wd=cleanWord(w.value).toLowerCase();const box=$("#minePrev");box.innerHTML="";
     let note="Tap 🎤 and say it, then fix the spelling by typing if you need to.";
     if(nm&&/^[a-z]/.test(nm))note=`Names start with a capital letter, so we'll write ${nm[0].toUpperCase()+nm.slice(1)}.`;
-    if(/[^A-Za-z ]/.test(n.value+w.value))note="Loopy only knows letters, so numbers and symbols get skipped.";
+    if(/[^A-Za-z ]/.test(n.value+w.value))note="Cursive is just for letters, so numbers and symbols get skipped.";
     $("#mineNote").textContent=note;
     [fixName(nm),wd].filter(Boolean).forEach(t=>box.appendChild(cursiveText(t,70)));
     if(!box.children.length)box.innerHTML=`<p class="hint">Your cursive will show up here.</p>`;
@@ -813,5 +880,5 @@ function listen(b){const inp=$("#"+b.dataset.for);
 
 /* ===================== BOOT ===================== */
 const fontsReady=(document.fonts?Promise.race([document.fonts.load('80px "Playwrite US Trad"'),sleep(2500)]):Promise.resolve()).catch(()=>{});
-show("map");
+show(S.world?"map":"worlds");
 </script>

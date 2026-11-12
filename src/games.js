@@ -1,5 +1,8 @@
 /* ===================== WORLD BACKDROP ===================== */
 const BD={
+ mermaid:{bg:"linear-gradient(180deg,#9FE3FF 0%,#D9F6FF 45%,#FFE7B0 100%)",hill:["#5CC8E8","#2E9FD0"],parts:i=>i%4?`<div class="amb rise bub" style="left:${(i*37)%100}vw;width:${14+(i*7)%26}px;height:${14+(i*7)%26}px;animation-duration:${9+(i*3)%9}s;animation-delay:-${(i*1.7)%12}s"></div>`:`<div class="amb drift" style="top:${5+(i*7)%20}vh;font-size:30px;animation-duration:${24+i}s;animation-delay:-${i*3}s">🕊️</div>`},
+ truck:{bg:"linear-gradient(180deg,#FFD9A0 0%,#FFEBC9 45%,#F6C27A 100%)",hill:["#E0913A","#B8662A"],parts:i=>`<div class="amb fall" style="left:${(i*37)%100}vw;font-size:${18+(i*5)%16}px;animation-duration:${8+(i*3)%8}s;animation-delay:-${(i*1.3)%10}s">${i%2?"🍂":"🍁"}</div>`},
+ dragon:{bg:"linear-gradient(180deg,#BFD9FF 0%,#EAF3FF 55%,#FFFFFF 100%)",hill:["#FFFFFF","#DCEBFF"],parts:i=>`<div class="amb fall snowf" style="left:${(i*37)%100}vw;font-size:${12+(i*5)%16}px;animation-duration:${9+(i*3)%8}s;animation-delay:-${(i*1.1)%10}s">❄</div>`},
  lagoon:{bg:"linear-gradient(180deg,#C9F3F1 0%,#9DE3DA 55%,#5FC3B4 100%)",hill:["#7FD4C6","#4FB3A3"],parts:i=>`<div class="amb rise bub" style="left:${(i*37)%100}vw;width:${14+(i*7)%26}px;height:${14+(i*7)%26}px;animation-duration:${9+(i*3)%9}s;animation-delay:-${(i*1.7)%12}s"></div>`},
  lane:{bg:"linear-gradient(180deg,#CFEAFF 0%,#E9F7FF 45%,#DDF3C8 100%)",hill:["#B6E38E","#86C766"],parts:i=>i%2?`<div class="amb drift" style="top:${6+(i*11)%30}vh;font-size:${50+(i*9)%40}px;opacity:.85;animation-duration:${30+(i*7)%25}s;animation-delay:-${(i*5)%30}s">☁️</div>`:`<div class="amb fly" style="left:${(i*29)%95}vw;top:${30+(i*13)%40}vh;font-size:26px;animation-duration:${5+(i%4)}s">🦋</div>`},
  castle:{bg:"linear-gradient(180deg,#2A1E5C 0%,#5B3FA8 50%,#B79CFF 100%)",hill:["#4A3590","#2F2266"],parts:i=>`<div class="amb tw" style="left:${(i*41)%100}vw;top:${(i*23)%60}vh;font-size:${10+(i*5)%14}px;color:#FFF6B0;animation-delay:-${(i*.7)%2}s">✦</div>`},
@@ -16,19 +19,17 @@ const GAMES={
  castle:{name:"Dragon Snacks",ic:"🐉",cls:"cookieI",bg:"linear-gradient(180deg,#2A1E5C,#8E6CD8)",how:"The dragon is hungry! Tap the cookie with the right capital."},
  swamp:{name:"Firefly Catch",ic:"✨",cls:"flyI",bg:"linear-gradient(180deg,#14302B,#3F6E55)",how:"Catch the firefly glowing with the word!"}};
 const POWERS={
- shell:{classic:["Snail sense","The right one wiggles every few seconds."],strawberry:["Berry blast","Catch 3 in a row and every right one on screen pops!"],ocean:["Bubble shield","Your first 3 wrong taps don't cost a point."],
-  donut:["Sugar rush","Every 10 points adds 5 seconds."],watermelon:["Juicy combo","5 in a row earns 2 bonus points."],galaxy:["Star freeze","Every 12 seconds, everything freezes for 3 seconds."],
-  rainbow:["Rainbow luck","More of the right ones show up."],gold:["Golden touch","Gold bonus items, plus 10 extra coins at the end."]},
+ world:{mermaid:["Bubble shield","Your first 3 wrong taps don't cost a point."],truck:["Turbo time","Every 10 points adds 5 seconds."],dragon:["Fire blast","Catch 3 in a row and every right one on screen pops!"]},
  hat:{none:["No hat yet","Buy a hat in Skins for another power!"],crown:["Royal riches","Every point earns double coins."],wizard:["Slow-mo spell","Everything moves in slow motion."],
   cowboy:["Giant lasso","Everything is bigger and easier to grab. Yee-haw!"],party:["Party mode","Confetti on every catch, plus 5 bonus seconds."],bow:["Bow-nus time","10 extra seconds on the clock."],flower:["Lucky daisy","Golden bonus things pop up worth 3 points."]},
  pen:{berry:["Blue splash","Every 3 in a row adds 1 second."],grape:["Sticky jelly","Things move a little slower."],bubble:["Gum bubble","4 in a row earns a bonus point."],
   neon:["Glow-up","The right ones glow so they're easier to spot."],lava:["Hot streak","Every 5th catch is worth 3 points."],rainbow:["Double rainbow","After 5 in a row, every catch counts double."],glitter:["Glitter coins","Every catch drops an extra coin."]},
  paper:{notebook:["Doodle margin","3 extra seconds."],candy:["Sugar sprinkles","Things show up faster, so there's more to catch."],ocean:["Floaty water","Things float a little slower."],
   chalk:["Eraser","Your first 2 wrong taps get erased (no point lost)."],space:["Zero gravity","Every 15 seconds, everything floats still for 3 seconds."]}};
-const CAT_IC={shell:"🐚",hat:"🎩",pen:"🖊️",paper:"📄"};
-function powerList(){return ["shell","hat","pen","paper"].map(c=>{const it=({shell:SHELLS,hat:HATS,pen:PENS,paper:PAPERS})[c][S.eq[c]];const p=POWERS[c][S.eq[c]];return {c,name:it.n,p}})}
+const CAT_IC={world:"🌍",hat:"🎩",pen:"🖊️",paper:"📄"};
+function powerList(){return ["world","hat","pen","paper"].map(c=>{if(c==="world"){const w=Wd();return {c,name:w.name,p:POWERS.world[w.id]}}const it=({hat:HATS,pen:PENS,paper:PAPERS})[c][S.eq[c]];const p=POWERS[c][S.eq[c]];return {c,name:it.n,p}})}
 function gameParams(){const e=S.eq,P={slow:1,big:1,time:30,coinMul:1,shield:0,goldEvery:0,goldPts:3,luck:.42,spawnMul:1,hint:0,glow:0,blast:0,rush:0,combo5:0,freezeEvery:0,perCatch:0,bonus:0,streakSec:0,gum:0,lava:0,rdouble:0,party:0};
-  ({classic:()=>P.hint=1,strawberry:()=>P.blast=1,ocean:()=>P.shield+=3,donut:()=>P.rush=1,watermelon:()=>P.combo5=1,galaxy:()=>P.freezeEvery=12,rainbow:()=>P.luck=.6,gold:()=>{P.goldEvery=6;P.bonus=10}})[e.shell]?.();
+  ({mermaid:()=>P.shield+=3,truck:()=>P.rush=1,dragon:()=>P.blast=1})[Wd().id]?.();
   ({crown:()=>P.coinMul=2,wizard:()=>P.slow*=.6,cowboy:()=>P.big=1.25,party:()=>{P.party=1;P.time+=5},bow:()=>P.time+=10,flower:()=>P.goldEvery=P.goldEvery?4:5})[e.hat]?.();
   ({berry:()=>P.streakSec=1,grape:()=>P.slow*=.85,bubble:()=>P.gum=1,neon:()=>P.glow=1,lava:()=>P.lava=1,rainbow:()=>P.rdouble=1,glitter:()=>P.perCatch=1})[e.pen]?.();
   ({notebook:()=>P.time+=3,candy:()=>P.spawnMul=1.35,ocean:()=>P.slow*=.88,chalk:()=>P.shield+=2,space:()=>P.freezeEvery=P.freezeEvery?10:15})[e.paper]?.();
@@ -43,9 +44,9 @@ function paperOverlay(){const id=S.eq.paper;let h="";
 let GM=null;
 function stopGame(){if(GM){GM.dead=true;cancelAnimationFrame(GM.raf);clearInterval(GM.tick);GM=null}}
 $("#gquit").onclick=()=>{stopGame();show("map")};
-function startGame(rid){killPad();stopGame();show("game");renderBackdrop(rid);const gm=GAMES[rid];$("#gtitle").textContent=gm.ic+" "+gm.name;
-  $("#gstage").innerHTML=`<div class="card"><div class="mode">Silly game</div><div class="scene" style="background:${gm.bg};font-size:64px">${gm.ic}<span>🐌</span></div>${bubble(gm.how)}
-   <div class="power"><span class="dance">${snailSVG()}</span><div style="display:grid;gap:6px;min-width:0"><b>Loopy's skin powers</b>${powerList().map(x=>`<div class="pwrow"><span>${CAT_IC[x.c]}</span><div><strong>${esc(x.p[0])}</strong> <em>(${esc(x.name)})</em><br>${esc(x.p[1])}</div></div>`).join("")}</div></div>
+function startGame(rid){killPad();stopGame();show("game");renderBackdrop(Wd().id);const gm=GAMES[rid];$("#gtitle").textContent=gm.ic+" "+gm.name;
+  $("#gstage").innerHTML=`<div class="card"><div class="mode">Silly game</div><div class="scene" style="background:${gm.bg};font-size:64px">${gm.ic}<span>${Wd().ic}</span></div>${bubble(gm.how)}
+   <div class="power"><span class="dance">${snailSVG()}</span><div style="display:grid;gap:6px;min-width:0"><b>${esc(bn())}'s powers</b>${powerList().map(x=>`<div class="pwrow"><span>${CAT_IC[x.c]}</span><div><strong>${esc(x.p[0])}</strong> <em>(${esc(x.name)})</em><br>${esc(x.p[1])}</div></div>`).join("")}</div></div>
    <p class="hint">Every skin you own changes the game. Swap skins to try new combos! 30 seconds. Right taps score points, wrong taps lose one. Points turn into coins!</p><button class="btn mint big" id="ggo">Go!</button></div>`;
   $("#ggo").onclick=()=>play(rid)}
 function gamePool(rid){
@@ -113,7 +114,7 @@ function play(rid){stopGame();const gm=GAMES[rid],P=gameParams();const slow=P.sl
   spawn();GM.raf=requestAnimationFrame(frame);
   GM.tick=setInterval(()=>{time--;$("#gtime").textContent="⏱ "+time;if(time<=5&&time>0)tone(500,.08,"square",.05);if(time<=0)end()},1000);
   function end(){stopGame();const coins=Math.min(30,score)*P.coinMul+catches*P.perCatch+(score>0?P.bonus:0);S.coins+=coins;S.best=S.best||{};const best=Math.max(S.best[rid]||0,score);const isBest=score>(S.best[rid]||0)&&score>0;S.best[rid]=best;save();renderHUD();sfx.win();if(score>0)confetti();
-    $("#gstage").innerHTML=`<div class="card reward"><div class="rays"></div><h2>${score>=12?"Superstar snail!":score>=6?"Great catching!":"Nice try!"}</h2><div class="dance">${snailSVG()}</div>
+    $("#gstage").innerHTML=`<div class="card reward"><div class="rays"></div><h2>${score>=12?`Superstar ${esc(bn())}!`:score>=6?"Great catching!":"Nice try!"}</h2><div class="dance">${snailSVG()}</div>
      <div class="row ctr"><span class="gpill">⭐ ${score} points</span><span class="gpill">🏆 Best ${best}</span></div>${isBest?`<p class="sticker" style="font-family:var(--f-display);font-weight:700;color:var(--mint);margin:0">New best score!</p>`:""}<div class="coinsup">+${coins} coins</div>
      <div class="row ctr"><button class="btn mint big" id="gagain">Play again</button><button class="btn alt" id="gmap">Map</button><button class="btn sun" id="gskin">Try a new hat</button></div></div>`;
     $("#gagain").onclick=()=>play(rid);$("#gmap").onclick=()=>show("map");$("#gskin").onclick=()=>show("shop")}}
