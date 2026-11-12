@@ -230,6 +230,31 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .gamebtn{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .game-top{display:flex;align-items:center;gap:10px;width:100%;flex-wrap:wrap;justify-content:space-between}
 .gpill{background:var(--card2);border-radius:999px;padding:6px 14px;font-family:var(--f-display);font-weight:700;font-size:20px;font-variant-numeric:tabular-nums;box-shadow:0 3px 0 var(--shadow)}
+.party{position:fixed;inset:0;z-index:34;display:grid;place-items:center;align-content:center;gap:6px;pointer-events:none;background:radial-gradient(circle,rgba(255,232,150,.55),transparent 60%);animation:fadein .2s}
+.party.out{opacity:0;transition:opacity .4s}
+.pbanner{font-family:var(--f-display);font-weight:700;font-size:clamp(30px,8vw,48px);background:var(--card);color:var(--plum);border-radius:22px;padding:6px 24px;box-shadow:0 6px 0 var(--shadow);animation:popin2 .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes popin2{from{transform:scale(.2)}}
+.pdancer{width:min(56vw,240px)}
+.pdancer .snail .sb{transform-box:fill-box;transform-origin:50% 100%}
+.m-hop .sb{animation:hop .36s cubic-bezier(.3,0,.5,1) infinite alternate}
+@keyframes hop{from{transform:translateY(0) scale(1.06,.92)}to{transform:translateY(-34px) scale(.96,1.05)}}
+.m-spin .sb{animation:spinp .9s ease-in-out infinite;transform-origin:50% 60%!important}
+@keyframes spinp{50%{transform:rotate(180deg) scale(1.1)}100%{transform:rotate(360deg)}}
+.m-wiggle .sb{animation:wig .3s ease-in-out infinite alternate}
+@keyframes wig{from{transform:rotate(-12deg)}to{transform:rotate(12deg)}}
+.m-sway .sb{animation:swayp .6s ease-in-out infinite alternate}
+@keyframes swayp{from{transform:translateX(-24px) rotate(-8deg)}to{transform:translateX(24px) rotate(8deg)}}
+.m-flip .sb{animation:flipp 1s ease-in-out infinite}
+@keyframes flipp{0%,100%{transform:translateY(0)}40%{transform:translateY(-50px) rotate(-180deg)}70%{transform:translateY(-20px) rotate(-360deg)}}
+.pdancer .al,.pdancer .ar{transform-box:fill-box;animation:armw .3s ease-in-out infinite alternate}
+.pdancer .mm{display:none}.pdancer .mo{display:inline}
+.nextstage{display:grid;gap:8px;justify-items:center;background:var(--sun-soft);border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 color-mix(in srgb,var(--sun) 50%,var(--shadow));width:100%;max-width:520px}
+.nextstage b{font-family:var(--f-display);font-size:22px}
+.backbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;width:min(560px,calc(100% - 32px));background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(8px);border-radius:22px;padding:10px;box-shadow:0 6px 18px rgba(20,40,60,.25);flex-wrap:nowrap}
+.backbar .btn.big{font-size:22px;padding:12px 18px;flex:1}
+#shop,#worlds{padding-bottom:110px}
+.backbar:empty{display:none}
+.myturn{min-width:min(100%,320px);font-size:clamp(26px,6.5vw,34px)}
 .gplay{font-size:clamp(24px,6vw,32px);padding:16px 36px;animation:pulse 1.4s ease-in-out infinite}
 .game-top .target{order:-1;flex-basis:100%;justify-content:center;font-size:clamp(22px,5vw,30px);padding:8px 22px;background:var(--sun);color:#3b2800;box-shadow:0 5px 0 var(--sun-d)}
 .game-top .target b{font-size:clamp(40px,10vw,60px);background:#fff;color:#262150;border-radius:16px;padding:2px 18px;line-height:1.1}
@@ -368,6 +393,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
       <div class="title"><span id="titleSnail" class="bob"></span><div class="brand">Loopaloo</div><p id="titleP">Learn cursive with your pal. Every letter is a little loop-de-loop.</p></div>
       <div class="chiplabel">Pick a pal!</div><div class="palrow" id="palrow"></div><div class="count" id="palcount"></div>
       <div class="regions" id="regions"></div>
+      <div class="nextstage" id="nextBanner" hidden style="justify-self:center"></div>
       <div class="gamebtn"><button class="btn big" id="playBtn">Play!</button><button class="btn sun big" id="gameBtn"></button></div>
       <div class="world" id="world"></div>
     </div>
@@ -383,6 +409,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
   <section id="game" hidden><div class="lesson-head"><button class="x" id="gquit" aria-label="Back to the map">✕</button><h2 id="gtitle" style="font-size:24px"></h2></div><div id="gstage"></div></section>
   <section id="worlds" hidden>
     <div class="section-title"><h2>Pick a world!</h2><span>Each world has its own pals to collect</span></div>
+    <div class="row ctr backbar" id="worldsBack"></div>
     <div class="worlds" id="worldGrid"></div>
   </section>
   <section id="mine" hidden>
@@ -400,7 +427,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
   </section>
   <section id="shop" hidden>
     <div class="section-title"><h2>Dress-up closet</h2><span>Every hat, pen and paper gives your pal a power in the mini-games</span></div>
-    <div class="row" id="shopBack" style="margin-bottom:12px"></div>
+    <div class="row ctr backbar" id="shopBack"></div>
     <div class="preview" id="shopPreview"></div>
     <div id="shopBody"></div>
   </section>
@@ -555,18 +582,21 @@ function paperBG(ctx,W,H,pp){ctx.fillStyle=pp.bg;ctx.fillRect(0,0,W,H);
 function guideLines(ctx,W,by,U,pp){const L=(y,dash,c,w)=>{ctx.save();ctx.strokeStyle=c;ctx.lineWidth=w;ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();ctx.restore()};
   L(by-2*U,[],pp.line,2);L(by-U,[10,8],pp.mid,2);L(by,[],pp.line,2.5);L(by+U,[4,8],pp.mid,1.5)}
 function penColor(pen,pp,t=0){if(pen.rainbow)return `hsl(${(t*40)%360} 90% ${pp.dark?65:52}%)`;if(pen.grad)return null;return pp.dark?pen.d:pen.l}
+/* a slanted pen nib: downstrokes a little thicker, hairline upstrokes a little thinner */
+const nibW=(w,a,b)=>w*(0.55+0.65*Math.abs(Math.sin(Math.atan2(b[1]-a[1],b[0]-a[0])+0.75)));
 function strokePoly(ctx,pts,w,pen,pp,t0=0){if(pts.length<2)return;ctx.lineCap="round";ctx.lineJoin="round";ctx.lineWidth=w;
-  if(pen.rainbow||pen.grad){for(let i=1;i<pts.length;i++){const t=t0+i;ctx.strokeStyle=pen.rainbow?penColor(pen,pp,t/18):lerpC(pen.grad,(Math.sin(t/14)+1)/2);ctx.beginPath();ctx.moveTo(pts[i-1][0],pts[i-1][1]);ctx.lineTo(pts[i][0],pts[i][1]);ctx.stroke()}return}
+  if(pen.rainbow||pen.grad){for(let i=1;i<pts.length;i++){const t=t0+i;ctx.lineWidth=nibW(w,pts[i-1],pts[i]);ctx.strokeStyle=pen.rainbow?penColor(pen,pp,t/18):lerpC(pen.grad,(Math.sin(t/14)+1)/2);ctx.beginPath();ctx.moveTo(pts[i-1][0],pts[i-1][1]);ctx.lineTo(pts[i][0],pts[i][1]);ctx.stroke()}return}
   ctx.save();ctx.strokeStyle=penColor(pen,pp);if(pen.glow){ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=w*1.2}
-  ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();ctx.restore();
+  for(let i=1;i<pts.length;i++){ctx.lineWidth=nibW(w,pts[i-1],pts[i]);ctx.beginPath();ctx.moveTo(pts[i-1][0],pts[i-1][1]);ctx.lineTo(pts[i][0],pts[i][1]);ctx.stroke()}ctx.restore();
   if(pen.sparkle){ctx.fillStyle="#fff";for(let i=0;i<pts.length;i+=9){if((i*7)%5<2){ctx.beginPath();ctx.arc(pts[i][0]+(i%3-1)*w*.2,pts[i][1]+((i>>1)%3-1)*w*.2,w*.16,0,7);ctx.fill()}}}}
 function dotAt(ctx,p,r,pen,pp){ctx.save();ctx.fillStyle=pen.grad?pen.grad[0]:pen.rainbow?"#FF4D8D":penColor(pen,pp);if(pen.glow){ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=r*2}ctx.beginPath();ctx.arc(p[0],p[1],r,0,7);ctx.fill();ctx.restore()}
 function lerpC(g,t){const h=s=>[1,3,5].map(i=>parseInt(s.slice(i,i+2),16));const a=h(g[0]),b=h(g[1]);return `rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*t)).join(",")})`}
 
 /* draw a word in cursive onto a fresh canvas (for quizzes, stickers, stones) */
-function cursiveCanvas(word,hpx,opts={}){const L=layoutWord(word);const U=hpx/3.4;const pad=opts.tight?U*.12:U*.35;const w=(L.maxx-L.minx)*U+pad*2;const dpr=Math.min(2,window.devicePixelRatio||1);
+function cursiveCanvas(word,hpx,opts={}){const L=layoutWord(word);const U=hpx/3.4;const pad=opts.tight?U*.12:U*.35;const w=(L.maxx-L.minx)*U+pad*2;
+  if(opts.fit!==false&&!opts.lines){const vp=U*.3;hpx=Math.max(U*1.4,(L.maxy-L.miny)*U+vp*2)}const dpr=Math.min(2,window.devicePixelRatio||1);
   const c=document.createElement("canvas");c.width=Math.ceil(w*dpr);c.height=Math.ceil(hpx*dpr);c.style.width=Math.ceil(w)+"px";c.style.aspectRatio=`${w}/${hpx}`;
-  const x=c.getContext("2d");x.scale(dpr,dpr);const by=U*2.25;const pp=opts.paper||PAPERS.notebook;const pen=opts.pen||PENS[S.eq.pen];
+  const x=c.getContext("2d");x.scale(dpr,dpr);const by=(opts.fit!==false&&!opts.lines)?hpx/2+((L.maxy+L.miny)/2)*U:U*2.25;const pp=opts.paper||PAPERS.notebook;const pen=opts.pen||PENS[S.eq.pen];
   if(opts.lines){guideLines(x,w,by,U,{line:"rgba(120,150,200,.35)",mid:"rgba(120,150,200,.25)"})}
   const P=s=>s.map(p=>[pad+(p[0]-L.minx)*U,by-p[1]*U]);
   const darkUI=!opts.paper&&isDark();const pp2=darkUI?{dark:1}:pp;
@@ -586,10 +616,10 @@ function TracePad(host,word,mode,onDone){
   const st={s:0,i:0,oops:0,off:false,done:false};
   function geom(){const dpr=Math.min(2,window.devicePixelRatio||1);W=wrap.clientWidth;if(W<20)return false;const wu=(L.maxx-L.minx)+.9;
     const avail=Math.max(150,Math.min(innerHeight,screen.height||innerHeight)*(innerWidth<560?0.34:0.42));U=Math.min(110,(W-24)/wu,avail/3.6);H=Math.round(U*3.6);cv.width=W*dpr;cv.height=H*dpr;cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);
-    by=U*2.3;ox=(W-(L.maxx-L.minx)*U)/2;
+    by=H/2+((L.maxy+L.miny)/2)*U;ox=(W-(L.maxx-L.minx)*U)/2;
     const P=s=>s.map(p=>[ox+(p[0]-L.minx)*U,by-p[1]*U]);
     strokes=[L.main,...L.extra].map(s=>{const pts=P(s);const cum=[0];for(let k=1;k<pts.length;k++)cum.push(cum[k-1]+Math.hypot(pts[k][0]-pts[k-1][0],pts[k][1]-pts[k-1][1]));return {pts,cum,len:cum[cum.length-1],dot:pts.length===1}})}
-  const tol=()=>Math.max(20,U*(mode==="solo"?.38:.3));
+  const tol=()=>Math.max(30,U*(mode==="solo"?.6:.5));
   const lw=()=>Math.max(5,U*.13);
   function draw(){paperBG(ctx,W,H,pp);guideLines(ctx,W,by,U,pp);
     const gc=pp.dark?"rgba(255,255,255,.18)":"rgba(40,60,120,.12)";
@@ -624,15 +654,15 @@ function TracePad(host,word,mode,onDone){
   function local(e){const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]}
   function onDown(e){if(mode==="demo"||st.done)return;e.preventDefault();const p=local(e);const s=strokes[st.s];
     const target=s.dot?s.pts[0]:s.pts[st.i];
-    if(Math.hypot(p[0]-target[0],p[1]-target[1])>tol()*1.7){pulse(target);return}
+    if(Math.hypot(p[0]-target[0],p[1]-target[1])>tol()*2.4){pulse(target);return}
     try{cv.setPointerCapture(e.pointerId)}catch(_){}
     if(s.dot){finishStroke();return}
     cur={pts:[p],bad:false};raw.push(cur);draw()}
   function onMove(e){if(!cur||st.done)return;e.preventDefault();const p=local(e);cur.pts.push(p);const s=strokes[st.s];
-    const win=U*.7;let best=-1,bd=1e9;for(let j=Math.max(0,st.i-4);j<s.pts.length&&s.cum[j]-s.cum[st.i]<=win;j++){const d=Math.hypot(p[0]-s.pts[j][0],p[1]-s.pts[j][1]);if(d<bd){bd=d;best=j}}
+    const win=U*1.0;let best=-1,bd=1e9;for(let j=Math.max(0,st.i-4);j<s.pts.length&&s.cum[j]-s.cum[st.i]<=win;j++){const d=Math.hypot(p[0]-s.pts[j][0],p[1]-s.pts[j][1]);if(d<bd){bd=d;best=j}}
     if(bd<=tol()){if(best>st.i)st.i=best;if(st.off){st.off=false;cur={pts:[p],bad:false};raw.push(cur)}}
-    else if(bd>tol()*1.6&&!st.off){st.off=true;st.oops++;cur.bad=true;sfx.bad();fb(`Oops! Hop back to ${bn()}.`,"bad")}
-    if(s.len-s.cum[st.i]<U*.16){st.i=s.pts.length-1;finishStroke()}
+    else if(bd>tol()*2.0&&!st.off){st.off=true;st.oops++;cur.bad=true;sfx.bad();fb(`Oops! Hop back to ${bn()}.`,"bad")}
+    if(s.len-s.cum[st.i]<U*.3){st.i=s.pts.length-1;finishStroke()}
     draw()}
   function onUp(){cur=null;if(st.off){st.off=false}}
   function finishStroke(){cur=null;sfx.pop();if(st.s<strokes.length-1){st.s++;st.i=0;fb(strokes[st.s].dot?"Now tap the dot!":"Now cross it!","good");draw();return}
@@ -683,6 +713,10 @@ const ART={
    +EM(330,h*.2,"🐉",40,"mapfx","animation-duration:4.5s")+EM(300,h*.44,"⛸️",24)+EM(320,h*.58,"🐧",30,"hopf")+EM(80,h*.68,"🛷",30)+EM(330,h*.84,"🏔️",40)+EM(90,h*.38,"🧣",24,"sway")
    +Array.from({length:Math.ceil(h/140)},(_,i)=>`<ellipse cx="${i%2?320:80}" cy="${60+i*140}" rx="80" ry="18" fill="#C9DEFA" opacity=".6"/>`).join("")
    +Array.from({length:22},(_,i)=>EM((i*83)%w,(i*149)%h,"❄",14+(i%3)*5,"twinkle","fill:#7FA9E6")).join("")};
+const trackDone=r=>doneCount(r)===r.lessons.length;
+function nextTrack(r){const i=REGIONS.indexOf(r);for(let k=1;k<=REGIONS.length;k++){const t=REGIONS[(i+k)%REGIONS.length];if(!trackDone(t))return t}return null}
+function goTrack(t){S.region=t.id;save();startLesson(t,nextIdx(t))}
+function nextWorld(){const i=WORLDS.findIndex(w=>w.id===S.world);return WORLDS[(i+1)%WORLDS.length]}
 function renderMap(){if(!S.world)return show("worlds");const r=R(),wd=Wd();
   $("#titleSnail").innerHTML=snailSVG();$("#titleP").textContent=`Welcome to ${wd.name}! Learn cursive with ${bn()}. Every lesson you finish brings new pals.`;
   const u=unl(wd),bi=buddyIdx(wd);
@@ -706,6 +740,13 @@ function renderMap(){if(!S.world)return show("worlds");const r=R(),wd=Wd();
   $("#world").querySelectorAll(".lbl[data-w]").forEach(el=>{const t=cursiveText(el.dataset.w,44);t.style.columnGap="2px";el.appendChild(t)});
   $("#world").querySelectorAll(".stone").forEach(b=>b.onclick=()=>{if(b.classList.contains("locked")){sfx.bad();toast("Finish the lesson before this one first!");return}startLesson(r,+b.dataset.i)});
   $("#playBtn").onclick=()=>startLesson(r,cur);
+  const nb=$("#nextBanner");nb.hidden=!trackDone(r);
+  if(trackDone(r)){const t=nextTrack(r);
+    nb.innerHTML=t?`<b>🎉 You finished ${esc(r.name)}!</b><span>Next stage:</span><button class="btn mint big gplay" id="nbGo">${t.ic} ${esc(t.name)} ▶</button>`
+      :`<b>🏆 You finished every lesson!</b><span>Collect more pals in a new world, or write your own words.</span><div class="row ctr"><button class="btn mint big gplay" id="nbW">${nextWorld().ic} ${esc(nextWorld().name)} ▶</button><button class="btn sun" id="nbM">✏️ My Words</button></div>`;
+    if(t){$("#nbGo").onclick=()=>goTrack(t);$("#playBtn").textContent="Play again";}
+    else{$("#nbW").onclick=()=>{S.world=nextWorld().id;save();bdNow="";show("map")};$("#nbM").onclick=()=>show("mine")}}
+  else $("#playBtn").textContent="Play!";
   const gm=GAMES[r.id];$("#gameBtn").innerHTML=`${gm.ic} ${gm.name}`;$("#gameBtn").onclick=()=>startGame(r.id);renderBackdrop(Wd().id)}
 function lessonName(r,i){const L=r.lessons[i];if(r.kind==="letters")return "Letters "+L.join(", ");if(r.kind==="words")return "Words: "+L.map(w=>w[0]).join(", ");if(r.kind==="caps")return typeof L==="string"?"Capitals "+L.split("").join(", "):"Capital names and sentences";return L.t}
 
@@ -735,8 +776,9 @@ function scramble(w){if(w.length<3)return w+w.slice(-1);for(let k=0;k<8;k++){con
 function capCue(c){const T={A:"Capital A is a big round a with a tall stick.",C:"Capital C is a giant cookie bite that reaches the top line.",I:"Capital I curls up, swoops down, and loops back.",L:"Capital L has a little loop at the bottom like a slide.",M:"Capital M has three tall humps.",N:"Capital N has two tall humps.",O:"Capital O is a big round O with a tiny bow on top.",Q:"Cursive capital Q looks like a number 2. Silly!",S:"Capital S zooms up, loops, and rolls down.",T:"Capital T: wavy hat on top, stick down the middle. Do the hat at the end!",F:"Capital F is like T with an extra little line across.",Z:"Capital Z zigs, zags, and dangles a loop below.",H:"Capital H: two tall sticks, then a bridge across.",K:"Capital K: a tall stick, then a kick!",X:"Capital X: a hump and a swoop, then a slash."};return (T[c]||`Capital ${c} is big and tall. It touches the top line.`)+" Capitals start names and sentences."}
 function stWatch(card,s){const single=s.w.length===1;
   card.innerHTML=`<div class="mode">${single?(/[A-Z]/.test(s.w)?"Capital letter":"New letter"):/[A-Z]/.test(s.w[0])?"Capital name":"New word"}: <span class="cur" style="font-size:22px;text-transform:none;letter-spacing:0">${esc(s.w)}</span></div>${bubble(esc(s.cue))}<div class="padhost" style="width:100%;display:grid;justify-items:center"></div>
-   <div class="row ctr"><button class="speak" aria-label="Hear it">${SPEAK}</button><button class="btn alt" id="again">↻ Again</button><button class="btn mint" id="go" disabled>My turn →</button></div>`;
-  pad=TracePad(card.querySelector(".padhost"),s.w,"demo",()=>{card.querySelector("#go").disabled=false});
+   <button class="btn mint big myturn" id="go">✋ My turn!</button>
+   <div class="row ctr"><button class="speak" aria-label="Hear it">${SPEAK}</button><button class="btn alt" id="again">↻ Watch again</button></div>`;
+  pad=TracePad(card.querySelector(".padhost"),s.w,"demo",()=>{card.querySelector("#go").classList.add("gplay")});
   const my=pad;setTimeout(()=>{if(pad===my)my.demo()},350);const spk=single?(/[A-Z]/.test(s.w)?`Capital ${s.w}`:`Cursive ${s.w}`):s.w;say(spk);
   card.querySelector(".speak").onclick=()=>say(spk);
   card.querySelector("#again").onclick=()=>{killPad();runStep()};
@@ -746,13 +788,19 @@ function stTrace(card,s){const solo=s.t==="solo";
    <div class="feedback" id="fb">${solo?"Start at the green dot and write it yourself.":`Put your finger on ${bn()} and follow the arrows.`}</div>
    <div class="row ctr"><button class="btn alt sm" id="redo">↻ Start over</button><button class="btn alt sm" id="skip">Skip</button></div>`;
   const fb=card.querySelector("#fb");
-  pad=TracePad(card.querySelector(".padhost"),s.w,solo?"solo":"trace",st=>{LS.oops+=Math.min(st.oops,4);sfx.good();fb.textContent=pick(["Loop-tastic!","Slimy and smooth!","Beautiful loops!","Wow, so neat!","You're a cursive star!"]);fb.className="feedback good";mood(card.querySelector(".paper .tip"),"happy");if(s.w.length===1)S.got[s.w]=1;setTimeout(next,1000)});
+  pad=TracePad(card.querySelector(".padhost"),s.w,solo?"solo":"trace",st=>{LS.oops+=Math.min(st.oops,4);sfx.good();st.oops?streak(0):streak(1);fb.textContent=pick(["Loop-tastic!","So smooth!","Beautiful loops!","Wow, so neat!","You're a cursive star!"]);fb.className="feedback good";mood(card.querySelector(".paper .tip"),"happy");if(s.w.length===1)S.got[s.w]=1;setTimeout(next,1000)});
   pad.setFb(fb);
   card.querySelector("#redo").onclick=()=>{pad.reset();fb.textContent="Fresh page! Start at the green dot.";fb.className="feedback"};
   card.querySelector("#skip").onclick=()=>{LS.oops+=3;next()}}
+/* streak dance parties: 3, 6, 10, 15, 20... right in a row */
+let STREAK=0;const MOVES=["m-hop","m-spin","m-wiggle","m-sway","m-flip"];
+function streak(ok){if(!ok){STREAK=0;return}STREAK++;const n=STREAK;if(n===3||n===6||n===10||(n>=15&&n%5===0))party(n)}
+function party(n){const d=document.createElement("div");d.className="party";const mv=MOVES[(n===3?0:n===6?1:n===10?2:3+((n/5)|0)%2)];
+  d.innerHTML=`<div class="pbanner">${n} in a row! ${pick(["🎉","🌟","🔥","💃","🕺"])}</div><div class="pdancer ${mv}">${snailSVG()}</div>`;
+  document.body.appendChild(d);confetti();[523,659,784,1046,1318].forEach((f,i)=>tone(f,.18,"triangle",.09,i*.09));setTimeout(()=>d.classList.add("out"),1600);setTimeout(()=>d.remove(),2000)}
 function quizWire(card,correct,onRight){const fb=card.querySelector(".feedback");let tries=0;
   card.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(card.dataset.done)return;
-    if(b.dataset.v===correct){card.dataset.done=1;b.classList.add("right");sfx.good();fb.textContent=pick(["Yes!","You got it!","Super reading!","Correct!"]);fb.className="feedback good";mood(card.querySelector(".bs"),"happy");onRight&&onRight();setTimeout(next,1000)}
+    if(b.dataset.v===correct){card.dataset.done=1;tries?streak(0):streak(1);b.classList.add("right");sfx.good();fb.textContent=pick(["Yes!","You got it!","Super reading!","Correct!"]);fb.className="feedback good";mood(card.querySelector(".bs"),"happy");onRight&&onRight();setTimeout(next,1000)}
     else{tries++;LS.miss++;b.classList.add("wrong");b.disabled=true;sfx.bad();fb.textContent="Not that one, look again!";fb.className="feedback bad";mood(card.querySelector(".bs"),"sad")}})}
 function stSpotCur(card,s){const opts=shuffle([s.c,...shuffle(s.pool.filter(x=>x!==s.c)).slice(0,3)]);
   card.innerHTML=`<div class="mode">Read it</div>${bubble("Which letter is this?")}<div class="big-cur" id="bc"></div><div class="opts">${opts.map(o=>`<button class="opt" data-v="${o}">${o}</button>`).join("")}</div><div class="feedback"></div>`;
@@ -779,7 +827,7 @@ function stRule(card,s){card.innerHTML=`<div class="mode">Capital rules</div>${b
   card.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>say(s.rules[b.dataset.r]));card.querySelector("#go").onclick=()=>next()}
 function cursiveText(t,h){const box=document.createElement("span");box.className="ctext";
   t.split(" ").forEach(tok=>{const m=tok.match(/^([^A-Za-z]*)([A-Za-z]+)(.*)$/);const w=document.createElement("span");w.className="w";w.dataset.say=tok.replace(/[^A-Za-z']/g,"");
-    if(!m){w.textContent=tok}else{if(m[1])w.append(m[1]);const c=cursiveCanvas(m[2],h,{tight:1});w.appendChild(c);if(m[3]){const p=document.createElement("span");p.className="punct";p.textContent=m[3].replace(/'s$/,"’s");w.appendChild(p)}}
+    if(!m){w.textContent=tok}else{if(m[1])w.append(m[1]);const c=cursiveCanvas(m[2],h,{tight:1,fit:false});w.appendChild(c);if(m[3]){const p=document.createElement("span");p.className="punct";p.textContent=m[3].replace(/'s$/,"’s");w.appendChild(p)}}
     box.appendChild(w)});return box}
 function wordsHTML(t){return t.split(" ").map(w=>`<span class="w">${esc(w)}</span>`).join(" ")}
 function stCover(card,s){const st=s.s;card.innerHTML=`<div class="mode">Story time</div><div class="scene" style="background:${st.bg}"><span>${st.e}</span><span>${Wd().ic}</span></div><h2 class="storytext" style="font-size:clamp(28px,7vw,44px)">${esc(st.t)}</h2>${bubble("Read each page in cursive. Tap a word to hear it, or peek at the print if you get stuck.")}<button class="btn mint big" id="go">Start reading</button>`;
@@ -807,9 +855,13 @@ function finish(){killPad();const {r,i}=LS;const k=lkey(r.id,i);const pen=LS.oop
    <div class="dance">${snailSVG()}</div><div class="coinsup">+${coins} coins</div>
    ${newPals.length?`<b style="font-family:var(--f-display);font-size:20px">New pals joined you!</b><div class="newpals">${newPals.map(p=>`<div class="ptile">${palSVG(p,"none","")}<span>${esc(p.n)}</span></div>`).join("")}</div>`:""}
    ${gift?`<div class="gift"><div class="prev">${giftPreview(gift)}</div><div>Surprise gift! ${esc(bn())} found a <b>${esc(gift[2].n)}</b>. Wear it in Skins.</div></div>`:`<p class="hint">Every 3rd lesson hides a surprise gift. ${3-S.plays%3} to go!</p>`}
-   <div class="row ctr">${nextOpen?`<button class="btn mint big" id="nx">Next lesson →</button>`:""}<button class="btn alt" id="mp">Map</button><button class="btn sun" id="sk">Skins</button></div></div>`;
+   ${!nextOpen&&r.kind!=="custom"?nextStageHTML(r):""}<div class="row ctr">${nextOpen?`<button class="btn mint big gplay" id="nx">Next lesson →</button>`:""}<button class="btn alt" id="mp">Map</button><button class="btn sun" id="sk">Skins</button></div></div>`;
   sfx.win();confetti();
-  if(nextOpen)$("#nx").onclick=()=>startLesson(r,i+1);$("#mp").onclick=()=>show(r.kind==="custom"?"mine":"map");$("#sk").onclick=()=>show("shop")}
+  if(nextOpen)$("#nx").onclick=()=>startLesson(r,i+1);
+  if(!nextOpen&&r.kind!=="custom")wireNextStage(r);$("#mp").onclick=()=>show(r.kind==="custom"?"mine":"map");$("#sk").onclick=()=>show("shop")}
+function nextStageHTML(r){const t=nextTrack(r);if(t)return `<div class="nextstage"><b>🎉 You finished ${esc(r.name)}!</b><span>Ready for the next stage?</span><button class="btn mint big gplay" id="nsGo">${t.ic} ${esc(t.name)} ▶</button></div>`;
+  const w=nextWorld();return `<div class="nextstage"><b>🏆 You finished every lesson!</b><span>Try a new world and collect new pals.</span><button class="btn mint big gplay" id="nsW">${w.ic} ${esc(w.name)} ▶</button></div>`}
+function wireNextStage(r){const t=nextTrack(r);if(t)$("#nsGo").onclick=()=>goTrack(t);else $("#nsW").onclick=()=>{S.world=nextWorld().id;save();bdNow="";show("map")}}
 function giftPreview([cat,id]){if(cat==="shell")return snailSVG({...S.eq,shell:id});if(cat==="hat")return snailSVG({...S.eq,hat:id});return `<div style="font-size:44px;text-align:center">${cat==="pen"?"🖊️":"📄"}</div>`}
 function confetti(){const c=$("#fx"),x=c.getContext("2d");const dpr=Math.min(2,devicePixelRatio||1);c.width=innerWidth*dpr;c.height=innerHeight*dpr;x.setTransform(dpr,0,0,dpr,0,0);
   if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
@@ -820,8 +872,9 @@ function confetti(){const c=$("#fx"),x=c.getContext("2d");const dpr=Math.min(2,d
 
 /* ===================== SHOP ===================== */
 const CATS=[["hat","Hats",HATS],["pen","Pens",PENS],["paper","Paper",PAPERS]];
-function renderShop(){const sb=$("#shopBack");sb.innerHTML=(lastGame?`<button class="btn mint" id="sbGame">▶ Play ${esc(GAMES[lastGame].name)} again</button>`:"")+`<button class="btn alt" id="sbMap">🗺️ Back to map</button>`;
-  if(lastGame)$("#sbGame").onclick=()=>startGame(lastGame);$("#sbMap").onclick=()=>show("map");const pv=$("#shopPreview");pv.innerHTML=`<div class="dance">${snailSVG()}</div><div style="display:grid;gap:8px;min-width:0"><b class="cur" style="font-size:22px;color:var(--plum)">Hi, I'm ${esc(bn())}!</b><div class="ppv"></div></div>`;
+function keepPlaying(){const r=R();startLesson(r,nextIdx(r))}
+function renderShop(){const sb=$("#shopBack");sb.innerHTML=`<button class="btn mint big gplay" id="sbKeep">▶ Keep playing</button>`+(lastGame?`<button class="btn mint" id="sbGame">▶ Play ${esc(GAMES[lastGame].name)} again</button>`:"")+`<button class="btn alt" id="sbMap">🗺️ Back to map</button>`;
+  if(lastGame)$("#sbGame").onclick=()=>startGame(lastGame);$("#sbMap").onclick=()=>show("map");$("#sbKeep").onclick=keepPlaying;const pv=$("#shopPreview");pv.innerHTML=`<div class="dance">${snailSVG()}</div><div style="display:grid;gap:8px;min-width:0"><b class="cur" style="font-size:22px;color:var(--plum)">Hi, I'm ${esc(bn())}!</b><div class="ppv"></div></div>`;
   mini(pv.querySelector(".ppv"),"loopy");
   $("#shopBody").innerHTML=CATS.map(([cat,label,set])=>`<div class="section-title"><h2>${label}</h2></div><div class="shop">${Object.entries(set).map(([id,it])=>{const own=S.own[cat].includes(id),eq=S.eq[cat]===id;
     return `<div class="item ${eq?"equipped":""}"><div class="ico" data-cat="${cat}" data-id="${id}"></div><h3>${esc(it.n)}</h3><p class="pw"><b>🎮 ${esc(POWERS[cat][id][0])}</b><br>${esc(POWERS[cat][id][1])}</p>${eq?`<button class="btn mint" disabled>Wearing</button>`:own?`<button class="btn mint" data-eq="${cat}:${id}">Use</button>`:`<button class="btn sun" data-buy="${cat}:${id}" ${S.coins<it.price?"disabled":""}><svg class="coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="url(#gCoin)" stroke="#B87400" stroke-width="1.5"/></svg> ${it.price}</button>`}</div>`}).join("")}</div>`).join("");
@@ -851,7 +904,7 @@ function renderBook(){const low="abcdefghijklmnopqrstuvwxyz".split(""),caps="ABC
 /*GAMES*/
 /* ===================== WORLDS PICKER ===================== */
 const WBG={flower:"linear-gradient(180deg,#FFE3F1,#BDEBA4 60%,#7CC35A 60%)",mermaid:"linear-gradient(180deg,#9FE3FF,#4CC3E6 60%,#F4E3B9 60%)",truck:"linear-gradient(180deg,#FFD9A0,#F3B868 60%,#C8662A 60%)",dragon:"linear-gradient(180deg,#BFD9FF,#EAF3FF 60%,#FFFFFF 60%)"};
-function renderWorlds(){$("#worldGrid").innerHTML=WORLDS.map(w=>`<button class="wcard ${S.world===w.id?"on":""}" data-w="${w.id}" style="background:${WBG[w.id]}"><div class="trio">${ROSTER[w.id].slice(0,3).map(p=>palSVG(p)).join("")}</div><h3>${w.name}</h3><p>${w.blurb}<br>${unl(w)} of ${ROSTER[w.id].length} pals unlocked</p></button>`).join("");
+function renderWorlds(){const wb=$("#worldsBack");wb.innerHTML=S.world?`<button class="btn mint big gplay" id="wbKeep">▶ Keep playing in ${esc(Wd().name)}</button>`:"";if(S.world)$("#wbKeep").onclick=keepPlaying;$("#worldGrid").innerHTML=WORLDS.map(w=>`<button class="wcard ${S.world===w.id?"on":""}" data-w="${w.id}" style="background:${WBG[w.id]}"><div class="trio">${ROSTER[w.id].slice(0,3).map(p=>palSVG(p)).join("")}</div><h3>${w.name}</h3><p>${w.blurb}<br>${unl(w)} of ${ROSTER[w.id].length} pals unlocked</p></button>`).join("");
   $("#worldGrid").querySelectorAll(".wcard").forEach(b=>b.onclick=()=>{S.world=b.dataset.w;save();sfx.good();bdNow="";renderBackdrop(S.world);show("map");mood($("#titleSnail"),"happy")})}
 
 /* ===================== MY WORDS ===================== */
