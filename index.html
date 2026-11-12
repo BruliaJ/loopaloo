@@ -1,7 +1,6 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light}body{margin:0;font:14px sans-serif}[hidden]{display:none!important}</style></head><body><title>Loopaloo</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#7A3FE0"><meta name="description" content="Learn cursive handwriting with friendly pals: trace letters, join words, read silly stories and play mini-games."><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Loopaloo"><style>:root{color-scheme:light}body{margin:0;font:14px sans-serif}[hidden]{display:none!important}</style></head><body><title>Loopaloo</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;800;900&family=Playwrite+US+Trad:wght@300;400&display=swap">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 /* Layout: a lagoon-world map of stepping stones; each lesson is a sheet of handwriting paper on a floating card; your pal leads the way and the paper changes with the season. */
 :root{
@@ -1299,4 +1298,4 @@ setInterval(updateHint,1000);
 const fontsReady=(document.fonts?Promise.race([document.fonts.load('80px "Playwrite US Trad"'),sleep(2500)]):Promise.resolve()).catch(()=>{});
 show(S.world?"map":"worlds");
 </script>
-</body></html>
+<script>if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))</script></body></html>

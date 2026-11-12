@@ -1,0 +1,7 @@
+{
+  "appId": "com.loopaloo.cursive",
+  "appName": "Loopaloo",
+  "webDir": "www",
+  "backgroundColor": "#E4F5F0",
+  "ios": { "contentInset": "never" }
+}

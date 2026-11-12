@@ -1,2 +1,4 @@
 loopaloo-artifact.html
 .vercel
+node_modules/
+www/
