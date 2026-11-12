@@ -949,8 +949,11 @@ function renderMine(){$("#mineSnail").innerHTML=snailSVG();$("#mineHi").textCont
   document.querySelectorAll(".mic").forEach(b=>{b.hidden=!micOK;b.onclick=()=>listen(b)})}
 const fixName=t=>t?t.split(" ").map(x=>x?x[0].toUpperCase()+x.slice(1).toLowerCase():x).join(" "):t;
 /* voice: Claude dictation inside claude.ai, browser speech recognition elsewhere, typing always */
-let DICT=null,micOK=!!(window.SpeechRecognition||window.webkitSpeechRecognition),micBtn=null;
-if(window.claude&&window.claude.use){window.claude.use("dictation").then(d=>{if(!d)return;DICT=d;micOK=true;
+/* FEATURE SWITCH: voice input (the microphone buttons in My Words).
+   Set to false before the App Store release so the app collects no audio. See CLAUDE.md and docs/APP_STORE.md. */
+const VOICE_INPUT=true;
+let DICT=null,micOK=VOICE_INPUT&&!!(window.SpeechRecognition||window.webkitSpeechRecognition),micBtn=null;
+if(VOICE_INPUT&&window.claude&&window.claude.use){window.claude.use("dictation").then(d=>{if(!d)return;DICT=d;micOK=true;
   d.onFinal(({text})=>{if(!micBtn)return;const inp=$("#"+micBtn.dataset.for);inp.value=cleanWord((inp.dataset.base||"")+" "+text);inp.dispatchEvent(new Event("input"))});
   d.onPartial(({text})=>{if(!micBtn||!text)return;const inp=$("#"+micBtn.dataset.for);inp.value=cleanWord((inp.dataset.base||"")+" "+text)});
   d.onState(({state,reason})=>{if(state==="idle"){if(micBtn){micBtn.classList.remove("on");const inp=$("#"+micBtn.dataset.for);inp.dispatchEvent(new Event("input"))}micBtn=null;if(reason==="unavailable"){micOK=false;document.querySelectorAll(".mic").forEach(b=>b.hidden=true)}}});
