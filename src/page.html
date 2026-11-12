@@ -428,9 +428,9 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
   </section>
   <section id="mine" hidden>
     <div class="col">
-      <div class="title"><span class="bob" id="mineSnail"></span><div class="brand" id="mineHi">Write anything!</div><p>Type or say your name and any word. Your pal will show you how to write it in cursive.</p></div>
+      <div class="title"><span class="bob" id="mineSnail"></span><div class="brand" id="mineHi">Write anything!</div><p>Type or say any word, or a name you'd like to write. Your pal will show you how in cursive.</p></div>
       <div class="card" style="justify-items:stretch;text-align:left">
-        <label class="fld"><span>Your name</span><div class="inrow"><input id="inName" maxlength="16" autocomplete="off" placeholder="Like Mia or Leo"><button class="mic" data-for="inName" aria-label="Say your name">🎤</button></div></label>
+        <label class="fld"><span>Practice a name (optional)</span><div class="inrow"><input id="inName" maxlength="16" autocomplete="off" placeholder="Like Max, Grandma or Pickles"><button class="mic" data-for="inName" aria-label="Say a name">🎤</button></div></label>
         <label class="fld"><span>A word you want to write</span><div class="inrow"><input id="inWord" maxlength="40" autocomplete="off" placeholder="Like dinosaur or pizza party"><button class="mic" data-for="inWord" aria-label="Say a word">🎤</button></div></label>
         <p class="hint" id="mineNote" style="max-width:none">Tap 🎤 and say it, then fix the spelling by typing if you need to.</p>
         <div class="prevbox" id="minePrev"></div>
@@ -534,7 +534,7 @@ const PAPERS={
 const KEY="loopaloo-v1";
 const fresh=()=>({coins:20,stars:{},done:{},plays:0,region:"lagoon",own:{shell:["classic"],hat:["none"],pen:["berry"],paper:["notebook"]},eq:{shell:"classic",hat:"none",pen:"berry",paper:"notebook"},got:{},world:"",unl:{},buddy:{}});
 let S;try{S=Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||"null")||{})}catch(e){S=fresh()}
-if(!S.unl)S.unl={};if(!S.buddy)S.buddy={};
+delete S.name;if(!S.unl)S.unl={};if(!S.buddy)S.buddy={};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -778,7 +778,7 @@ function startLesson(r,i){killPad();const L=r.lessons[i];const steps=[];
     shuffle(L).forEach(([w,e])=>steps.push({t:"readWord",w,e,pool:WORDS.flat().concat(EXTRAWORDS)}))}
   if(r.kind==="caps"&&typeof L==="string"){L.split("").forEach(c=>steps.push({t:"watch",w:c,cue:capCue(c)},{t:"trace",w:c},{t:"solo",w:c}));shuffle(L.split("")).slice(0,4).forEach(c=>steps.push({t:"capspot",c,pool:CAPS.slice(0,5).join("").split("")}))}
   if(r.kind==="caps"&&typeof L==="object"){if(L.sent)steps.push({t:"rule",rules:CAPRULES});L.names.forEach(c=>steps.push({t:"watch",w:c,cue:`Names start with a capital! Watch the big ${c[0]} at the front of ${c}.`},{t:"trace",w:c}));shuffle(CAPSENT).slice(0,L.sent?5:3).forEach(sent=>steps.push({t:"fixCap",sent}))}
-  if(r.kind==="custom"){L.words.forEach(w=>{const isName=w===L.name;steps.push({t:"watch",w,cue:isName?`Let's write your name, ${w}! It starts with a big capital ${w[0]}.`:`Let's write ${w}! Watch how all ${w.length} letters link together.`},{t:"trace",w},{t:"solo",w})});
+  if(r.kind==="custom"){L.words.forEach(w=>{const isName=w===L.name;steps.push({t:"watch",w,cue:isName?`Let's write the name ${w}! Names always start with a big capital ${w[0]}.`:`Let's write ${w}! Watch how all ${w.length} letters link together.`},{t:"trace",w},{t:"solo",w})});
     L.words.forEach(w=>{const sc=scramble(w);steps.push({t:"spotPrint",c:w,pool:[sc,scramble(sc)!==w?scramble(sc):w.split("").reverse().join("")].filter(x=>x!==w).concat(sc+"s")})})}
   if(r.kind==="story"){steps.push({t:"cover",s:L});L.pages.forEach((p,k)=>steps.push({t:"page",s:L,p,k}));L.qs.forEach(q=>steps.push({t:"storyQ",s:L,q}));steps.push({t:"fixCap",sent:pick(L.pages.map(p=>p[0]).filter(t=>t.split(" ").length>3)),s:L})}
   LS={r,i,steps,k:0,oops:0,miss:0};show("lesson");$("#walker").innerHTML=snailSVG();runStep()}
@@ -871,7 +871,7 @@ function finish(){killPad();const {r,i}=LS;const k=lkey(r.id,i);const pen=LS.oop
   let gift=null;if(S.plays%3===0){const pool=[];[["hat",HATS],["pen",PENS],["paper",PAPERS]].forEach(([cat,set])=>Object.keys(set).forEach(id=>{if(!S.own[cat].includes(id))pool.push([cat,id,set[id]])}));if(pool.length){gift=pick(pool);S.own[gift[0]].push(gift[1])}}
   const wd=Wd(),before=unl(wd);S.unl[wd.id]=Math.min(ROSTER[wd.id].length,before+PER);const newPals=ROSTER[wd.id].slice(before,unl(wd));
   save();renderHUD();show("reward");const nextOpen=i+1<r.lessons.length;
-  $("#reward").innerHTML=`<div class="card reward"><div class="rays"></div><h2>${r.kind==="custom"&&S.name?`Way to go, ${esc(S.name)}!`:pick(["Lesson complete!","You did it!","Loop-de-loo-hoo!"])}</h2><div class="bigstars">${[1,2,3].map(s=>STAR(s<=stars)).join("")}</div><div class="coinsup">+${coins} coins</div>
+  $("#reward").innerHTML=`<div class="card reward"><div class="rays"></div><h2>${pick(["Lesson complete!","You did it!","Loop-de-loo-hoo!"])}</h2><div class="bigstars">${[1,2,3].map(s=>STAR(s<=stars)).join("")}</div><div class="coinsup">+${coins} coins</div>
    ${!nextOpen&&r.kind!=="custom"?nextStageHTML(r):""}<div class="row ctr">${nextOpen?`<button class="btn mint big gplay" id="nx">Next lesson →</button>`:""}<button class="btn alt" id="mp">🗺️ Map</button><button class="btn sun" id="sk">🎩 Skins</button></div>
    <div class="dance">${snailSVG()}</div>
    ${newPals.length?`<b style="font-family:var(--f-display);font-size:20px">New pals joined you!</b><div class="newpals">${newPals.map(p=>`<div class="ptile">${palSVG(p,"none","")}<span>${esc(p.n)}</span></div>`).join("")}</div>`:""}
@@ -930,8 +930,8 @@ function renderWorlds(){const wb=$("#worldsBack");wb.innerHTML=S.world?`<button 
 
 /* ===================== MY WORDS ===================== */
 const cleanWord=t=>t.replace(/[^A-Za-z ]/g,"").replace(/\s+/g," ").trim();
-function renderMine(){$("#mineSnail").innerHTML=snailSVG();$("#mineHi").textContent=S.name?`Hi, ${S.name}!`:"Write anything!";
-  const n=$("#inName"),w=$("#inWord");if(!n.value&&S.name)n.value=S.name;
+function renderMine(){$("#mineSnail").innerHTML=snailSVG();$("#mineHi").textContent="Write anything!";
+  const n=$("#inName"),w=$("#inWord");
   const upd=()=>{const nm=cleanWord(n.value),wd=cleanWord(w.value).toLowerCase();const box=$("#minePrev");box.innerHTML="";
     let note="Tap 🎤 and say it, then fix the spelling by typing if you need to.";
     if(nm&&/^[a-z]/.test(nm))note=`Names start with a capital letter, so we'll write ${nm[0].toUpperCase()+nm.slice(1)}.`;
@@ -941,9 +941,9 @@ function renderMine(){$("#mineSnail").innerHTML=snailSVG();$("#mineHi").textCont
     if(!box.children.length)box.innerHTML=`<p class="hint">Your cursive will show up here.</p>`;
     $("#teachBtn").disabled=!(nm||wd)};
   n.oninput=w.oninput=upd;upd();
-  $("#teachBtn").onclick=()=>{const nm=fixName(cleanWord(n.value)),wd=cleanWord(w.value).toLowerCase();if(nm){S.name=nm}
+  $("#teachBtn").onclick=()=>{const nm=fixName(cleanWord(n.value)),wd=cleanWord(w.value).toLowerCase();
     const words=[...(nm?[nm]:[]),...wd.split(" ").filter(Boolean)].slice(0,4).map(x=>x.slice(0,12));if(!words.length)return;
-    S.mine=S.mine||[];words.forEach(x=>{if(!S.mine.includes(x))S.mine.unshift(x)});S.mine=S.mine.slice(0,24);save();
+    S.mine=(S.mine||[]).filter(x=>!/^[A-Z]/.test(x));words.forEach(x=>{if(x!==nm&&!S.mine.includes(x))S.mine.unshift(x)});S.mine=S.mine.slice(0,24);save();
     startLesson({id:"mine",kind:"custom",rc:"#E8358C",lessons:[{words,name:nm}]},0)};
   const sv=$("#mineSaved");sv.innerHTML=(S.mine||[]).map(x=>`<button class="chip" data-w="${esc(x)}">${esc(x)}</button>`).join("")||`<p class="hint">Nothing yet. Your words will be saved here to practice again.</p>`;
   sv.querySelectorAll(".chip").forEach(c=>c.onclick=()=>startLesson({id:"mine",kind:"custom",rc:"#E8358C",lessons:[{words:[c.dataset.w],name:/^[A-Z]/.test(c.dataset.w)?c.dataset.w:""}]},0));
