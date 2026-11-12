@@ -262,6 +262,9 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .backbar:empty{display:none}
 .actions{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:4;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;width:100%;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(6px);border-radius:20px;padding:8px}
 .btn.sm{min-height:44px}
+.scrollhint{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--hintgap,16px) + env(safe-area-inset-bottom,0px));z-index:21;display:flex;align-items:center;gap:4px;background:var(--ink);color:var(--bg);border-radius:999px;padding:6px 12px 6px 14px;font-family:var(--f-display);font-weight:600;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,.25);animation:hintbob 1.2s ease-in-out infinite;opacity:.92}
+.scrollhint svg{width:18px;height:18px}
+@keyframes hintbob{50%{transform:translateX(-50%) translateY(5px)}}
 .confirm{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:rgba(20,30,50,.45);padding:16px}
 .confirm .card{max-width:420px}
 .myturn{min-width:min(100%,320px);font-size:clamp(26px,6.5vw,34px)}
@@ -449,6 +452,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
   </section>
 </main>
 <div class="toast" id="toast" hidden></div>
+<button class="scrollhint" id="scrollHint" hidden aria-label="Scroll down for more"><span>More below</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
 
 <script>
 /* ===== CURSIVE GLYPHS — centerlines in "x-height units": baseline y=0, midline y=1, top y=2, descender y=-1 (y up).
@@ -1280,6 +1284,16 @@ function listen(b){const inp=$("#"+b.dataset.for);
   rec.onresult=e=>{let t="";for(const r of e.results)t+=r[0].transcript;inp.value=cleanWord(t);inp.dispatchEvent(new Event("input"))};
   rec.onerror=e=>{toast(e.error==="not-allowed"?"No microphone allowed. You can type instead!":"Couldn't hear that. Try again or type it.")};
   rec.onend=()=>{b.classList.remove("on");micBtn=null};try{rec.start()}catch(e){b.classList.remove("on");micBtn=null}}
+
+/* ===================== SCROLL HINT ===================== */
+function updateHint(){const h=$("#scrollHint");if(!h)return;const more=document.documentElement.scrollHeight-(scrollY+innerHeight);
+  const bars=[...document.querySelectorAll(".actions,.backbar")].filter(e=>e.offsetParent!==null&&e.getBoundingClientRect().bottom>innerHeight-140);
+  const gap=bars.length?Math.max(16,innerHeight-Math.min(...bars.map(e=>e.getBoundingClientRect().top))+8):16;
+  h.style.setProperty("--hintgap",gap+"px");h.hidden=more<60||!!document.querySelector(".confirm,.party")}
+addEventListener("scroll",updateHint,{passive:true});addEventListener("resize",updateHint);
+new MutationObserver(()=>requestAnimationFrame(updateHint)).observe(document.querySelector("main"),{childList:true,subtree:true,attributes:true,attributeFilter:["hidden"]});
+$("#scrollHint").onclick=()=>scrollBy({top:innerHeight*.6,behavior:"smooth"});
+setInterval(updateHint,1000);
 
 /* ===================== BOOT ===================== */
 const fontsReady=(document.fonts?Promise.race([document.fonts.load('80px "Playwrite US Trad"'),sleep(2500)]):Promise.resolve()).catch(()=>{});
