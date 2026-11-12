@@ -46,7 +46,11 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .pill{display:inline-flex;align-items:center;gap:6px;background:var(--sun-soft);border-radius:999px;padding:5px 12px 5px 6px;font-family:var(--f-display);font-weight:700;font-size:18px;font-variant-numeric:tabular-nums;box-shadow:0 3px 0 color-mix(in srgb,var(--sun) 50%,var(--shadow))}
 .coin{width:24px;height:24px;flex:none}
 .nav{display:flex;gap:4px;flex-wrap:wrap}
-.nav button{padding:8px 12px;border-radius:14px;font-family:var(--f-display);font-weight:600;font-size:16px;background:var(--card);box-shadow:0 3px 0 var(--shadow)}
+#muteBtn{min-width:44px}
+.nav .ni{display:none}
+@media (max-width:420px){header.top .nav{flex-wrap:nowrap;justify-content:space-between;gap:3px;overflow:visible}header.top .nav button{display:grid;justify-items:center;gap:0;padding:4px 2px;min-height:48px;font-size:11px;line-height:1.1;flex:1 1 0;min-width:0}header.top .nav .ni{display:block;font-size:19px}header.top #muteBtn{font-size:19px;flex:0 0 38px;min-width:38px}}
+@media (max-width:560px){.nav{flex-wrap:nowrap;overflow-x:auto;width:100%;padding-bottom:4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.nav::-webkit-scrollbar{display:none}.nav button{flex:none}}
+.nav button{min-height:44px;padding:8px 12px;border-radius:14px;font-family:var(--f-display);font-weight:600;font-size:16px;background:var(--card);box-shadow:0 3px 0 var(--shadow)}
 .nav button[aria-current="true"]{background:var(--plum);color:#fff;box-shadow:0 3px 0 var(--plum-d)}
 
 /* buttons */
@@ -56,6 +60,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--d)}
 .btn.mint{--c:var(--mint);--d:var(--mint-d)} .btn.sun{--c:var(--sun);--d:var(--sun-d);color:#3b2800} .btn.coral{--c:var(--coral);--d:var(--coral-d)}
 .btn.alt{--c:var(--card);--d:var(--shadow);color:var(--ink);background:var(--card)} .btn.alt::after{display:none}
+.btn.poor{filter:grayscale(.6);opacity:.65}
 .btn[disabled]{filter:grayscale(.7);opacity:.55;cursor:default}
 .btn.big{font-size:28px;padding:16px 40px;border-radius:26px}
 .btn.sm{font-size:16px;padding:9px 14px;border-radius:16px}
@@ -158,6 +163,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .rays{position:absolute;left:50%;top:40%;width:760px;height:760px;margin:-380px 0 0 -380px;background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--sun) 26%,transparent) 0 10deg,transparent 10deg 20deg);border-radius:50%;animation:spin 18s linear infinite;pointer-events:none;-webkit-mask:radial-gradient(circle,#000 30%,transparent 70%);mask:radial-gradient(circle,#000 30%,transparent 70%)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .reward>*{position:relative}
+.reward>.rays{position:absolute}
 .bigstars{display:flex;gap:10px;align-items:flex-end}
 .bigstars .star{width:64px;height:64px;transform:scale(0);animation:pop .45s forwards;filter:drop-shadow(0 4px 0 rgba(0,0,0,.18))}
 .bigstars .star:nth-child(2){width:84px;height:84px;animation-delay:.25s}.bigstars .star:nth-child(3){animation-delay:.5s}
@@ -252,8 +258,12 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .nextstage b{font-family:var(--f-display);font-size:22px}
 .backbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;width:min(560px,calc(100% - 32px));background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(8px);border-radius:22px;padding:10px;box-shadow:0 6px 18px rgba(20,40,60,.25);flex-wrap:nowrap}
 .backbar .btn.big{font-size:22px;padding:12px 18px;flex:1}
-#shop,#worlds{padding-bottom:110px}
+#shop,#worlds,#book{padding-bottom:110px}
 .backbar:empty{display:none}
+.actions{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:4;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;width:100%;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(6px);border-radius:20px;padding:8px}
+.btn.sm{min-height:44px}
+.confirm{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:rgba(20,30,50,.45);padding:16px}
+.confirm .card{max-width:420px}
 .myturn{min-width:min(100%,320px);font-size:clamp(26px,6.5vw,34px)}
 .gplay{font-size:clamp(24px,6vw,32px);padding:16px 36px;animation:pulse 1.4s ease-in-out infinite}
 .game-top .target{order:-1;flex-basis:100%;justify-content:center;font-size:clamp(22px,5vw,30px);padding:8px 22px;background:var(--sun);color:#3b2800;box-shadow:0 5px 0 var(--sun-d)}
@@ -361,11 +371,11 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .sad .snail .sb{transform-box:fill-box;transform-origin:50% 100%;animation:droop .8s ease}
 @keyframes droop{30%,70%{transform:rotate(-6deg) translateY(2px)}}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
-@media (max-width:560px){.who .snail{width:40px}header.top .wrap{padding-block:5px;gap:6px}.pill{font-size:16px;padding:3px 10px 3px 4px}
+@media (max-width:560px){.scene{min-height:84px;font-size:44px;padding:6px}.storytext{line-height:1.6}.who .snail{width:40px}header.top .wrap{padding-block:5px;gap:6px}.pill{font-size:16px;padding:3px 10px 3px 4px}
   .card{padding:14px 12px;gap:10px;border-radius:24px}.bubble .snail{width:52px}.bubble p{font-size:16px;padding:8px 12px}
   .lesson-head{padding-block:6px}.trail{height:46px}.trail .walker{width:46px}.x{width:40px;height:40px}
   .speak{width:52px;height:52px}.btn{padding:10px 18px;font-size:18px}.mode{font-size:12px}
-.nav button{padding:6px 9px;font-size:14px}.who b{display:none}.preview{grid-template-columns:1fr}.preview .snail{width:120px;justify-self:center}.title .snail{width:72px}.rtab{font-size:12px}}
+.nav button{padding:6px 9px;font-size:14px;min-height:42px}.who b{display:none}.preview{grid-template-columns:1fr}.preview .snail{width:120px;justify-self:center}.title .snail{width:72px}.rtab{font-size:12px}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -379,11 +389,12 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
   <span class="pill" title="Stars"><svg class="star on coin" viewBox="0 0 24 24"><path d="M12 1.8l3.1 6.5 7.1.9-5.2 4.9 1.4 7.1L12 17.7 5.6 21.2 7 14.1 1.8 9.2l7.1-.9z"/></svg><span id="starCount">0</span></span>
   <span class="pill" title="Coins"><svg class="coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="url(#gCoin)" stroke="#B87400" stroke-width="1.5"/><path d="M8 14c1-4 3-6 4-6s1 3-1 5-3 3-1 3 4-2 5-3" fill="none" stroke="#B87400" stroke-width="1.8" stroke-linecap="round"/></svg><span id="coinCount">0</span></span>
   <nav class="nav" aria-label="Sections">
-    <button data-go="map">Map</button>
-    <button data-go="worlds">Worlds</button>
-    <button data-go="mine">My Words</button>
-    <button data-go="shop">Skins</button>
-    <button data-go="book">Stickers</button>
+    <button id="muteBtn" aria-label="Sound on or off">🔊</button>
+    <button data-go="map"><span class="ni">🗺️</span><span class="nl">Map</span></button>
+    <button data-go="worlds"><span class="ni">🌍</span><span class="nl">Worlds</span></button>
+    <button data-go="mine"><span class="ni">✏️</span><span class="nl">My Words</span></button>
+    <button data-go="shop"><span class="ni">🎩</span><span class="nl">Skins</span></button>
+    <button data-go="book"><span class="ni">⭐</span><span class="nl">Stickers</span></button>
   </nav>
 </div></header>
 
@@ -391,10 +402,10 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
   <section id="map">
     <div class="col">
       <div class="title"><span id="titleSnail" class="bob"></span><div class="brand">Loopaloo</div><p id="titleP">Learn cursive with your pal. Every letter is a little loop-de-loop.</p></div>
-      <div class="chiplabel">Pick a pal!</div><div class="palrow" id="palrow"></div><div class="count" id="palcount"></div>
-      <div class="regions" id="regions"></div>
       <div class="nextstage" id="nextBanner" hidden style="justify-self:center"></div>
-      <div class="gamebtn"><button class="btn big" id="playBtn">Play!</button><button class="btn sun big" id="gameBtn"></button></div>
+      <div class="gamebtn"><button class="btn big gplay" id="playBtn">Play!</button><button class="btn sun big" id="gameBtn"></button></div>
+      <div class="regions" id="regions"></div>
+      <div class="chiplabel">Pick a pal!</div><div class="palrow" id="palrow"></div><div class="count" id="palcount"></div>
       <div class="world" id="world"></div>
     </div>
   </section>
@@ -420,7 +431,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
         <label class="fld"><span>A word you want to write</span><div class="inrow"><input id="inWord" maxlength="40" autocomplete="off" placeholder="Like dinosaur or pizza party"><button class="mic" data-for="inWord" aria-label="Say a word">🎤</button></div></label>
         <p class="hint" id="mineNote" style="max-width:none">Tap 🎤 and say it, then fix the spelling by typing if you need to.</p>
         <div class="prevbox" id="minePrev"></div>
-        <div class="row ctr"><button class="btn mint big" id="teachBtn">Teach me! ✨</button></div>
+        <div class="actions"><button class="btn mint big gplay" id="teachBtn">Teach me! ✨</button></div>
       </div>
       <div class="card" style="justify-items:stretch;text-align:left" id="mineSavedCard"><h3 style="font-size:20px">Words you've practiced</h3><div class="chips" id="mineSaved"></div></div>
     </div>
@@ -433,6 +444,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
   </section>
   <section id="book" hidden>
     <div class="section-title"><h2>Sticker book</h2><span>Finish a lesson to earn its stickers</span></div>
+    <div class="row ctr backbar" id="bookBack"></div>
     <div id="bookBody"></div>
   </section>
 </main>
@@ -566,11 +578,11 @@ function snailSVG(sk=S.eq,cls="",pal=null){return palSVG(pal||buddy(),sk.hat,cls
 function mood(el,cls,ms=700){if(!el)return;el.classList.remove("happy","sad");void el.offsetWidth;el.classList.add(cls);setTimeout(()=>el.classList.remove(cls),ms)}
 
 /* ===================== AUDIO ===================== */
-let AC=null;function tone(f,d=.12,type="sine",v=.12,when=0){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(AC.destination);const t=AC.currentTime+when;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d)}catch(e){}}
+let AC=null;function tone(f,d=.12,type="sine",v=.12,when=0){if(S.mute)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(AC.destination);const t=AC.currentTime+when;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d)}catch(e){}}
 const sfx={good:()=>{tone(660,.12,"triangle");tone(990,.18,"triangle",.1,.1)},bad:()=>tone(180,.2,"square",.06),pop:()=>tone(880,.06,"triangle",.08),coin:()=>{tone(1200,.08,"square",.05);tone(1600,.12,"square",.05,.07)},win:()=>[523,659,784,1046].forEach((f,i)=>tone(f,.25,"triangle",.1,i*.12))};
 let voice=null;function pickVoice(){try{const v=speechSynthesis.getVoices();voice=v.find(x=>/en[-_]US/i.test(x.lang)&&/female|samantha|google/i.test(x.name))||v.find(x=>/^en/i.test(x.lang))||null}catch(e){}}
 if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
-function say(t,rate=.85){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";if(voice)u.voice=voice;u.rate=rate;u.pitch=1.15;speechSynthesis.speak(u)}catch(e){}}
+function say(t,rate=.85){if(S.mute)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";if(voice)u.voice=voice;u.rate=rate;u.pitch=1.15;speechSynthesis.speak(u)}catch(e){}}
 const SPEAK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>`;
 
 /* ===================== PAPER + PEN ===================== */
@@ -678,9 +690,11 @@ function TracePad(host,word,mode,onDone){
 const SECTIONS=["map","lesson","reward","shop","book","game","mine","worlds"];
 function show(id){SECTIONS.forEach(s=>$("#"+s).hidden=s!==id);document.querySelectorAll(".nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.go===id));scrollTo(0,0);
   if(id==="map")renderMap();if(id==="shop")renderShop();if(id==="book")renderBook();if(id==="mine")renderMine();if(id==="worlds")renderWorlds();if(S.world)renderBackdrop(S.world);renderHUD()}
-function renderHUD(){$("#starCount").textContent=totalStars();$("#coinCount").textContent=S.coins;$("#whoSnail").innerHTML=snailSVG()}
-document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{killPad();stopGame();show(b.dataset.go)});
-$("#who").onclick=()=>{killPad();stopGame();show("shop")};
+function renderMute(){const m=$("#muteBtn");m.textContent=S.mute?"🔇":"🔊";m.setAttribute("aria-pressed",S.mute?"true":"false")}
+$("#muteBtn").onclick=()=>{S.mute=!S.mute;save();renderMute();try{speechSynthesis.cancel()}catch(e){}if(!S.mute)sfx.pop();toast(S.mute?"Sound off":"Sound on")};
+function renderHUD(){renderMute();$("#starCount").textContent=totalStars();$("#coinCount").textContent=S.coins;$("#whoSnail").innerHTML=snailSVG()}
+document.querySelectorAll(".nav button[data-go]").forEach(b=>b.onclick=()=>{stopGame();leaveLesson(()=>show(b.dataset.go))});
+$("#who").onclick=()=>{stopGame();leaveLesson(()=>show("shop"))};
 function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2200)}
 
 /* ===================== MAP ===================== */
@@ -764,7 +778,10 @@ function startLesson(r,i){killPad();const L=r.lessons[i];const steps=[];
     L.words.forEach(w=>{const sc=scramble(w);steps.push({t:"spotPrint",c:w,pool:[sc,scramble(sc)!==w?scramble(sc):w.split("").reverse().join("")].filter(x=>x!==w).concat(sc+"s")})})}
   if(r.kind==="story"){steps.push({t:"cover",s:L});L.pages.forEach((p,k)=>steps.push({t:"page",s:L,p,k}));L.qs.forEach(q=>steps.push({t:"storyQ",s:L,q}));steps.push({t:"fixCap",sent:pick(L.pages.map(p=>p[0]).filter(t=>t.split(" ").length>3)),s:L})}
   LS={r,i,steps,k:0,oops:0,miss:0};show("lesson");$("#walker").innerHTML=snailSVG();runStep()}
-$("#quit").onclick=()=>{killPad();show(LS&&LS.r.kind==="custom"?"mine":"map")};
+function leaveLesson(then){if(!LS||LS.k<1||$("#lesson").hidden){killPad();then();return}
+  const d=document.createElement("div");d.className="confirm";d.innerHTML=`<div class="card"><h2>Leave this lesson?</h2><p class="hint">You'll start this lesson over next time.</p><div class="row ctr"><button class="btn mint big" id="cfStay">Keep going</button><button class="btn alt" id="cfLeave">Leave</button></div></div>`;
+  document.body.appendChild(d);d.querySelector("#cfStay").onclick=()=>d.remove();d.querySelector("#cfLeave").onclick=()=>{d.remove();killPad();LS=null;then()}}
+$("#quit").onclick=()=>{const k=LS&&LS.r.kind;leaveLesson(()=>show(k==="custom"?"mine":"map"))};
 function progress(){const f=LS.k/LS.steps.length;$("#bar").style.width=(f*100)+"%";$("#walker").style.left=`calc(8px + (100% - 48px) * ${f})`}
 function next(){LS.k++;if(LS.k>=LS.steps.length)return finish();runStep()}
 function bubble(text){return `<div class="bubble"><span class="bs">${snailSVG()}</span><p>${text}</p></div>`}
@@ -776,8 +793,7 @@ function scramble(w){if(w.length<3)return w+w.slice(-1);for(let k=0;k<8;k++){con
 function capCue(c){const T={A:"Capital A is a big round a with a tall stick.",C:"Capital C is a giant cookie bite that reaches the top line.",I:"Capital I curls up, swoops down, and loops back.",L:"Capital L has a little loop at the bottom like a slide.",M:"Capital M has three tall humps.",N:"Capital N has two tall humps.",O:"Capital O is a big round O with a tiny bow on top.",Q:"Cursive capital Q looks like a number 2. Silly!",S:"Capital S zooms up, loops, and rolls down.",T:"Capital T: wavy hat on top, stick down the middle. Do the hat at the end!",F:"Capital F is like T with an extra little line across.",Z:"Capital Z zigs, zags, and dangles a loop below.",H:"Capital H: two tall sticks, then a bridge across.",K:"Capital K: a tall stick, then a kick!",X:"Capital X: a hump and a swoop, then a slash."};return (T[c]||`Capital ${c} is big and tall. It touches the top line.`)+" Capitals start names and sentences."}
 function stWatch(card,s){const single=s.w.length===1;
   card.innerHTML=`<div class="mode">${single?(/[A-Z]/.test(s.w)?"Capital letter":"New letter"):/[A-Z]/.test(s.w[0])?"Capital name":"New word"}: <span class="cur" style="font-size:22px;text-transform:none;letter-spacing:0">${esc(s.w)}</span></div>${bubble(esc(s.cue))}<div class="padhost" style="width:100%;display:grid;justify-items:center"></div>
-   <button class="btn mint big myturn" id="go">✋ My turn!</button>
-   <div class="row ctr"><button class="speak" aria-label="Hear it">${SPEAK}</button><button class="btn alt" id="again">↻ Watch again</button></div>`;
+   <div class="actions"><button class="btn mint big myturn" id="go">✋ My turn!</button><button class="speak" aria-label="Hear it">${SPEAK}</button><button class="btn alt" id="again">↻ Watch again</button></div>`;
   pad=TracePad(card.querySelector(".padhost"),s.w,"demo",()=>{card.querySelector("#go").classList.add("gplay")});
   const my=pad;setTimeout(()=>{if(pad===my)my.demo()},350);const spk=single?(/[A-Z]/.test(s.w)?`Capital ${s.w}`:`Cursive ${s.w}`):s.w;say(spk);
   card.querySelector(".speak").onclick=()=>say(spk);
@@ -835,7 +851,7 @@ function stCover(card,s){const st=s.s;card.innerHTML=`<div class="mode">Story ti
 function stPage(card,s){const [text,art]=s.p;
   card.innerHTML=`<div class="mode">${esc(s.s.t)} · page ${s.k+1} of ${s.s.pages.length}</div><div class="scene" style="background:${s.s.bg}">${graphemes(art).map(g=>`<span>${g}</span>`).join("")}</div>
    <div class="storytext"></div><div class="print" hidden>${esc(text)}</div>
-   <div class="row ctr"><button class="speak" aria-label="Read it to me">${SPEAK}</button><button class="btn alt" id="peek">👀 Peek</button><button class="btn mint" id="go">Next →</button></div>`;
+   <div class="actions"><button class="btn mint big gplay" id="go">Next →</button><button class="speak" aria-label="Read it to me">${SPEAK}</button><button class="btn alt" id="peek">👀 Peek</button></div>`;
   card.querySelector(".storytext").appendChild(cursiveText(text,innerWidth<560?92:118));
   card.querySelectorAll(".storytext .w").forEach(w=>w.onclick=()=>{w.classList.add("tap");say(w.dataset.say);setTimeout(()=>w.classList.remove("tap"),900)});
   card.querySelector(".speak").onclick=()=>say(text,.8);card.querySelector("#peek").onclick=()=>{card.querySelector(".print").hidden=false};card.querySelector("#go").onclick=()=>next()}
@@ -851,11 +867,12 @@ function finish(){killPad();const {r,i}=LS;const k=lkey(r.id,i);const pen=LS.oop
   let gift=null;if(S.plays%3===0){const pool=[];[["hat",HATS],["pen",PENS],["paper",PAPERS]].forEach(([cat,set])=>Object.keys(set).forEach(id=>{if(!S.own[cat].includes(id))pool.push([cat,id,set[id]])}));if(pool.length){gift=pick(pool);S.own[gift[0]].push(gift[1])}}
   const wd=Wd(),before=unl(wd);S.unl[wd.id]=Math.min(ROSTER[wd.id].length,before+PER);const newPals=ROSTER[wd.id].slice(before,unl(wd));
   save();renderHUD();show("reward");const nextOpen=i+1<r.lessons.length;
-  $("#reward").innerHTML=`<div class="card reward"><div class="rays"></div><h2>${r.kind==="custom"&&S.name?`Way to go, ${esc(S.name)}!`:pick(["Lesson complete!","You did it!","Loop-de-loo-hoo!"])}</h2><div class="bigstars">${[1,2,3].map(s=>STAR(s<=stars)).join("")}</div>
-   <div class="dance">${snailSVG()}</div><div class="coinsup">+${coins} coins</div>
+  $("#reward").innerHTML=`<div class="card reward"><div class="rays"></div><h2>${r.kind==="custom"&&S.name?`Way to go, ${esc(S.name)}!`:pick(["Lesson complete!","You did it!","Loop-de-loo-hoo!"])}</h2><div class="bigstars">${[1,2,3].map(s=>STAR(s<=stars)).join("")}</div><div class="coinsup">+${coins} coins</div>
+   ${!nextOpen&&r.kind!=="custom"?nextStageHTML(r):""}<div class="row ctr">${nextOpen?`<button class="btn mint big gplay" id="nx">Next lesson →</button>`:""}<button class="btn alt" id="mp">🗺️ Map</button><button class="btn sun" id="sk">🎩 Skins</button></div>
+   <div class="dance">${snailSVG()}</div>
    ${newPals.length?`<b style="font-family:var(--f-display);font-size:20px">New pals joined you!</b><div class="newpals">${newPals.map(p=>`<div class="ptile">${palSVG(p,"none","")}<span>${esc(p.n)}</span></div>`).join("")}</div>`:""}
    ${gift?`<div class="gift"><div class="prev">${giftPreview(gift)}</div><div>Surprise gift! ${esc(bn())} found a <b>${esc(gift[2].n)}</b>. Wear it in Skins.</div></div>`:`<p class="hint">Every 3rd lesson hides a surprise gift. ${3-S.plays%3} to go!</p>`}
-   ${!nextOpen&&r.kind!=="custom"?nextStageHTML(r):""}<div class="row ctr">${nextOpen?`<button class="btn mint big gplay" id="nx">Next lesson →</button>`:""}<button class="btn alt" id="mp">Map</button><button class="btn sun" id="sk">Skins</button></div></div>`;
+   </div>`;
   sfx.win();confetti();
   if(nextOpen)$("#nx").onclick=()=>startLesson(r,i+1);
   if(!nextOpen&&r.kind!=="custom")wireNextStage(r);$("#mp").onclick=()=>show(r.kind==="custom"?"mine":"map");$("#sk").onclick=()=>show("shop")}
@@ -877,11 +894,11 @@ function renderShop(){const sb=$("#shopBack");sb.innerHTML=`<button class="btn m
   if(lastGame)$("#sbGame").onclick=()=>startGame(lastGame);$("#sbMap").onclick=()=>show("map");$("#sbKeep").onclick=keepPlaying;const pv=$("#shopPreview");pv.innerHTML=`<div class="dance">${snailSVG()}</div><div style="display:grid;gap:8px;min-width:0"><b class="cur" style="font-size:22px;color:var(--plum)">Hi, I'm ${esc(bn())}!</b><div class="ppv"></div></div>`;
   mini(pv.querySelector(".ppv"),"loopy");
   $("#shopBody").innerHTML=CATS.map(([cat,label,set])=>`<div class="section-title"><h2>${label}</h2></div><div class="shop">${Object.entries(set).map(([id,it])=>{const own=S.own[cat].includes(id),eq=S.eq[cat]===id;
-    return `<div class="item ${eq?"equipped":""}"><div class="ico" data-cat="${cat}" data-id="${id}"></div><h3>${esc(it.n)}</h3><p class="pw"><b>🎮 ${esc(POWERS[cat][id][0])}</b><br>${esc(POWERS[cat][id][1])}</p>${eq?`<button class="btn mint" disabled>Wearing</button>`:own?`<button class="btn mint" data-eq="${cat}:${id}">Use</button>`:`<button class="btn sun" data-buy="${cat}:${id}" ${S.coins<it.price?"disabled":""}><svg class="coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="url(#gCoin)" stroke="#B87400" stroke-width="1.5"/></svg> ${it.price}</button>`}</div>`}).join("")}</div>`).join("");
+    return `<div class="item ${eq?"equipped":""}"><div class="ico" data-cat="${cat}" data-id="${id}"></div><h3>${esc(it.n)}</h3><p class="pw"><b>🎮 ${esc(POWERS[cat][id][0])}</b><br>${esc(POWERS[cat][id][1])}</p>${eq?`<button class="btn mint" disabled>Wearing</button>`:own?`<button class="btn mint" data-eq="${cat}:${id}">Use</button>`:`<button class="btn sun ${S.coins<it.price?"poor":""}" data-buy="${cat}:${id}" ${S.coins<it.price?'aria-disabled="true"':""}><svg class="coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="url(#gCoin)" stroke="#B87400" stroke-width="1.5"/></svg> ${it.price}</button>`}</div>`}).join("")}</div>`).join("");
   $("#shopBody").querySelectorAll(".ico").forEach(el=>{const {cat,id}=el.dataset;
     if(cat==="shell")el.innerHTML=snailSVG({...S.eq,shell:id});else if(cat==="hat")el.innerHTML=snailSVG({...S.eq,hat:id});else mini(el,"loop",cat==="pen"?{pen:PENS[id]}:{paper:PAPERS[id]})});
   $("#shopBody").querySelectorAll("[data-eq]").forEach(b=>b.onclick=()=>{const [c,id]=b.dataset.eq.split(":");S.eq[c]=id;save();sfx.pop();renderShop();renderHUD();mood($("#shopPreview .dance"),"happy")});
-  $("#shopBody").querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>{const [c,id]=b.dataset.buy.split(":");const it=CATS.find(x=>x[0]===c)[2][id];if(S.coins<it.price)return;S.coins-=it.price;S.own[c].push(id);S.eq[c]=id;save();sfx.coin();toast(`New ${it.n}!`);renderShop();renderHUD();confetti()})}
+  $("#shopBody").querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>{const [c,id]=b.dataset.buy.split(":");const it=CATS.find(x=>x[0]===c)[2][id];if(S.coins<it.price){sfx.bad();toast(`You need ${it.price-S.coins} more coins. Finish a lesson or play a game to earn them!`);return}S.coins-=it.price;S.own[c].push(id);S.eq[c]=id;save();sfx.coin();toast(`New ${it.n}!`);renderShop();renderHUD();confetti()})}
 function mini(el,word,o={}){const pen=o.pen||PENS[S.eq.pen],pp=o.paper||PAPERS[S.eq.paper];const W=el.clientWidth||220,H=el.clientHeight||84;const dpr=Math.min(2,devicePixelRatio||1);
   const c=document.createElement("canvas");c.width=W*dpr;c.height=H*dpr;c.style.width="100%";c.style.height=H+"px";const x=c.getContext("2d");x.scale(dpr,dpr);
   const L=layoutWord(word);const U=Math.min(H/3.6,(W-16)/(L.maxx-L.minx+.6));const by=H*.62;const ox=(W-(L.maxx-L.minx)*U)/2;paperBG(x,W,H,pp);guideLines(x,W,by,U,pp);
@@ -889,7 +906,7 @@ function mini(el,word,o={}){const pen=o.pen||PENS[S.eq.pen],pp=o.paper||PAPERS[S
   el.innerHTML="";el.appendChild(c);el.style.borderRadius="14px";el.style.overflow="hidden"}
 
 /* ===================== STICKER BOOK ===================== */
-function renderBook(){const low="abcdefghijklmnopqrstuvwxyz".split(""),caps="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+function renderBook(){const bb=$("#bookBack");bb.innerHTML=S.world?`<button class="btn mint big gplay" id="bbKeep">▶ Keep playing</button>`:"";if(S.world)$("#bbKeep").onclick=keepPlaying;const low="abcdefghijklmnopqrstuvwxyz".split(""),caps="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const n=low.filter(c=>S.got[c]).length+caps.filter(c=>S.got[c]).length;
   $("#bookBody").innerHTML=`<p class="hint" style="background:var(--card);border-radius:14px;padding:8px 14px;max-width:none;margin-bottom:12px">${n} of 52 letter stickers collected. Tap any sticker you've earned to hear it.</p>
    <div class="section-title"><h2 style="font-size:20px">Little letters</h2></div><div class="book" id="bLow"></div>
