@@ -230,6 +230,10 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .gamebtn{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .game-top{display:flex;align-items:center;gap:10px;width:100%;flex-wrap:wrap;justify-content:space-between}
 .gpill{background:var(--card2);border-radius:999px;padding:6px 14px;font-family:var(--f-display);font-weight:700;font-size:20px;font-variant-numeric:tabular-nums;box-shadow:0 3px 0 var(--shadow)}
+.gplay{font-size:clamp(24px,6vw,32px);padding:16px 36px;animation:pulse 1.4s ease-in-out infinite}
+.game-top .target{order:-1;flex-basis:100%;justify-content:center;font-size:clamp(22px,5vw,30px);padding:8px 22px;background:var(--sun);color:#3b2800;box-shadow:0 5px 0 var(--sun-d)}
+.game-top .target b{font-size:clamp(40px,10vw,60px);background:#fff;color:#262150;border-radius:16px;padding:2px 18px;line-height:1.1}
+.target.newt{animation:pop .45s}
 .target{display:flex;align-items:center;gap:10px;background:var(--sun-soft);border-radius:18px;padding:6px 16px;font-family:var(--f-display);font-weight:700;font-size:20px;box-shadow:0 4px 0 color-mix(in srgb,var(--sun) 50%,var(--shadow))}
 .target b{font-size:32px;line-height:1}
 .arena{position:relative;width:100%;height:min(62vh,480px);border-radius:24px;overflow:hidden;box-shadow:inset 0 0 0 4px rgba(0,0,0,.08);touch-action:none}
@@ -395,7 +399,8 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
     </div>
   </section>
   <section id="shop" hidden>
-    <div class="section-title"><h2>Dress-up closet</h2><span>Every hat, pen and paper gives your pal a silly power in the mini-games</span></div>
+    <div class="section-title"><h2>Dress-up closet</h2><span>Every hat, pen and paper gives your pal a power in the mini-games</span></div>
+    <div class="row" id="shopBack" style="margin-bottom:12px"></div>
     <div class="preview" id="shopPreview"></div>
     <div id="shopBody"></div>
   </section>
@@ -997,7 +1002,8 @@ function confetti(){const c=$("#fx"),x=c.getContext("2d");const dpr=Math.min(2,d
 
 /* ===================== SHOP ===================== */
 const CATS=[["hat","Hats",HATS],["pen","Pens",PENS],["paper","Paper",PAPERS]];
-function renderShop(){const pv=$("#shopPreview");pv.innerHTML=`<div class="dance">${snailSVG()}</div><div style="display:grid;gap:8px;min-width:0"><b class="cur" style="font-size:22px;color:var(--plum)">Hi, I'm ${esc(bn())}!</b><div class="ppv"></div></div>`;
+function renderShop(){const sb=$("#shopBack");sb.innerHTML=(lastGame?`<button class="btn mint" id="sbGame">▶ Play ${esc(GAMES[lastGame].name)} again</button>`:"")+`<button class="btn alt" id="sbMap">🗺️ Back to map</button>`;
+  if(lastGame)$("#sbGame").onclick=()=>startGame(lastGame);$("#sbMap").onclick=()=>show("map");const pv=$("#shopPreview");pv.innerHTML=`<div class="dance">${snailSVG()}</div><div style="display:grid;gap:8px;min-width:0"><b class="cur" style="font-size:22px;color:var(--plum)">Hi, I'm ${esc(bn())}!</b><div class="ppv"></div></div>`;
   mini(pv.querySelector(".ppv"),"loopy");
   $("#shopBody").innerHTML=CATS.map(([cat,label,set])=>`<div class="section-title"><h2>${label}</h2></div><div class="shop">${Object.entries(set).map(([id,it])=>{const own=S.own[cat].includes(id),eq=S.eq[cat]===id;
     return `<div class="item ${eq?"equipped":""}"><div class="ico" data-cat="${cat}" data-id="${id}"></div><h3>${esc(it.n)}</h3><p class="pw"><b>🎮 ${esc(POWERS[cat][id][0])}</b><br>${esc(POWERS[cat][id][1])}</p>${eq?`<button class="btn mint" disabled>Wearing</button>`:own?`<button class="btn mint" data-eq="${cat}:${id}">Use</button>`:`<button class="btn sun" data-buy="${cat}:${id}" ${S.coins<it.price?"disabled":""}><svg class="coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="url(#gCoin)" stroke="#B87400" stroke-width="1.5"/></svg> ${it.price}</button>`}</div>`}).join("")}</div>`).join("");
@@ -1083,15 +1089,17 @@ let GM=null;
 function stopGame(){if(GM){GM.dead=true;cancelAnimationFrame(GM.raf);clearInterval(GM.tick);GM=null}}
 $("#gquit").onclick=()=>{stopGame();show("map")};
 function startGame(rid){killPad();stopGame();show("game");renderBackdrop(Wd().id);const gm=GAMES[rid];$("#gtitle").textContent=gm.ic+" "+gm.name;
-  $("#gstage").innerHTML=`<div class="card"><div class="mode">Silly game</div><div class="scene" style="background:${gm.bg};font-size:64px">${gm.ic}<span>${Wd().ic}</span></div>${bubble(gm.how)}
-   <div class="power"><span class="dance">${snailSVG()}</span><div style="display:grid;gap:6px;min-width:0"><b>${esc(bn())}'s powers</b>${powerList().map(x=>`<div class="pwrow"><span>${CAT_IC[x.c]}</span><div><strong>${esc(x.p[0])}</strong> <em>(${esc(x.name)})</em><br>${esc(x.p[1])}</div></div>`).join("")}</div></div>
-   <p class="hint">Every skin you own changes the game. Swap skins to try new combos! 30 seconds. Right taps score points, wrong taps lose one. Points turn into coins!</p><button class="btn mint big" id="ggo">Go!</button></div>`;
+  $("#gstage").innerHTML=`<div class="card">${bubble(gm.how)}
+   <button class="btn mint big gplay" id="ggo">▶ Play ${gm.name}!</button>
+   <p class="hint">30 seconds. Right taps score points, wrong taps lose one. Points turn into coins!</p>
+   <div class="power"><span class="dance">${snailSVG()}</span><div style="display:grid;gap:6px;min-width:0"><b>${esc(bn())}'s powers</b>${powerList().map(x=>`<div class="pwrow"><span>${CAT_IC[x.c]}</span><div><strong>${esc(x.p[0])}</strong> <em>(${esc(x.name)})</em><br>${esc(x.p[1])}</div></div>`).join("")}<p class="hint" style="margin:4px 0 0">Swap hats, pens and paper in Skins to try new combos!</p></div></div></div>`;
   $("#ggo").onclick=()=>play(rid)}
 function gamePool(rid){
   if(rid==="lagoon"){const L=REGIONS[0].lessons.filter((_,i)=>S.done[lkey("lagoon",i)]).flat();return (L.length>=4?L:"aceilmnostu".split("")).map(c=>({id:c,show:c,lab:c,kind:"low"}))}
   if(rid==="castle")return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c=>({id:c,show:c,lab:c,kind:"cap"}));
   const W=WORDS.flat().concat(EXTRAWORDS);return W.map(([w,e])=>({id:w,show:rid==="lane"?e:w,lab:w,kind:"low"}))}
-function play(rid){stopGame();const gm=GAMES[rid],P=gameParams();const slow=P.slow,big=P.big;
+let lastGame=null;
+function play(rid){stopGame();lastGame=rid;const gm=GAMES[rid],P=gameParams();const slow=P.slow,big=P.big;
   let time=P.time,score=0,streak=0,spawnN=0,catches=0,shield=P.shield,freezeUntil=0,nextRush=10,frozenAcc=0;const pool=gamePool(rid);
   $("#gstage").innerHTML=`<div class="card" style="padding:14px"><div class="game-top"><span class="gpill" id="gtime">⏱ ${time}</span><div class="target" id="gtarget"></div><span class="gpill" id="gscore">⭐ 0</span></div>
     <div class="arena" id="arena" style="background:${arenaBG(rid)}">${paperOverlay()}<div class="freeze" id="gfreeze" hidden>❄️ Freeze!</div></div></div>`;
@@ -1103,7 +1111,7 @@ function play(rid){stopGame();const gm=GAMES[rid],P=gameParams();const slow=P.sl
   if(false)A.insertAdjacentHTML("beforeend",Array.from({length:7},(_,i)=>`<div style="position:absolute;bottom:0;left:${i*15+3}%;font-size:44px;opacity:.75">🌾</div>`).join(""));
   if(rid!=="castle")A.insertAdjacentHTML("beforeend",`<div class="gsnail" id="gsnail">${snailSVG()}</div>`);else A.insertAdjacentHTML("beforeend",`<div class="gsnail" id="gsnail" style="width:90px">${snailSVG()}</div>`);
   let target=null,hits=0;
-  function newTarget(){target=pick(pool.filter(p=>!target||p.id!==target.id));hits=0;$("#gtarget").innerHTML=rid==="lane"?`Find <b>${target.show}</b>`:`Find <b style="font-family:var(--f-body)">${esc(target.show)}</b>`;say(rid==="lane"?target.lab:target.kind==="cap"?"capital "+target.lab:target.lab)}
+  function newTarget(){target=pick(pool.filter(p=>!target||p.id!==target.id));hits=0;$("#gtarget").innerHTML=rid==="lane"?`<span>Tap</span><b>${target.show}</b>`:`<span>${rid==="lagoon"?"Pop":"Tap"}</span><b style="font-family:var(--f-body)">${esc(target.show)}</b>`;const tg=$("#gtarget");tg.classList.remove("newt");void tg.offsetWidth;tg.classList.add("newt");say(rid==="lane"?target.lab:target.kind==="cap"?"capital "+target.lab:target.lab)}
   newTarget();
   const items=[];
   function label(p,h){

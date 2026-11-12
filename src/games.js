@@ -57,15 +57,17 @@ let GM=null;
 function stopGame(){if(GM){GM.dead=true;cancelAnimationFrame(GM.raf);clearInterval(GM.tick);GM=null}}
 $("#gquit").onclick=()=>{stopGame();show("map")};
 function startGame(rid){killPad();stopGame();show("game");renderBackdrop(Wd().id);const gm=GAMES[rid];$("#gtitle").textContent=gm.ic+" "+gm.name;
-  $("#gstage").innerHTML=`<div class="card"><div class="mode">Silly game</div><div class="scene" style="background:${gm.bg};font-size:64px">${gm.ic}<span>${Wd().ic}</span></div>${bubble(gm.how)}
-   <div class="power"><span class="dance">${snailSVG()}</span><div style="display:grid;gap:6px;min-width:0"><b>${esc(bn())}'s powers</b>${powerList().map(x=>`<div class="pwrow"><span>${CAT_IC[x.c]}</span><div><strong>${esc(x.p[0])}</strong> <em>(${esc(x.name)})</em><br>${esc(x.p[1])}</div></div>`).join("")}</div></div>
-   <p class="hint">Every skin you own changes the game. Swap skins to try new combos! 30 seconds. Right taps score points, wrong taps lose one. Points turn into coins!</p><button class="btn mint big" id="ggo">Go!</button></div>`;
+  $("#gstage").innerHTML=`<div class="card">${bubble(gm.how)}
+   <button class="btn mint big gplay" id="ggo">▶ Play ${gm.name}!</button>
+   <p class="hint">30 seconds. Right taps score points, wrong taps lose one. Points turn into coins!</p>
+   <div class="power"><span class="dance">${snailSVG()}</span><div style="display:grid;gap:6px;min-width:0"><b>${esc(bn())}'s powers</b>${powerList().map(x=>`<div class="pwrow"><span>${CAT_IC[x.c]}</span><div><strong>${esc(x.p[0])}</strong> <em>(${esc(x.name)})</em><br>${esc(x.p[1])}</div></div>`).join("")}<p class="hint" style="margin:4px 0 0">Swap hats, pens and paper in Skins to try new combos!</p></div></div></div>`;
   $("#ggo").onclick=()=>play(rid)}
 function gamePool(rid){
   if(rid==="lagoon"){const L=REGIONS[0].lessons.filter((_,i)=>S.done[lkey("lagoon",i)]).flat();return (L.length>=4?L:"aceilmnostu".split("")).map(c=>({id:c,show:c,lab:c,kind:"low"}))}
   if(rid==="castle")return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c=>({id:c,show:c,lab:c,kind:"cap"}));
   const W=WORDS.flat().concat(EXTRAWORDS);return W.map(([w,e])=>({id:w,show:rid==="lane"?e:w,lab:w,kind:"low"}))}
-function play(rid){stopGame();const gm=GAMES[rid],P=gameParams();const slow=P.slow,big=P.big;
+let lastGame=null;
+function play(rid){stopGame();lastGame=rid;const gm=GAMES[rid],P=gameParams();const slow=P.slow,big=P.big;
   let time=P.time,score=0,streak=0,spawnN=0,catches=0,shield=P.shield,freezeUntil=0,nextRush=10,frozenAcc=0;const pool=gamePool(rid);
   $("#gstage").innerHTML=`<div class="card" style="padding:14px"><div class="game-top"><span class="gpill" id="gtime">⏱ ${time}</span><div class="target" id="gtarget"></div><span class="gpill" id="gscore">⭐ 0</span></div>
     <div class="arena" id="arena" style="background:${arenaBG(rid)}">${paperOverlay()}<div class="freeze" id="gfreeze" hidden>❄️ Freeze!</div></div></div>`;
@@ -77,7 +79,7 @@ function play(rid){stopGame();const gm=GAMES[rid],P=gameParams();const slow=P.sl
   if(false)A.insertAdjacentHTML("beforeend",Array.from({length:7},(_,i)=>`<div style="position:absolute;bottom:0;left:${i*15+3}%;font-size:44px;opacity:.75">🌾</div>`).join(""));
   if(rid!=="castle")A.insertAdjacentHTML("beforeend",`<div class="gsnail" id="gsnail">${snailSVG()}</div>`);else A.insertAdjacentHTML("beforeend",`<div class="gsnail" id="gsnail" style="width:90px">${snailSVG()}</div>`);
   let target=null,hits=0;
-  function newTarget(){target=pick(pool.filter(p=>!target||p.id!==target.id));hits=0;$("#gtarget").innerHTML=rid==="lane"?`Find <b>${target.show}</b>`:`Find <b style="font-family:var(--f-body)">${esc(target.show)}</b>`;say(rid==="lane"?target.lab:target.kind==="cap"?"capital "+target.lab:target.lab)}
+  function newTarget(){target=pick(pool.filter(p=>!target||p.id!==target.id));hits=0;$("#gtarget").innerHTML=rid==="lane"?`<span>Tap</span><b>${target.show}</b>`:`<span>${rid==="lagoon"?"Pop":"Tap"}</span><b style="font-family:var(--f-body)">${esc(target.show)}</b>`;const tg=$("#gtarget");tg.classList.remove("newt");void tg.offsetWidth;tg.classList.add("newt");say(rid==="lane"?target.lab:target.kind==="cap"?"capital "+target.lab:target.lab)}
   newTarget();
   const items=[];
   function label(p,h){

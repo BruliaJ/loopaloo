@@ -230,6 +230,10 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .gamebtn{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .game-top{display:flex;align-items:center;gap:10px;width:100%;flex-wrap:wrap;justify-content:space-between}
 .gpill{background:var(--card2);border-radius:999px;padding:6px 14px;font-family:var(--f-display);font-weight:700;font-size:20px;font-variant-numeric:tabular-nums;box-shadow:0 3px 0 var(--shadow)}
+.gplay{font-size:clamp(24px,6vw,32px);padding:16px 36px;animation:pulse 1.4s ease-in-out infinite}
+.game-top .target{order:-1;flex-basis:100%;justify-content:center;font-size:clamp(22px,5vw,30px);padding:8px 22px;background:var(--sun);color:#3b2800;box-shadow:0 5px 0 var(--sun-d)}
+.game-top .target b{font-size:clamp(40px,10vw,60px);background:#fff;color:#262150;border-radius:16px;padding:2px 18px;line-height:1.1}
+.target.newt{animation:pop .45s}
 .target{display:flex;align-items:center;gap:10px;background:var(--sun-soft);border-radius:18px;padding:6px 16px;font-family:var(--f-display);font-weight:700;font-size:20px;box-shadow:0 4px 0 color-mix(in srgb,var(--sun) 50%,var(--shadow))}
 .target b{font-size:32px;line-height:1}
 .arena{position:relative;width:100%;height:min(62vh,480px);border-radius:24px;overflow:hidden;box-shadow:inset 0 0 0 4px rgba(0,0,0,.08);touch-action:none}
@@ -395,7 +399,8 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
     </div>
   </section>
   <section id="shop" hidden>
-    <div class="section-title"><h2>Dress-up closet</h2><span>Every hat, pen and paper gives your pal a silly power in the mini-games</span></div>
+    <div class="section-title"><h2>Dress-up closet</h2><span>Every hat, pen and paper gives your pal a power in the mini-games</span></div>
+    <div class="row" id="shopBack" style="margin-bottom:12px"></div>
     <div class="preview" id="shopPreview"></div>
     <div id="shopBody"></div>
   </section>
@@ -815,7 +820,8 @@ function confetti(){const c=$("#fx"),x=c.getContext("2d");const dpr=Math.min(2,d
 
 /* ===================== SHOP ===================== */
 const CATS=[["hat","Hats",HATS],["pen","Pens",PENS],["paper","Paper",PAPERS]];
-function renderShop(){const pv=$("#shopPreview");pv.innerHTML=`<div class="dance">${snailSVG()}</div><div style="display:grid;gap:8px;min-width:0"><b class="cur" style="font-size:22px;color:var(--plum)">Hi, I'm ${esc(bn())}!</b><div class="ppv"></div></div>`;
+function renderShop(){const sb=$("#shopBack");sb.innerHTML=(lastGame?`<button class="btn mint" id="sbGame">▶ Play ${esc(GAMES[lastGame].name)} again</button>`:"")+`<button class="btn alt" id="sbMap">🗺️ Back to map</button>`;
+  if(lastGame)$("#sbGame").onclick=()=>startGame(lastGame);$("#sbMap").onclick=()=>show("map");const pv=$("#shopPreview");pv.innerHTML=`<div class="dance">${snailSVG()}</div><div style="display:grid;gap:8px;min-width:0"><b class="cur" style="font-size:22px;color:var(--plum)">Hi, I'm ${esc(bn())}!</b><div class="ppv"></div></div>`;
   mini(pv.querySelector(".ppv"),"loopy");
   $("#shopBody").innerHTML=CATS.map(([cat,label,set])=>`<div class="section-title"><h2>${label}</h2></div><div class="shop">${Object.entries(set).map(([id,it])=>{const own=S.own[cat].includes(id),eq=S.eq[cat]===id;
     return `<div class="item ${eq?"equipped":""}"><div class="ico" data-cat="${cat}" data-id="${id}"></div><h3>${esc(it.n)}</h3><p class="pw"><b>🎮 ${esc(POWERS[cat][id][0])}</b><br>${esc(POWERS[cat][id][1])}</p>${eq?`<button class="btn mint" disabled>Wearing</button>`:own?`<button class="btn mint" data-eq="${cat}:${id}">Use</button>`:`<button class="btn sun" data-buy="${cat}:${id}" ${S.coins<it.price?"disabled":""}><svg class="coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="url(#gCoin)" stroke="#B87400" stroke-width="1.5"/></svg> ${it.price}</button>`}</div>`}).join("")}</div>`).join("");
