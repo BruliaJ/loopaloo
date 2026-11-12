@@ -3,6 +3,10 @@
 const SKN={a:"#FFDCC2",b:"#F2C29B",c:"#D79A6B",d:"#A86B44",e:"#7A4B2E"};
 const PK=(n,sp,o)=>Object.assign({n,sp},o);
 const ROSTER={
+ flower:[PK("Sunny","flower",{kind:"sun",pet:"#FFC531",mid:"#C98B4E",pot:"#E2674E"}),PK("Daisy","flower",{kind:"round",pet:"#FFFFFF",mid:"#FFD23F",pot:"#3E8EF0"}),PK("Tulip","flower",{kind:"tulip",pet:"#FF5A7A",mid:"#FFD9E0",pot:"#FFB81F"}),
+  PK("Violet","flower",{kind:"round",pet:"#9B6BFF",mid:"#FFE27A",pot:"#12A386"}),PK("Rosie","flower",{kind:"tulip",pet:"#E8352E",mid:"#FFD6D6",pot:"#8E6BD8"}),PK("Poppy","flower",{kind:"point",pet:"#FF6B3D",mid:"#FFE3B3",pot:"#3E8EF0"}),
+  PK("Bluebell","flower",{kind:"point",pet:"#5CA8FF",mid:"#FFF1CC",pot:"#FF8FC4"}),PK("Petal","flower",{kind:"round",pet:"#FF9EC7",mid:"#FFE27A",pot:"#5CC98F"}),PK("Clover","flower",{kind:"clover",pet:"#5CC98F",mid:"#D7FFE3",pot:"#C8743A"}),
+  PK("Lily","flower",{kind:"tulip",pet:"#FFF6D8",mid:"#FFE27A",pot:"#2C3AA0"}),PK("Pansy","flower",{kind:"point",pet:"#B48CFF",mid:"#FFD23F",pot:"#FFB81F"}),PK("Goldbloom","flower",{kind:"sun",pet:"#FFE27A",mid:"#E0A100",pot:"#FFD23F",gold:1})],
  mermaid:[PK("Marina","mermaid",{skin:SKN.b,hair:"#E8504F",tail:"#22B8A7",top:"#FFD23F"}),PK("Coral","mermaid",{skin:SKN.d,hair:"#2B1B14",tail:"#FF7FA8",top:"#7FE3D4"}),PK("Kai","mermaid",{skin:SKN.c,hair:"#1D2B53",tail:"#3E8EF0",top:"",boy:1}),
   PK("Pearl","mermaid",{skin:SKN.a,hair:"#F4D35E",tail:"#B48CFF",top:"#FFFFFF"}),PK("Nami","mermaid",{skin:SKN.e,hair:"#7A3FE0",tail:"#FFB81F",top:"#FF6FA8"}),PK("Finn","mermaid",{skin:SKN.a,hair:"#C8743A",tail:"#12A386",top:"",boy:1}),
   PK("Shelly","mermaid",{skin:SKN.c,hair:"#FF8FC4",tail:"#5CC8FF",top:"#FFE27A"}),PK("Ripple","mermaid",{skin:SKN.b,hair:"#3EC6A8",tail:"#7A3FE0",top:"#FFFFFF"}),PK("Luna","mermaid",{skin:SKN.d,hair:"#E9EEF9",tail:"#2C3AA0",top:"#B4C2FF"}),
@@ -66,8 +70,20 @@ function truckSVG(p){const c=p.c,cd=shadeC(c,-.28),cl=shadeC(c,.35),k=p.kind,big
    <rect x="12" y="${50+dy}" width="9" height="12" rx="3" fill="${cd}" ${SKW}/><rect x="99" y="${50+dy}" width="9" height="12" rx="3" fill="${cd}" ${SKW}/>
    <circle cx="34" cy="${66+dy}" r="3.6" fill="#FF8FA3" opacity=".6"/><circle cx="86" cy="${66+dy}" r="3.6" fill="#FF8FA3" opacity=".6"/>
    ${top}${p.gold?`<path d="M30 ${44+dy} l60 0" stroke="#fff" stroke-width="3" opacity=".7"/>`:""}`}
-const HATPOS={mermaid:[60,18,.62],dragon:[60,19,.6],truck:[60,40,.62]};
-function palCore(p,hat){const draw={mermaid:mermaidSVG,dragon:dragonSVG,truck:truckSVG}[p.sp](p);let hp=HATPOS[p.sp];if(p.sp==="truck"&&p.kind==="monster")hp=[60,28,.62];
+function flowerSVG(p){const k=p.kind,pc=p.pet,pd=shadeC(pc,-.22),cx=60,cy=42;let petals="";
+  if(k==="round"||k==="point"||k==="sun"||k==="clover"){const n=k==="sun"?16:k==="clover"?4:k==="point"?8:7;const r=k==="sun"?27:k==="clover"?22:25;
+    for(let i=0;i<n;i++){const a=i*360/n;petals+=k==="point"?`<path d="M0 -14 Q9 -26 0 -42 Q-9 -26 0 -14Z" fill="${pc}" ${SKW} transform="translate(${cx} ${cy}) rotate(${a})"/>`:k==="clover"?`<path d="M0 -10 C-16 -16 -20 -36 -6 -38 Q0 -38 0 -32 Q0 -38 6 -38 C20 -36 16 -16 0 -10Z" fill="${pc}" ${SKW} transform="translate(${cx} ${cy}) rotate(${a+45})"/>`:`<ellipse cx="0" cy="${-r}" rx="${k==="sun"?6:11}" ry="${k==="sun"?13:14}" fill="${pc}" ${SKW} transform="translate(${cx} ${cy}) rotate(${a})"/>`}}
+  if(k==="tulip")petals=`<path d="M34 46 Q30 18 42 8 Q50 22 60 14 Q70 22 78 8 Q90 18 86 46 Q60 60 34 46Z" fill="${pc}" ${SKW}/><path d="M60 14 Q52 30 54 50 M60 14 Q68 30 66 50" stroke="${pd}" stroke-width="2.4" fill="none"/>`;
+  const faceR=k==="sun"?19:k==="tulip"?0:17;
+  return `<path d="M60 60 Q58 80 60 96" stroke="#3E9E4A" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M60 60 Q58 80 60 96" stroke="${OL}" stroke-width="10" fill="none" stroke-linecap="round" opacity=".0"/>
+   <path class="al" d="M59 80 Q42 62 30 70 Q40 84 59 84Z" fill="#6CCB5F" ${SKW}/><path class="ar" d="M61 76 Q78 58 90 66 Q80 80 61 80Z" fill="#6CCB5F" ${SKW}/>
+   <g class="tl" style="transform-origin:60px 60px">${petals}${faceR?`<circle cx="${cx}" cy="${cy}" r="${faceR}" fill="${p.mid}" ${SKW}/>`:""}
+   ${k==="sun"?Array.from({length:10},(_,i)=>`<circle cx="${cx+Math.cos(i*.63)*12}" cy="${cy+Math.sin(i*.63)*12}" r="1.4" fill="${shadeC(p.mid,-.3)}"/>`).join(""):""}
+   ${faceEyes(52,68,k==="tulip"?36:39,4.2)}<circle cx="47" cy="47" r="3.4" fill="#FF8FA3" opacity=".55"/><circle cx="73" cy="47" r="3.4" fill="#FF8FA3" opacity=".55"/>${mouth(60,48,5)}</g>
+   <path d="M40 94 H80 L76 112 H44Z" fill="${p.pot}" ${SKW}/><rect x="36" y="88" width="48" height="9" rx="4" fill="${shadeC(p.pot,.25)}" ${SKW}/>
+   ${p.gold?`<path d="M46 98 l28 0" stroke="#fff" stroke-width="3" opacity=".7"/>`:""}`}
+const HATPOS={flower:[60,6,.55],mermaid:[60,18,.62],dragon:[60,19,.6],truck:[60,40,.62]};
+function palCore(p,hat){const draw={mermaid:mermaidSVG,dragon:dragonSVG,truck:truckSVG,flower:flowerSVG}[p.sp](p);let hp=HATPOS[p.sp];if(p.sp==='flower'&&p.kind==='tulip')hp=[60,10,.55];if(p.sp==="truck"&&p.kind==="monster")hp=[60,28,.62];
   if(p.sp==="truck"&&(p.kind==="icecream"))hp=[60,-6,.5];if(p.sp==="truck"&&p.kind==="fire")hp=[60,20,.55];
   const hs=hat&&hat!=="none"?`<g transform="translate(${hp[0]-56*hp[2]} ${hp[1]-18*hp[2]}) scale(${hp[2]})">${hatSVG(hat)}</g>`:"";
   return `<ellipse cx="60" cy="113" rx="40" ry="5" fill="rgba(0,0,0,.13)"/><g class="sb">${draw}${hs}</g>`}

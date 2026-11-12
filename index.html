@@ -319,7 +319,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .newpals .ptile{animation:pop .5s .6s backwards}
 .amb.fall{animation:fall linear infinite}
 @keyframes fall{from{transform:translate(0,-10vh) rotate(0)}to{transform:translate(7vw,110vh) rotate(420deg)}}
-.snowf{color:#fff;text-shadow:0 0 6px rgba(90,140,220,.7)}
+.snowf{color:#8FB4EA;text-shadow:0 0 2px #fff,0 0 8px rgba(90,140,220,.6)}
 
 /* snail */
 .snail{display:block;width:100%;height:auto;overflow:visible}
@@ -543,10 +543,10 @@ const STORIES=[
  {t:"Cat in Pajamas",e:"🐈",bg:"#F0E6FF",pages:[["My cat wears pajamas.","🐈👕"],["They have tiny fish on them.","👕🐟🐟"],["At night she reads a book.","🐈📖🌙"],["She snores like a big truck.","🐈😴🚚"]],
   qs:[["What does the cat wear?","pajamas",["boots","a cape"]],["What does she snore like?","a truck",["a bird","a bell"]]]}];
 const REGIONS=[
- {id:"lagoon",name:"Lowercase Lagoon",ic:"🪷",rc:"#12A386",kind:"letters",lessons:[["i","t","u","w"],["e","l","b","h"],["f","k","r","s"],["j","p","a","d"],["g","o","c","q"],["n","m","v"],["x","y","z"]]},
- {id:"lane",name:"Link-Up Lane",ic:"🔗",rc:"#E0742A",kind:"words",lessons:WORDS},
- {id:"castle",name:"Capital Castle",ic:"🏰",rc:"#7A3FE0",kind:"caps",lessons:CAPS},
- {id:"swamp",name:"Story Swamp",ic:"📖",rc:"#3E8E3A",kind:"story",lessons:STORIES}];
+ {id:"lagoon",name:"Little Letters",ic:"✏️",rc:"#12A386",kind:"letters",lessons:[["i","t","u","w"],["e","l","b","h"],["f","k","r","s"],["j","p","a","d"],["g","o","c","q"],["n","m","v"],["x","y","z"]]},
+ {id:"lane",name:"Joined Words",ic:"🔗",rc:"#E0742A",kind:"words",lessons:WORDS},
+ {id:"castle",name:"Big Capitals",ic:"👑",rc:"#7A3FE0",kind:"caps",lessons:CAPS},
+ {id:"swamp",name:"Story Time",ic:"📖",rc:"#3E8E3A",kind:"story",lessons:STORIES}];
 
 /* ===================== SKINS ===================== */
 const SHELLS={
@@ -614,6 +614,10 @@ function hatSVG(h){switch(h){
 const SKN={a:"#FFDCC2",b:"#F2C29B",c:"#D79A6B",d:"#A86B44",e:"#7A4B2E"};
 const PK=(n,sp,o)=>Object.assign({n,sp},o);
 const ROSTER={
+ flower:[PK("Sunny","flower",{kind:"sun",pet:"#FFC531",mid:"#C98B4E",pot:"#E2674E"}),PK("Daisy","flower",{kind:"round",pet:"#FFFFFF",mid:"#FFD23F",pot:"#3E8EF0"}),PK("Tulip","flower",{kind:"tulip",pet:"#FF5A7A",mid:"#FFD9E0",pot:"#FFB81F"}),
+  PK("Violet","flower",{kind:"round",pet:"#9B6BFF",mid:"#FFE27A",pot:"#12A386"}),PK("Rosie","flower",{kind:"tulip",pet:"#E8352E",mid:"#FFD6D6",pot:"#8E6BD8"}),PK("Poppy","flower",{kind:"point",pet:"#FF6B3D",mid:"#FFE3B3",pot:"#3E8EF0"}),
+  PK("Bluebell","flower",{kind:"point",pet:"#5CA8FF",mid:"#FFF1CC",pot:"#FF8FC4"}),PK("Petal","flower",{kind:"round",pet:"#FF9EC7",mid:"#FFE27A",pot:"#5CC98F"}),PK("Clover","flower",{kind:"clover",pet:"#5CC98F",mid:"#D7FFE3",pot:"#C8743A"}),
+  PK("Lily","flower",{kind:"tulip",pet:"#FFF6D8",mid:"#FFE27A",pot:"#2C3AA0"}),PK("Pansy","flower",{kind:"point",pet:"#B48CFF",mid:"#FFD23F",pot:"#FFB81F"}),PK("Goldbloom","flower",{kind:"sun",pet:"#FFE27A",mid:"#E0A100",pot:"#FFD23F",gold:1})],
  mermaid:[PK("Marina","mermaid",{skin:SKN.b,hair:"#E8504F",tail:"#22B8A7",top:"#FFD23F"}),PK("Coral","mermaid",{skin:SKN.d,hair:"#2B1B14",tail:"#FF7FA8",top:"#7FE3D4"}),PK("Kai","mermaid",{skin:SKN.c,hair:"#1D2B53",tail:"#3E8EF0",top:"",boy:1}),
   PK("Pearl","mermaid",{skin:SKN.a,hair:"#F4D35E",tail:"#B48CFF",top:"#FFFFFF"}),PK("Nami","mermaid",{skin:SKN.e,hair:"#7A3FE0",tail:"#FFB81F",top:"#FF6FA8"}),PK("Finn","mermaid",{skin:SKN.a,hair:"#C8743A",tail:"#12A386",top:"",boy:1}),
   PK("Shelly","mermaid",{skin:SKN.c,hair:"#FF8FC4",tail:"#5CC8FF",top:"#FFE27A"}),PK("Ripple","mermaid",{skin:SKN.b,hair:"#3EC6A8",tail:"#7A3FE0",top:"#FFFFFF"}),PK("Luna","mermaid",{skin:SKN.d,hair:"#E9EEF9",tail:"#2C3AA0",top:"#B4C2FF"}),
@@ -677,8 +681,20 @@ function truckSVG(p){const c=p.c,cd=shadeC(c,-.28),cl=shadeC(c,.35),k=p.kind,big
    <rect x="12" y="${50+dy}" width="9" height="12" rx="3" fill="${cd}" ${SKW}/><rect x="99" y="${50+dy}" width="9" height="12" rx="3" fill="${cd}" ${SKW}/>
    <circle cx="34" cy="${66+dy}" r="3.6" fill="#FF8FA3" opacity=".6"/><circle cx="86" cy="${66+dy}" r="3.6" fill="#FF8FA3" opacity=".6"/>
    ${top}${p.gold?`<path d="M30 ${44+dy} l60 0" stroke="#fff" stroke-width="3" opacity=".7"/>`:""}`}
-const HATPOS={mermaid:[60,18,.62],dragon:[60,19,.6],truck:[60,40,.62]};
-function palCore(p,hat){const draw={mermaid:mermaidSVG,dragon:dragonSVG,truck:truckSVG}[p.sp](p);let hp=HATPOS[p.sp];if(p.sp==="truck"&&p.kind==="monster")hp=[60,28,.62];
+function flowerSVG(p){const k=p.kind,pc=p.pet,pd=shadeC(pc,-.22),cx=60,cy=42;let petals="";
+  if(k==="round"||k==="point"||k==="sun"||k==="clover"){const n=k==="sun"?16:k==="clover"?4:k==="point"?8:7;const r=k==="sun"?27:k==="clover"?22:25;
+    for(let i=0;i<n;i++){const a=i*360/n;petals+=k==="point"?`<path d="M0 -14 Q9 -26 0 -42 Q-9 -26 0 -14Z" fill="${pc}" ${SKW} transform="translate(${cx} ${cy}) rotate(${a})"/>`:k==="clover"?`<path d="M0 -10 C-16 -16 -20 -36 -6 -38 Q0 -38 0 -32 Q0 -38 6 -38 C20 -36 16 -16 0 -10Z" fill="${pc}" ${SKW} transform="translate(${cx} ${cy}) rotate(${a+45})"/>`:`<ellipse cx="0" cy="${-r}" rx="${k==="sun"?6:11}" ry="${k==="sun"?13:14}" fill="${pc}" ${SKW} transform="translate(${cx} ${cy}) rotate(${a})"/>`}}
+  if(k==="tulip")petals=`<path d="M34 46 Q30 18 42 8 Q50 22 60 14 Q70 22 78 8 Q90 18 86 46 Q60 60 34 46Z" fill="${pc}" ${SKW}/><path d="M60 14 Q52 30 54 50 M60 14 Q68 30 66 50" stroke="${pd}" stroke-width="2.4" fill="none"/>`;
+  const faceR=k==="sun"?19:k==="tulip"?0:17;
+  return `<path d="M60 60 Q58 80 60 96" stroke="#3E9E4A" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M60 60 Q58 80 60 96" stroke="${OL}" stroke-width="10" fill="none" stroke-linecap="round" opacity=".0"/>
+   <path class="al" d="M59 80 Q42 62 30 70 Q40 84 59 84Z" fill="#6CCB5F" ${SKW}/><path class="ar" d="M61 76 Q78 58 90 66 Q80 80 61 80Z" fill="#6CCB5F" ${SKW}/>
+   <g class="tl" style="transform-origin:60px 60px">${petals}${faceR?`<circle cx="${cx}" cy="${cy}" r="${faceR}" fill="${p.mid}" ${SKW}/>`:""}
+   ${k==="sun"?Array.from({length:10},(_,i)=>`<circle cx="${cx+Math.cos(i*.63)*12}" cy="${cy+Math.sin(i*.63)*12}" r="1.4" fill="${shadeC(p.mid,-.3)}"/>`).join(""):""}
+   ${faceEyes(52,68,k==="tulip"?36:39,4.2)}<circle cx="47" cy="47" r="3.4" fill="#FF8FA3" opacity=".55"/><circle cx="73" cy="47" r="3.4" fill="#FF8FA3" opacity=".55"/>${mouth(60,48,5)}</g>
+   <path d="M40 94 H80 L76 112 H44Z" fill="${p.pot}" ${SKW}/><rect x="36" y="88" width="48" height="9" rx="4" fill="${shadeC(p.pot,.25)}" ${SKW}/>
+   ${p.gold?`<path d="M46 98 l28 0" stroke="#fff" stroke-width="3" opacity=".7"/>`:""}`}
+const HATPOS={flower:[60,6,.55],mermaid:[60,18,.62],dragon:[60,19,.6],truck:[60,40,.62]};
+function palCore(p,hat){const draw={mermaid:mermaidSVG,dragon:dragonSVG,truck:truckSVG,flower:flowerSVG}[p.sp](p);let hp=HATPOS[p.sp];if(p.sp==='flower'&&p.kind==='tulip')hp=[60,10,.55];if(p.sp==="truck"&&p.kind==="monster")hp=[60,28,.62];
   if(p.sp==="truck"&&(p.kind==="icecream"))hp=[60,-6,.5];if(p.sp==="truck"&&p.kind==="fire")hp=[60,20,.55];
   const hs=hat&&hat!=="none"?`<g transform="translate(${hp[0]-56*hp[2]} ${hp[1]-18*hp[2]}) scale(${hp[2]})">${hatSVG(hat)}</g>`:"";
   return `<ellipse cx="60" cy="113" rx="40" ry="5" fill="rgba(0,0,0,.13)"/><g class="sb">${draw}${hs}</g>`}
@@ -686,6 +702,7 @@ function palSVG(p,hat="none",cls=""){return `<svg class="snail pal ${cls}" viewB
 
 /* worlds: one per season, each with its own cast of pals */
 const WORLDS=[
+ {id:"flower",name:"Flower Garden",season:"Spring",ic:"🌷",em:"🌸",acc:"#E8358C",blurb:"Blossoms, butterflies and happy little flowers."},
  {id:"mermaid",name:"Mermaid Cove",season:"Summer",ic:"🧜‍♀️",em:"🐚",acc:"#12A386",blurb:"Sunny waves, sandcastles and sparkly tails."},
  {id:"truck",name:"Truck Town",season:"Fall",ic:"🚚",em:"🍂",acc:"#E0742A",blurb:"Crunchy leaves, pumpkins and big busy trucks."},
  {id:"dragon",name:"Dragon Peaks",season:"Winter",ic:"🐉",em:"❄️",acc:"#3E7FD8",blurb:"Snowy mountains and cozy little dragons."}];
@@ -833,10 +850,16 @@ const ART={
    +[.36,.74].map((f,i)=>`<rect x="0" y="${h*f-18}" width="${w}" height="36" fill="#7B7F8C"/><path d="M0 ${h*f} H${w}" stroke="#FFE27A" stroke-width="3" stroke-dasharray="14 12"/>`+EM(0,h*f+4,i?"🚜":"🚚",32,"drive","animation-delay:-"+(i*4)+"s;animation-duration:"+(9+i*3)+"s")).join("")
    +[[340,.14,"🍁"],[60,.28,"🌳"],[350,.5,"🍂"],[50,.6,"🎃"],[340,.86,"🌾"],[70,.92,"🍁"],[320,.62,"🎃"]].map(([x,f,e])=>EM(x,h*f,e,40,"sway")).join("")
    +Array.from({length:14},(_,i)=>EM((i*97)%w,(i*173)%h,i%2?"🍂":"🍁",16,"twinkle")).join(""),
+ flower:(w,h)=>`<rect width="${w}" height="${h}" fill="#A6DC86"/><rect width="${w}" height="${h}" fill="url(#springG)"/><path d="M-20 90 Q60 10 140 90" stroke="#FF6B6B" stroke-width="9" fill="none" opacity=".75"/><path d="M-10 90 Q60 20 130 90" stroke="#FFD23F" stroke-width="9" fill="none" opacity=".75"/><path d="M0 90 Q60 30 120 90" stroke="#5CA8FF" stroke-width="9" fill="none" opacity=".75"/>`
+   +[[340,.16,"🌸",48],[60,.34,"🌷",34],[350,.46,"🌳",44],[60,.62,"🌸",46],[340,.76,"🌷",34],[70,.92,"🌼",34],[320,.95,"🌸",44]].map(([x,f,e,z])=>EM(x,h*f,e,z,"sway")).join("")
+   +EM(310,h*.3,"🦋",28,"mapfx")+EM(90,h*.5,"🐰",32,"hopf")+EM(300,h*.62,"🐝",22,"mapfx","animation-delay:-1s")+EM(110,h*.8,"🐣",28)+EM(320,h*.06,"☁️",40)
+   +Array.from({length:16},(_,i)=>EM((i*83)%w,(i*149)%h,["🌼","🌸","🌷"][i%3],14,"twinkle")).join(""),
  dragon:(w,h)=>`<rect width="${w}" height="${h}" fill="#DCEBFF"/><rect width="${w}" height="${h}" fill="url(#snowG)"/><path d="M0 120 L70 30 L130 100 L200 10 L270 100 L330 40 L400 110 V0 H0Z" fill="#A9C6EE"/><path d="M50 55 L70 30 L88 52 Z M180 35 L200 10 L222 38Z M312 62 L330 40 L350 64Z" fill="#fff"/>`
    +`<ellipse cx="300" cy="${h*.46}" rx="60" ry="20" fill="#BFE6FF" stroke="#fff" stroke-width="3"/>`
    +[[50,.24,"🌲"],[350,.32,"🌲"],[60,.52,"☃️"],[340,.72,"🌲"],[70,.84,"🌲"],[330,.94,"⛄"]].map(([x,f,e])=>EM(x,h*f,e,42,"sway")).join("")
-   +EM(330,h*.2,"🐉",40,"mapfx","animation-duration:4.5s")+EM(300,h*.44,"⛸️",24)+Array.from({length:16},(_,i)=>EM((i*83)%w,(i*149)%h,"❄",14+(i%3)*4,"twinkle","fill:#fff")).join("")};
+   +EM(330,h*.2,"🐉",40,"mapfx","animation-duration:4.5s")+EM(300,h*.44,"⛸️",24)+EM(320,h*.58,"🐧",30,"hopf")+EM(80,h*.68,"🛷",30)+EM(330,h*.84,"🏔️",40)+EM(90,h*.38,"🧣",24,"sway")
+   +Array.from({length:Math.ceil(h/140)},(_,i)=>`<ellipse cx="${i%2?320:80}" cy="${60+i*140}" rx="80" ry="18" fill="#C9DEFA" opacity=".6"/>`).join("")
+   +Array.from({length:22},(_,i)=>EM((i*83)%w,(i*149)%h,"❄",14+(i%3)*5,"twinkle","fill:#7FA9E6")).join("")};
 function renderMap(){if(!S.world)return show("worlds");const r=R(),wd=Wd();
   $("#titleSnail").innerHTML=snailSVG();$("#titleP").textContent=`${wd.season} in ${wd.name}! Learn cursive with ${bn()}. Every lesson you finish brings new pals.`;
   const u=unl(wd),bi=buddyIdx(wd);
@@ -848,7 +871,7 @@ function renderMap(){if(!S.world)return show("worlds");const r=R(),wd=Wd();
   const n=r.lessons.length,w=400,h=170+n*118;const pos=r.lessons.map((_,i)=>[[130,280,200,110,290,200,120,280][i%8],150+i*118]);
   const pathPts=spline([[330,40],...pos,[200,h+20]],4);
   const cur=nextIdx(r);
-  let html=`<div class="region" style="aspect-ratio:${w}/${h}"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FE3FF" stop-opacity=".6"/><stop offset="1" stop-color="#1F8FC4" stop-opacity=".5"/></linearGradient><linearGradient id="fallG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD58A" stop-opacity=".7"/><stop offset="1" stop-color="#C8662A" stop-opacity=".45"/></linearGradient><linearGradient id="snowG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAF3FF"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient><linearGradient id="lw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5CC8D8" stop-opacity=".5"/><stop offset="1" stop-color="#2E9F8C" stop-opacity=".4"/></linearGradient><linearGradient id="cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A1E5C"/><stop offset="1" stop-color="#8E6CD8"/></linearGradient></defs>${ART[Wd().id](w,h)}
+  let html=`<div class="region" style="aspect-ratio:${w}/${h}"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><linearGradient id="springG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3F1" stop-opacity=".8"/><stop offset=".35" stop-color="#C9F0B0" stop-opacity=".5"/><stop offset="1" stop-color="#6CBB4E" stop-opacity=".5"/></linearGradient><linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FE3FF" stop-opacity=".6"/><stop offset="1" stop-color="#1F8FC4" stop-opacity=".5"/></linearGradient><linearGradient id="fallG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD58A" stop-opacity=".7"/><stop offset="1" stop-color="#C8662A" stop-opacity=".45"/></linearGradient><linearGradient id="snowG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAF3FF"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient><linearGradient id="lw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5CC8D8" stop-opacity=".5"/><stop offset="1" stop-color="#2E9F8C" stop-opacity=".4"/></linearGradient><linearGradient id="cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A1E5C"/><stop offset="1" stop-color="#8E6CD8"/></linearGradient></defs>${ART[Wd().id](w,h)}
     <polyline points="${pathPts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="#F4E3B9" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
     <polyline points="${pathPts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round" opacity=".9"/></svg>
     <div class="sign">${r.name}</div>`;
@@ -1003,6 +1026,7 @@ function renderBook(){const low="abcdefghijklmnopqrstuvwxyz".split(""),caps="ABC
 
 /* ===================== WORLD BACKDROP ===================== */
 const BD={
+ flower:{bg:"linear-gradient(180deg,#FFE3F1 0%,#F4FBE8 50%,#CDEFB4 100%)",hill:["#A6DC86","#6CBB4E"],parts:i=>i%3?`<div class="amb fall" style="left:${(i*37)%100}vw;font-size:${14+(i*5)%12}px;animation-duration:${9+(i*3)%8}s;animation-delay:-${(i*1.3)%10}s">🌸</div>`:`<div class="amb fly" style="left:${(i*29)%95}vw;top:${25+(i*13)%45}vh;font-size:26px;animation-duration:${5+(i%4)}s">🦋</div>`},
  mermaid:{bg:"linear-gradient(180deg,#9FE3FF 0%,#D9F6FF 45%,#FFE7B0 100%)",hill:["#5CC8E8","#2E9FD0"],parts:i=>i%4?`<div class="amb rise bub" style="left:${(i*37)%100}vw;width:${14+(i*7)%26}px;height:${14+(i*7)%26}px;animation-duration:${9+(i*3)%9}s;animation-delay:-${(i*1.7)%12}s"></div>`:`<div class="amb drift" style="top:${5+(i*7)%20}vh;font-size:30px;animation-duration:${24+i}s;animation-delay:-${i*3}s">🕊️</div>`},
  truck:{bg:"linear-gradient(180deg,#FFD9A0 0%,#FFEBC9 45%,#F6C27A 100%)",hill:["#E0913A","#B8662A"],parts:i=>`<div class="amb fall" style="left:${(i*37)%100}vw;font-size:${18+(i*5)%16}px;animation-duration:${8+(i*3)%8}s;animation-delay:-${(i*1.3)%10}s">${i%2?"🍂":"🍁"}</div>`},
  dragon:{bg:"linear-gradient(180deg,#BFD9FF 0%,#EAF3FF 55%,#FFFFFF 100%)",hill:["#FFFFFF","#DCEBFF"],parts:i=>`<div class="amb fall snowf" style="left:${(i*37)%100}vw;font-size:${12+(i*5)%16}px;animation-duration:${9+(i*3)%8}s;animation-delay:-${(i*1.1)%10}s">❄</div>`},
@@ -1022,7 +1046,7 @@ const GAMES={
  castle:{name:"Dragon Snacks",ic:"🐉",cls:"cookieI",bg:"linear-gradient(180deg,#2A1E5C,#8E6CD8)",how:"The dragon is hungry! Tap the cookie with the right capital."},
  swamp:{name:"Firefly Catch",ic:"✨",cls:"flyI",bg:"linear-gradient(180deg,#14302B,#3F6E55)",how:"Catch the firefly glowing with the word!"}};
 const POWERS={
- world:{mermaid:["Bubble shield","Your first 3 wrong taps don't cost a point."],truck:["Turbo time","Every 10 points adds 5 seconds."],dragon:["Fire blast","Catch 3 in a row and every right one on screen pops!"]},
+ world:{flower:["Sunshine sense","The right one wiggles every few seconds."],mermaid:["Bubble shield","Your first 3 wrong taps don't cost a point."],truck:["Turbo time","Every 10 points adds 5 seconds."],dragon:["Fire blast","Catch 3 in a row and every right one on screen pops!"]},
  hat:{none:["No hat yet","Buy a hat in Skins for another power!"],crown:["Royal riches","Every point earns double coins."],wizard:["Slow-mo spell","Everything moves in slow motion."],
   cowboy:["Giant lasso","Everything is bigger and easier to grab. Yee-haw!"],party:["Party mode","Confetti on every catch, plus 5 bonus seconds."],bow:["Bow-nus time","10 extra seconds on the clock."],flower:["Lucky daisy","Golden bonus things pop up worth 3 points."]},
  pen:{berry:["Blue splash","Every 3 in a row adds 1 second."],grape:["Sticky jelly","Things move a little slower."],bubble:["Gum bubble","4 in a row earns a bonus point."],
@@ -1032,7 +1056,7 @@ const POWERS={
 const CAT_IC={world:"🌍",hat:"🎩",pen:"🖊️",paper:"📄"};
 function powerList(){return ["world","hat","pen","paper"].map(c=>{if(c==="world"){const w=Wd();return {c,name:w.name,p:POWERS.world[w.id]}}const it=({hat:HATS,pen:PENS,paper:PAPERS})[c][S.eq[c]];const p=POWERS[c][S.eq[c]];return {c,name:it.n,p}})}
 function gameParams(){const e=S.eq,P={slow:1,big:1,time:30,coinMul:1,shield:0,goldEvery:0,goldPts:3,luck:.42,spawnMul:1,hint:0,glow:0,blast:0,rush:0,combo5:0,freezeEvery:0,perCatch:0,bonus:0,streakSec:0,gum:0,lava:0,rdouble:0,party:0};
-  ({mermaid:()=>P.shield+=3,truck:()=>P.rush=1,dragon:()=>P.blast=1})[Wd().id]?.();
+  ({flower:()=>P.hint=1,mermaid:()=>P.shield+=3,truck:()=>P.rush=1,dragon:()=>P.blast=1})[Wd().id]?.();
   ({crown:()=>P.coinMul=2,wizard:()=>P.slow*=.6,cowboy:()=>P.big=1.25,party:()=>{P.party=1;P.time+=5},bow:()=>P.time+=10,flower:()=>P.goldEvery=P.goldEvery?4:5})[e.hat]?.();
   ({berry:()=>P.streakSec=1,grape:()=>P.slow*=.85,bubble:()=>P.gum=1,neon:()=>P.glow=1,lava:()=>P.lava=1,rainbow:()=>P.rdouble=1,glitter:()=>P.perCatch=1})[e.pen]?.();
   ({notebook:()=>P.time+=3,candy:()=>P.spawnMul=1.35,ocean:()=>P.slow*=.88,chalk:()=>P.shield+=2,space:()=>P.freezeEvery=P.freezeEvery?10:15})[e.paper]?.();
@@ -1044,6 +1068,17 @@ function paperOverlay(){const id=S.eq.paper;let h="";
   if(id==="chalk")h=`<div style="position:absolute;inset:0;box-shadow:inset 0 0 0 10px #8A5A2B,inset 0 0 0 14px #5E3A16;pointer-events:none;z-index:3"></div>`+Array.from({length:30},(_,i)=>`<div style="position:absolute;left:${(i*37)%100}%;top:${(i*53)%100}%;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.5)"></div>`).join("");
   if(id==="space")h=Array.from({length:26},(_,i)=>`<div class="amb tw" style="left:${(i*41)%100}%;top:${(i*23)%100}%;font-size:${8+(i%3)*4}px;color:#FFF6B0;animation-delay:-${(i*.3)%2}s">✦</div>`).join("")+`<div style="position:absolute;right:14px;top:10px;font-size:40px">🪐</div>`;
   return `<div style="position:absolute;inset:0;pointer-events:none;overflow:hidden">${h}</div>`}
+/* game arenas take the colors of the chosen season; fireflies always come out at dusk */
+const SEASON_SKY={flower:["#FFE3F1","#A6DC86"],mermaid:["#A8EEFF","#2E9FD0"],truck:["#FFD9A0","#D9853A"],dragon:["#E3EEFF","#9CC3F0"]};
+const SEASON_DUSK={flower:["#3B2A6E","#6E5BA8"],mermaid:["#1D2B6B","#2E7FB8"],truck:["#4A2316","#9A4A22"],dragon:["#141B3D","#3D4E8C"]};
+const SEASON_GROUND={flower:"#7CC35A",mermaid:"#F4E3B9",truck:"#C8662A",dragon:"#FFFFFF"};
+function arenaBG(rid){const w=Wd().id;if(rid==="lane")return `linear-gradient(180deg,${SEASON_GROUND[w]} 0 12%,#6B6F7A 12% 88%,${SEASON_GROUND[w]} 88%)`;
+  const c=rid==="swamp"?SEASON_DUSK[w]:SEASON_SKY[w];return `linear-gradient(180deg,${c[0]},${c[1]})`}
+function arenaDeco(rid){const w=Wd().id;if(rid==="lane")return "";const E={flower:["🌷","🌸","🌼"],mermaid:["🐚","🌴","🦀"],truck:["🎃","🍂","🌾"],dragon:["🌲","⛄","🌲"]}[w];
+  return Array.from({length:6},(_,i)=>`<div style="position:absolute;bottom:${rid==="castle"?2:0}px;left:${8+i*16}%;font-size:${34+(i%2)*10}px;opacity:.85;pointer-events:none">${E[i%3]}</div>`).join("")
+   +(w==="dragon"?Array.from({length:14},(_,i)=>`<div class="amb gfall snowf" style="left:${(i*37)%100}%;animation-duration:${5+(i%4)}s;animation-delay:-${i*.5}s">❄</div>`).join(""):"")
+   +(w==="truck"?Array.from({length:10},(_,i)=>`<div class="amb gfall" style="left:${(i*37)%100}%;animation-duration:${5+(i%4)}s;animation-delay:-${i*.6}s">${i%2?"🍂":"🍁"}</div>`).join(""):"")
+   +(w==="flower"?Array.from({length:10},(_,i)=>`<div class="amb gfall" style="left:${(i*37)%100}%;animation-duration:${6+(i%4)}s;animation-delay:-${i*.6}s">🌸</div>`).join(""):"")}
 let GM=null;
 function stopGame(){if(GM){GM.dead=true;cancelAnimationFrame(GM.raf);clearInterval(GM.tick);GM=null}}
 $("#gquit").onclick=()=>{stopGame();show("map")};
@@ -1059,12 +1094,13 @@ function gamePool(rid){
 function play(rid){stopGame();const gm=GAMES[rid],P=gameParams();const slow=P.slow,big=P.big;
   let time=P.time,score=0,streak=0,spawnN=0,catches=0,shield=P.shield,freezeUntil=0,nextRush=10,frozenAcc=0;const pool=gamePool(rid);
   $("#gstage").innerHTML=`<div class="card" style="padding:14px"><div class="game-top"><span class="gpill" id="gtime">⏱ ${time}</span><div class="target" id="gtarget"></div><span class="gpill" id="gscore">⭐ 0</span></div>
-    <div class="arena" id="arena" style="background:${gm.bg}">${paperOverlay()}<div class="freeze" id="gfreeze" hidden>❄️ Freeze!</div></div></div>`;
+    <div class="arena" id="arena" style="background:${arenaBG(rid)}">${paperOverlay()}<div class="freeze" id="gfreeze" hidden>❄️ Freeze!</div></div></div>`;
   const A=$("#arena");const AW=()=>A.clientWidth,AH=()=>A.clientHeight;
   if(rid==="castle")A.insertAdjacentHTML("beforeend",`<div class="dragon" id="dragon">🐲</div>`);
   if(rid==="lane")A.insertAdjacentHTML("beforeend",`<svg style="position:absolute;inset:0;width:100%;height:100%" preserveAspectRatio="none" viewBox="0 0 100 100"><path d="M0 37 H100 M0 63 H100" stroke="#fff" stroke-width=".8" stroke-dasharray="4 4"/></svg>`);
-  if(rid==="lagoon")A.insertAdjacentHTML("beforeend",Array.from({length:4},(_,i)=>`<div style="position:absolute;left:${10+i*24}%;bottom:${8+(i%2)*14}%;width:70px;height:24px;border-radius:50%;background:#2FA35A;opacity:.8"></div>`).join(""));
-  if(rid==="swamp")A.insertAdjacentHTML("beforeend",Array.from({length:7},(_,i)=>`<div style="position:absolute;bottom:0;left:${i*15+3}%;font-size:44px;opacity:.75">🌾</div>`).join(""));
+  A.insertAdjacentHTML("beforeend",arenaDeco(rid));
+  if(false)A.insertAdjacentHTML("beforeend",Array.from({length:4},(_,i)=>`<div style="position:absolute;left:${10+i*24}%;bottom:${8+(i%2)*14}%;width:70px;height:24px;border-radius:50%;background:#2FA35A;opacity:.8"></div>`).join(""));
+  if(false)A.insertAdjacentHTML("beforeend",Array.from({length:7},(_,i)=>`<div style="position:absolute;bottom:0;left:${i*15+3}%;font-size:44px;opacity:.75">🌾</div>`).join(""));
   if(rid!=="castle")A.insertAdjacentHTML("beforeend",`<div class="gsnail" id="gsnail">${snailSVG()}</div>`);else A.insertAdjacentHTML("beforeend",`<div class="gsnail" id="gsnail" style="width:90px">${snailSVG()}</div>`);
   let target=null,hits=0;
   function newTarget(){target=pick(pool.filter(p=>!target||p.id!==target.id));hits=0;$("#gtarget").innerHTML=rid==="lane"?`Find <b>${target.show}</b>`:`Find <b style="font-family:var(--f-body)">${esc(target.show)}</b>`;say(rid==="lane"?target.lab:target.kind==="cap"?"capital "+target.lab:target.lab)}
@@ -1123,7 +1159,7 @@ function play(rid){stopGame();const gm=GAMES[rid],P=gameParams();const slow=P.sl
     $("#gagain").onclick=()=>play(rid);$("#gmap").onclick=()=>show("map");$("#gskin").onclick=()=>show("shop")}}
 
 /* ===================== WORLDS PICKER ===================== */
-const WBG={mermaid:"linear-gradient(180deg,#9FE3FF,#4CC3E6 60%,#F4E3B9 60%)",truck:"linear-gradient(180deg,#FFD9A0,#F3B868 60%,#C8662A 60%)",dragon:"linear-gradient(180deg,#BFD9FF,#EAF3FF 60%,#FFFFFF 60%)"};
+const WBG={flower:"linear-gradient(180deg,#FFE3F1,#BDEBA4 60%,#7CC35A 60%)",mermaid:"linear-gradient(180deg,#9FE3FF,#4CC3E6 60%,#F4E3B9 60%)",truck:"linear-gradient(180deg,#FFD9A0,#F3B868 60%,#C8662A 60%)",dragon:"linear-gradient(180deg,#BFD9FF,#EAF3FF 60%,#FFFFFF 60%)"};
 function renderWorlds(){$("#worldGrid").innerHTML=WORLDS.map(w=>`<button class="wcard ${S.world===w.id?"on":""}" data-w="${w.id}" style="background:${WBG[w.id]}"><span class="season">${w.em} ${w.season}</span><div class="trio">${ROSTER[w.id].slice(0,3).map(p=>palSVG(p)).join("")}</div><h3>${w.name}</h3><p>${w.blurb}<br>${unl(w)} of ${ROSTER[w.id].length} pals unlocked</p></button>`).join("");
   $("#worldGrid").querySelectorAll(".wcard").forEach(b=>b.onclick=()=>{S.world=b.dataset.w;save();sfx.good();bdNow="";renderBackdrop(S.world);show("map");mood($("#titleSnail"),"happy")})}
 

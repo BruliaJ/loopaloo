@@ -319,7 +319,7 @@ header.top .wrap{display:flex;align-items:center;gap:8px;padding-block:8px;flex-
 .newpals .ptile{animation:pop .5s .6s backwards}
 .amb.fall{animation:fall linear infinite}
 @keyframes fall{from{transform:translate(0,-10vh) rotate(0)}to{transform:translate(7vw,110vh) rotate(420deg)}}
-.snowf{color:#fff;text-shadow:0 0 6px rgba(90,140,220,.7)}
+.snowf{color:#8FB4EA;text-shadow:0 0 2px #fff,0 0 8px rgba(90,140,220,.6)}
 
 /* snail */
 .snail{display:block;width:100%;height:auto;overflow:visible}
@@ -451,10 +451,10 @@ const STORIES=[
  {t:"Cat in Pajamas",e:"🐈",bg:"#F0E6FF",pages:[["My cat wears pajamas.","🐈👕"],["They have tiny fish on them.","👕🐟🐟"],["At night she reads a book.","🐈📖🌙"],["She snores like a big truck.","🐈😴🚚"]],
   qs:[["What does the cat wear?","pajamas",["boots","a cape"]],["What does she snore like?","a truck",["a bird","a bell"]]]}];
 const REGIONS=[
- {id:"lagoon",name:"Lowercase Lagoon",ic:"🪷",rc:"#12A386",kind:"letters",lessons:[["i","t","u","w"],["e","l","b","h"],["f","k","r","s"],["j","p","a","d"],["g","o","c","q"],["n","m","v"],["x","y","z"]]},
- {id:"lane",name:"Link-Up Lane",ic:"🔗",rc:"#E0742A",kind:"words",lessons:WORDS},
- {id:"castle",name:"Capital Castle",ic:"🏰",rc:"#7A3FE0",kind:"caps",lessons:CAPS},
- {id:"swamp",name:"Story Swamp",ic:"📖",rc:"#3E8E3A",kind:"story",lessons:STORIES}];
+ {id:"lagoon",name:"Little Letters",ic:"✏️",rc:"#12A386",kind:"letters",lessons:[["i","t","u","w"],["e","l","b","h"],["f","k","r","s"],["j","p","a","d"],["g","o","c","q"],["n","m","v"],["x","y","z"]]},
+ {id:"lane",name:"Joined Words",ic:"🔗",rc:"#E0742A",kind:"words",lessons:WORDS},
+ {id:"castle",name:"Big Capitals",ic:"👑",rc:"#7A3FE0",kind:"caps",lessons:CAPS},
+ {id:"swamp",name:"Story Time",ic:"📖",rc:"#3E8E3A",kind:"story",lessons:STORIES}];
 
 /* ===================== SKINS ===================== */
 const SHELLS={
@@ -520,6 +520,7 @@ function hatSVG(h){switch(h){
 /*PALS*/
 /* worlds: one per season, each with its own cast of pals */
 const WORLDS=[
+ {id:"flower",name:"Flower Garden",season:"Spring",ic:"🌷",em:"🌸",acc:"#E8358C",blurb:"Blossoms, butterflies and happy little flowers."},
  {id:"mermaid",name:"Mermaid Cove",season:"Summer",ic:"🧜‍♀️",em:"🐚",acc:"#12A386",blurb:"Sunny waves, sandcastles and sparkly tails."},
  {id:"truck",name:"Truck Town",season:"Fall",ic:"🚚",em:"🍂",acc:"#E0742A",blurb:"Crunchy leaves, pumpkins and big busy trucks."},
  {id:"dragon",name:"Dragon Peaks",season:"Winter",ic:"🐉",em:"❄️",acc:"#3E7FD8",blurb:"Snowy mountains and cozy little dragons."}];
@@ -667,10 +668,16 @@ const ART={
    +[.36,.74].map((f,i)=>`<rect x="0" y="${h*f-18}" width="${w}" height="36" fill="#7B7F8C"/><path d="M0 ${h*f} H${w}" stroke="#FFE27A" stroke-width="3" stroke-dasharray="14 12"/>`+EM(0,h*f+4,i?"🚜":"🚚",32,"drive","animation-delay:-"+(i*4)+"s;animation-duration:"+(9+i*3)+"s")).join("")
    +[[340,.14,"🍁"],[60,.28,"🌳"],[350,.5,"🍂"],[50,.6,"🎃"],[340,.86,"🌾"],[70,.92,"🍁"],[320,.62,"🎃"]].map(([x,f,e])=>EM(x,h*f,e,40,"sway")).join("")
    +Array.from({length:14},(_,i)=>EM((i*97)%w,(i*173)%h,i%2?"🍂":"🍁",16,"twinkle")).join(""),
+ flower:(w,h)=>`<rect width="${w}" height="${h}" fill="#A6DC86"/><rect width="${w}" height="${h}" fill="url(#springG)"/><path d="M-20 90 Q60 10 140 90" stroke="#FF6B6B" stroke-width="9" fill="none" opacity=".75"/><path d="M-10 90 Q60 20 130 90" stroke="#FFD23F" stroke-width="9" fill="none" opacity=".75"/><path d="M0 90 Q60 30 120 90" stroke="#5CA8FF" stroke-width="9" fill="none" opacity=".75"/>`
+   +[[340,.16,"🌸",48],[60,.34,"🌷",34],[350,.46,"🌳",44],[60,.62,"🌸",46],[340,.76,"🌷",34],[70,.92,"🌼",34],[320,.95,"🌸",44]].map(([x,f,e,z])=>EM(x,h*f,e,z,"sway")).join("")
+   +EM(310,h*.3,"🦋",28,"mapfx")+EM(90,h*.5,"🐰",32,"hopf")+EM(300,h*.62,"🐝",22,"mapfx","animation-delay:-1s")+EM(110,h*.8,"🐣",28)+EM(320,h*.06,"☁️",40)
+   +Array.from({length:16},(_,i)=>EM((i*83)%w,(i*149)%h,["🌼","🌸","🌷"][i%3],14,"twinkle")).join(""),
  dragon:(w,h)=>`<rect width="${w}" height="${h}" fill="#DCEBFF"/><rect width="${w}" height="${h}" fill="url(#snowG)"/><path d="M0 120 L70 30 L130 100 L200 10 L270 100 L330 40 L400 110 V0 H0Z" fill="#A9C6EE"/><path d="M50 55 L70 30 L88 52 Z M180 35 L200 10 L222 38Z M312 62 L330 40 L350 64Z" fill="#fff"/>`
    +`<ellipse cx="300" cy="${h*.46}" rx="60" ry="20" fill="#BFE6FF" stroke="#fff" stroke-width="3"/>`
    +[[50,.24,"🌲"],[350,.32,"🌲"],[60,.52,"☃️"],[340,.72,"🌲"],[70,.84,"🌲"],[330,.94,"⛄"]].map(([x,f,e])=>EM(x,h*f,e,42,"sway")).join("")
-   +EM(330,h*.2,"🐉",40,"mapfx","animation-duration:4.5s")+EM(300,h*.44,"⛸️",24)+Array.from({length:16},(_,i)=>EM((i*83)%w,(i*149)%h,"❄",14+(i%3)*4,"twinkle","fill:#fff")).join("")};
+   +EM(330,h*.2,"🐉",40,"mapfx","animation-duration:4.5s")+EM(300,h*.44,"⛸️",24)+EM(320,h*.58,"🐧",30,"hopf")+EM(80,h*.68,"🛷",30)+EM(330,h*.84,"🏔️",40)+EM(90,h*.38,"🧣",24,"sway")
+   +Array.from({length:Math.ceil(h/140)},(_,i)=>`<ellipse cx="${i%2?320:80}" cy="${60+i*140}" rx="80" ry="18" fill="#C9DEFA" opacity=".6"/>`).join("")
+   +Array.from({length:22},(_,i)=>EM((i*83)%w,(i*149)%h,"❄",14+(i%3)*5,"twinkle","fill:#7FA9E6")).join("")};
 function renderMap(){if(!S.world)return show("worlds");const r=R(),wd=Wd();
   $("#titleSnail").innerHTML=snailSVG();$("#titleP").textContent=`${wd.season} in ${wd.name}! Learn cursive with ${bn()}. Every lesson you finish brings new pals.`;
   const u=unl(wd),bi=buddyIdx(wd);
@@ -682,7 +689,7 @@ function renderMap(){if(!S.world)return show("worlds");const r=R(),wd=Wd();
   const n=r.lessons.length,w=400,h=170+n*118;const pos=r.lessons.map((_,i)=>[[130,280,200,110,290,200,120,280][i%8],150+i*118]);
   const pathPts=spline([[330,40],...pos,[200,h+20]],4);
   const cur=nextIdx(r);
-  let html=`<div class="region" style="aspect-ratio:${w}/${h}"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FE3FF" stop-opacity=".6"/><stop offset="1" stop-color="#1F8FC4" stop-opacity=".5"/></linearGradient><linearGradient id="fallG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD58A" stop-opacity=".7"/><stop offset="1" stop-color="#C8662A" stop-opacity=".45"/></linearGradient><linearGradient id="snowG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAF3FF"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient><linearGradient id="lw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5CC8D8" stop-opacity=".5"/><stop offset="1" stop-color="#2E9F8C" stop-opacity=".4"/></linearGradient><linearGradient id="cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A1E5C"/><stop offset="1" stop-color="#8E6CD8"/></linearGradient></defs>${ART[Wd().id](w,h)}
+  let html=`<div class="region" style="aspect-ratio:${w}/${h}"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><linearGradient id="springG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3F1" stop-opacity=".8"/><stop offset=".35" stop-color="#C9F0B0" stop-opacity=".5"/><stop offset="1" stop-color="#6CBB4E" stop-opacity=".5"/></linearGradient><linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FE3FF" stop-opacity=".6"/><stop offset="1" stop-color="#1F8FC4" stop-opacity=".5"/></linearGradient><linearGradient id="fallG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD58A" stop-opacity=".7"/><stop offset="1" stop-color="#C8662A" stop-opacity=".45"/></linearGradient><linearGradient id="snowG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAF3FF"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient><linearGradient id="lw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5CC8D8" stop-opacity=".5"/><stop offset="1" stop-color="#2E9F8C" stop-opacity=".4"/></linearGradient><linearGradient id="cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A1E5C"/><stop offset="1" stop-color="#8E6CD8"/></linearGradient></defs>${ART[Wd().id](w,h)}
     <polyline points="${pathPts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="#F4E3B9" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
     <polyline points="${pathPts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round" opacity=".9"/></svg>
     <div class="sign">${r.name}</div>`;
@@ -837,7 +844,7 @@ function renderBook(){const low="abcdefghijklmnopqrstuvwxyz".split(""),caps="ABC
 
 /*GAMES*/
 /* ===================== WORLDS PICKER ===================== */
-const WBG={mermaid:"linear-gradient(180deg,#9FE3FF,#4CC3E6 60%,#F4E3B9 60%)",truck:"linear-gradient(180deg,#FFD9A0,#F3B868 60%,#C8662A 60%)",dragon:"linear-gradient(180deg,#BFD9FF,#EAF3FF 60%,#FFFFFF 60%)"};
+const WBG={flower:"linear-gradient(180deg,#FFE3F1,#BDEBA4 60%,#7CC35A 60%)",mermaid:"linear-gradient(180deg,#9FE3FF,#4CC3E6 60%,#F4E3B9 60%)",truck:"linear-gradient(180deg,#FFD9A0,#F3B868 60%,#C8662A 60%)",dragon:"linear-gradient(180deg,#BFD9FF,#EAF3FF 60%,#FFFFFF 60%)"};
 function renderWorlds(){$("#worldGrid").innerHTML=WORLDS.map(w=>`<button class="wcard ${S.world===w.id?"on":""}" data-w="${w.id}" style="background:${WBG[w.id]}"><span class="season">${w.em} ${w.season}</span><div class="trio">${ROSTER[w.id].slice(0,3).map(p=>palSVG(p)).join("")}</div><h3>${w.name}</h3><p>${w.blurb}<br>${unl(w)} of ${ROSTER[w.id].length} pals unlocked</p></button>`).join("");
   $("#worldGrid").querySelectorAll(".wcard").forEach(b=>b.onclick=()=>{S.world=b.dataset.w;save();sfx.good();bdNow="";renderBackdrop(S.world);show("map");mood($("#titleSnail"),"happy")})}
 

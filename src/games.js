@@ -1,5 +1,6 @@
 /* ===================== WORLD BACKDROP ===================== */
 const BD={
+ flower:{bg:"linear-gradient(180deg,#FFE3F1 0%,#F4FBE8 50%,#CDEFB4 100%)",hill:["#A6DC86","#6CBB4E"],parts:i=>i%3?`<div class="amb fall" style="left:${(i*37)%100}vw;font-size:${14+(i*5)%12}px;animation-duration:${9+(i*3)%8}s;animation-delay:-${(i*1.3)%10}s">🌸</div>`:`<div class="amb fly" style="left:${(i*29)%95}vw;top:${25+(i*13)%45}vh;font-size:26px;animation-duration:${5+(i%4)}s">🦋</div>`},
  mermaid:{bg:"linear-gradient(180deg,#9FE3FF 0%,#D9F6FF 45%,#FFE7B0 100%)",hill:["#5CC8E8","#2E9FD0"],parts:i=>i%4?`<div class="amb rise bub" style="left:${(i*37)%100}vw;width:${14+(i*7)%26}px;height:${14+(i*7)%26}px;animation-duration:${9+(i*3)%9}s;animation-delay:-${(i*1.7)%12}s"></div>`:`<div class="amb drift" style="top:${5+(i*7)%20}vh;font-size:30px;animation-duration:${24+i}s;animation-delay:-${i*3}s">🕊️</div>`},
  truck:{bg:"linear-gradient(180deg,#FFD9A0 0%,#FFEBC9 45%,#F6C27A 100%)",hill:["#E0913A","#B8662A"],parts:i=>`<div class="amb fall" style="left:${(i*37)%100}vw;font-size:${18+(i*5)%16}px;animation-duration:${8+(i*3)%8}s;animation-delay:-${(i*1.3)%10}s">${i%2?"🍂":"🍁"}</div>`},
  dragon:{bg:"linear-gradient(180deg,#BFD9FF 0%,#EAF3FF 55%,#FFFFFF 100%)",hill:["#FFFFFF","#DCEBFF"],parts:i=>`<div class="amb fall snowf" style="left:${(i*37)%100}vw;font-size:${12+(i*5)%16}px;animation-duration:${9+(i*3)%8}s;animation-delay:-${(i*1.1)%10}s">❄</div>`},
@@ -19,7 +20,7 @@ const GAMES={
  castle:{name:"Dragon Snacks",ic:"🐉",cls:"cookieI",bg:"linear-gradient(180deg,#2A1E5C,#8E6CD8)",how:"The dragon is hungry! Tap the cookie with the right capital."},
  swamp:{name:"Firefly Catch",ic:"✨",cls:"flyI",bg:"linear-gradient(180deg,#14302B,#3F6E55)",how:"Catch the firefly glowing with the word!"}};
 const POWERS={
- world:{mermaid:["Bubble shield","Your first 3 wrong taps don't cost a point."],truck:["Turbo time","Every 10 points adds 5 seconds."],dragon:["Fire blast","Catch 3 in a row and every right one on screen pops!"]},
+ world:{flower:["Sunshine sense","The right one wiggles every few seconds."],mermaid:["Bubble shield","Your first 3 wrong taps don't cost a point."],truck:["Turbo time","Every 10 points adds 5 seconds."],dragon:["Fire blast","Catch 3 in a row and every right one on screen pops!"]},
  hat:{none:["No hat yet","Buy a hat in Skins for another power!"],crown:["Royal riches","Every point earns double coins."],wizard:["Slow-mo spell","Everything moves in slow motion."],
   cowboy:["Giant lasso","Everything is bigger and easier to grab. Yee-haw!"],party:["Party mode","Confetti on every catch, plus 5 bonus seconds."],bow:["Bow-nus time","10 extra seconds on the clock."],flower:["Lucky daisy","Golden bonus things pop up worth 3 points."]},
  pen:{berry:["Blue splash","Every 3 in a row adds 1 second."],grape:["Sticky jelly","Things move a little slower."],bubble:["Gum bubble","4 in a row earns a bonus point."],
@@ -29,7 +30,7 @@ const POWERS={
 const CAT_IC={world:"🌍",hat:"🎩",pen:"🖊️",paper:"📄"};
 function powerList(){return ["world","hat","pen","paper"].map(c=>{if(c==="world"){const w=Wd();return {c,name:w.name,p:POWERS.world[w.id]}}const it=({hat:HATS,pen:PENS,paper:PAPERS})[c][S.eq[c]];const p=POWERS[c][S.eq[c]];return {c,name:it.n,p}})}
 function gameParams(){const e=S.eq,P={slow:1,big:1,time:30,coinMul:1,shield:0,goldEvery:0,goldPts:3,luck:.42,spawnMul:1,hint:0,glow:0,blast:0,rush:0,combo5:0,freezeEvery:0,perCatch:0,bonus:0,streakSec:0,gum:0,lava:0,rdouble:0,party:0};
-  ({mermaid:()=>P.shield+=3,truck:()=>P.rush=1,dragon:()=>P.blast=1})[Wd().id]?.();
+  ({flower:()=>P.hint=1,mermaid:()=>P.shield+=3,truck:()=>P.rush=1,dragon:()=>P.blast=1})[Wd().id]?.();
   ({crown:()=>P.coinMul=2,wizard:()=>P.slow*=.6,cowboy:()=>P.big=1.25,party:()=>{P.party=1;P.time+=5},bow:()=>P.time+=10,flower:()=>P.goldEvery=P.goldEvery?4:5})[e.hat]?.();
   ({berry:()=>P.streakSec=1,grape:()=>P.slow*=.85,bubble:()=>P.gum=1,neon:()=>P.glow=1,lava:()=>P.lava=1,rainbow:()=>P.rdouble=1,glitter:()=>P.perCatch=1})[e.pen]?.();
   ({notebook:()=>P.time+=3,candy:()=>P.spawnMul=1.35,ocean:()=>P.slow*=.88,chalk:()=>P.shield+=2,space:()=>P.freezeEvery=P.freezeEvery?10:15})[e.paper]?.();
@@ -41,6 +42,17 @@ function paperOverlay(){const id=S.eq.paper;let h="";
   if(id==="chalk")h=`<div style="position:absolute;inset:0;box-shadow:inset 0 0 0 10px #8A5A2B,inset 0 0 0 14px #5E3A16;pointer-events:none;z-index:3"></div>`+Array.from({length:30},(_,i)=>`<div style="position:absolute;left:${(i*37)%100}%;top:${(i*53)%100}%;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.5)"></div>`).join("");
   if(id==="space")h=Array.from({length:26},(_,i)=>`<div class="amb tw" style="left:${(i*41)%100}%;top:${(i*23)%100}%;font-size:${8+(i%3)*4}px;color:#FFF6B0;animation-delay:-${(i*.3)%2}s">✦</div>`).join("")+`<div style="position:absolute;right:14px;top:10px;font-size:40px">🪐</div>`;
   return `<div style="position:absolute;inset:0;pointer-events:none;overflow:hidden">${h}</div>`}
+/* game arenas take the colors of the chosen season; fireflies always come out at dusk */
+const SEASON_SKY={flower:["#FFE3F1","#A6DC86"],mermaid:["#A8EEFF","#2E9FD0"],truck:["#FFD9A0","#D9853A"],dragon:["#E3EEFF","#9CC3F0"]};
+const SEASON_DUSK={flower:["#3B2A6E","#6E5BA8"],mermaid:["#1D2B6B","#2E7FB8"],truck:["#4A2316","#9A4A22"],dragon:["#141B3D","#3D4E8C"]};
+const SEASON_GROUND={flower:"#7CC35A",mermaid:"#F4E3B9",truck:"#C8662A",dragon:"#FFFFFF"};
+function arenaBG(rid){const w=Wd().id;if(rid==="lane")return `linear-gradient(180deg,${SEASON_GROUND[w]} 0 12%,#6B6F7A 12% 88%,${SEASON_GROUND[w]} 88%)`;
+  const c=rid==="swamp"?SEASON_DUSK[w]:SEASON_SKY[w];return `linear-gradient(180deg,${c[0]},${c[1]})`}
+function arenaDeco(rid){const w=Wd().id;if(rid==="lane")return "";const E={flower:["🌷","🌸","🌼"],mermaid:["🐚","🌴","🦀"],truck:["🎃","🍂","🌾"],dragon:["🌲","⛄","🌲"]}[w];
+  return Array.from({length:6},(_,i)=>`<div style="position:absolute;bottom:${rid==="castle"?2:0}px;left:${8+i*16}%;font-size:${34+(i%2)*10}px;opacity:.85;pointer-events:none">${E[i%3]}</div>`).join("")
+   +(w==="dragon"?Array.from({length:14},(_,i)=>`<div class="amb gfall snowf" style="left:${(i*37)%100}%;animation-duration:${5+(i%4)}s;animation-delay:-${i*.5}s">❄</div>`).join(""):"")
+   +(w==="truck"?Array.from({length:10},(_,i)=>`<div class="amb gfall" style="left:${(i*37)%100}%;animation-duration:${5+(i%4)}s;animation-delay:-${i*.6}s">${i%2?"🍂":"🍁"}</div>`).join(""):"")
+   +(w==="flower"?Array.from({length:10},(_,i)=>`<div class="amb gfall" style="left:${(i*37)%100}%;animation-duration:${6+(i%4)}s;animation-delay:-${i*.6}s">🌸</div>`).join(""):"")}
 let GM=null;
 function stopGame(){if(GM){GM.dead=true;cancelAnimationFrame(GM.raf);clearInterval(GM.tick);GM=null}}
 $("#gquit").onclick=()=>{stopGame();show("map")};
@@ -56,12 +68,13 @@ function gamePool(rid){
 function play(rid){stopGame();const gm=GAMES[rid],P=gameParams();const slow=P.slow,big=P.big;
   let time=P.time,score=0,streak=0,spawnN=0,catches=0,shield=P.shield,freezeUntil=0,nextRush=10,frozenAcc=0;const pool=gamePool(rid);
   $("#gstage").innerHTML=`<div class="card" style="padding:14px"><div class="game-top"><span class="gpill" id="gtime">⏱ ${time}</span><div class="target" id="gtarget"></div><span class="gpill" id="gscore">⭐ 0</span></div>
-    <div class="arena" id="arena" style="background:${gm.bg}">${paperOverlay()}<div class="freeze" id="gfreeze" hidden>❄️ Freeze!</div></div></div>`;
+    <div class="arena" id="arena" style="background:${arenaBG(rid)}">${paperOverlay()}<div class="freeze" id="gfreeze" hidden>❄️ Freeze!</div></div></div>`;
   const A=$("#arena");const AW=()=>A.clientWidth,AH=()=>A.clientHeight;
   if(rid==="castle")A.insertAdjacentHTML("beforeend",`<div class="dragon" id="dragon">🐲</div>`);
   if(rid==="lane")A.insertAdjacentHTML("beforeend",`<svg style="position:absolute;inset:0;width:100%;height:100%" preserveAspectRatio="none" viewBox="0 0 100 100"><path d="M0 37 H100 M0 63 H100" stroke="#fff" stroke-width=".8" stroke-dasharray="4 4"/></svg>`);
-  if(rid==="lagoon")A.insertAdjacentHTML("beforeend",Array.from({length:4},(_,i)=>`<div style="position:absolute;left:${10+i*24}%;bottom:${8+(i%2)*14}%;width:70px;height:24px;border-radius:50%;background:#2FA35A;opacity:.8"></div>`).join(""));
-  if(rid==="swamp")A.insertAdjacentHTML("beforeend",Array.from({length:7},(_,i)=>`<div style="position:absolute;bottom:0;left:${i*15+3}%;font-size:44px;opacity:.75">🌾</div>`).join(""));
+  A.insertAdjacentHTML("beforeend",arenaDeco(rid));
+  if(false)A.insertAdjacentHTML("beforeend",Array.from({length:4},(_,i)=>`<div style="position:absolute;left:${10+i*24}%;bottom:${8+(i%2)*14}%;width:70px;height:24px;border-radius:50%;background:#2FA35A;opacity:.8"></div>`).join(""));
+  if(false)A.insertAdjacentHTML("beforeend",Array.from({length:7},(_,i)=>`<div style="position:absolute;bottom:0;left:${i*15+3}%;font-size:44px;opacity:.75">🌾</div>`).join(""));
   if(rid!=="castle")A.insertAdjacentHTML("beforeend",`<div class="gsnail" id="gsnail">${snailSVG()}</div>`);else A.insertAdjacentHTML("beforeend",`<div class="gsnail" id="gsnail" style="width:90px">${snailSVG()}</div>`);
   let target=null,hits=0;
   function newTarget(){target=pick(pool.filter(p=>!target||p.id!==target.id));hits=0;$("#gtarget").innerHTML=rid==="lane"?`Find <b>${target.show}</b>`:`Find <b style="font-family:var(--f-body)">${esc(target.show)}</b>`;say(rid==="lane"?target.lab:target.kind==="cap"?"capital "+target.lab:target.lab)}
